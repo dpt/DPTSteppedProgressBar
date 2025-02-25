@@ -13,6 +13,8 @@ A highly customisable stepped progress indicator for SwiftUI applications. Perfe
 - ↔️ Horizontal and vertical orientations
 - 🔲 Flexible step shapes with adjustable corner radius
 - 📐 Independent width and height control
+- ♿️ Comprehensive accessibility support
+- 🏷️ Optional step labels with customisable styling
 - ⚡️ Lightweight and performant
 - 🎯 iOS 14.0+ and macOS 11.0+ compatibility
 
@@ -59,6 +61,38 @@ SteppedProgressBar(
 )
 ```
 
+### With Labels and Accessibility
+```swift
+SteppedProgressBar(
+    currentStep: 2,
+    totalSteps: 4,
+    stepConfigurations: [
+        StepConfiguration(
+            label: "Start",
+            accessibilityLabel: "Starting point",
+            accessibilityHint: "Initial setup complete"
+        ),
+        StepConfiguration(
+            label: "Details",
+            accessibilityLabel: "Personal details",
+            accessibilityHint: "Enter your information"
+        ),
+        StepConfiguration(
+            label: "Review",
+            accessibilityLabel: "Review details",
+            accessibilityHint: "Check your information"
+        ),
+        StepConfiguration(
+            label: "Done",
+            accessibilityLabel: "Completion",
+            accessibilityHint: "Process complete"
+        )
+    ],
+    showLabels: true,
+    labelFont: .caption.bold()
+)
+```
+
 ### Custom Colours with Active State
 ```swift
 SteppedProgressBar(
@@ -83,16 +117,6 @@ SteppedProgressBar(
 )
 ```
 
-### Pill-Shaped Steps
-```swift
-SteppedProgressBar(
-    currentStep: 3,
-    totalSteps: 5,
-    stepSize: CGSize(width: 32, height: 16),
-    cornerRadius: 8
-)
-```
-
 ## Configuration Options
 
 | Parameter | Type | Description | Default |
@@ -103,20 +127,45 @@ SteppedProgressBar(
 | `palette` | `Palette` | Colour scheme configuration | `Palette()` |
 | `stepSize` | `CGSize` | Width and height of step indicators | `CGSize(width: 16, height: 16)` |
 | `cornerRadius` | `CGFloat?` | Corner radius of step indicators | `min(width, height) / 2` |
+| `stepConfigurations` | `[StepConfiguration]?` | Configuration for step labels and accessibility | `nil` |
+| `showLabels` | `Bool` | Whether to show step labels | `false` |
+| `labelFont` | `Font` | Font for step labels | `.caption` |
+| `labelSpacing` | `CGFloat` | Space between step and label | `4` |
 
-### Palette Configuration
+### Step Configuration
 
-The `Palette` structure allows for detailed colour customisation:
+The `StepConfiguration` structure allows for detailed customisation of each step:
 
 ```swift
-Palette(
-    primary: .blue,          // Completed steps
-    active: .blue.opacity(0.8), // Current step (optional)
-    secondary: .gray.opacity(0.3) // Upcoming steps
+StepConfiguration(
+    label: "Step 1",              // Visual label (optional)
+    accessibilityLabel: "Start",  // VoiceOver label
+    accessibilityHint: "Begin"    // Additional VoiceOver context
 )
 ```
 
-If `active` is not specified, it defaults to `primary.opacity(0.6)`.
+### Accessibility Features
+
+The progress bar includes comprehensive accessibility support:
+
+1. **Overall Progress**
+   - VoiceOver announces current progress (e.g., "Progress tracker: Step 2 of 5")
+   - Progress percentage is provided (e.g., "40% complete")
+
+2. **Step-Specific Information**
+   - Each step can have a custom accessibility label and hint
+   - Default labels are provided if not specified
+   - Active step is marked as selected
+   - Completed steps are marked as buttons
+
+3. **Visual Labels**
+   - Optional text labels for each step
+   - Customisable font and spacing
+   - Labels inherit step colours for visual consistency
+
+4. **Dynamic Type Support**
+   - Labels scale with system font size settings
+   - Proper spacing management
 
 ## Best Practices
 
@@ -130,6 +179,10 @@ If `active` is not specified, it defaults to `primary.opacity(0.6)`.
    - Use contrasting colours for better visibility
    - Consider accessibility when choosing colours
    - Utilise opacity for subtle variations
+5. **Accessibility**:
+   - Provide meaningful labels and hints for each step
+   - Use clear, concise descriptions
+   - Test with VoiceOver enabled
 
 ## Contributing
 
