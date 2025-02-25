@@ -67,22 +67,22 @@ SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     stepConfigurations: [
-        StepConfiguration(
+        SteppedProgressBar.StepConfiguration(
             label: "Start",
             accessibilityLabel: "Starting point",
             accessibilityHint: "Initial setup complete"
         ),
-        StepConfiguration(
+        SteppedProgressBar.StepConfiguration(
             label: "Details",
             accessibilityLabel: "Personal details",
             accessibilityHint: "Enter your information"
         ),
-        StepConfiguration(
+        SteppedProgressBar.StepConfiguration(
             label: "Review",
             accessibilityLabel: "Review details",
             accessibilityHint: "Check your information"
         ),
-        StepConfiguration(
+        SteppedProgressBar.StepConfiguration(
             label: "Done",
             accessibilityLabel: "Completion",
             accessibilityHint: "Process complete"
@@ -98,7 +98,7 @@ SteppedProgressBar(
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    palette: Palette(
+    palette: SteppedProgressBar.Palette(
         primary: .blue,
         active: .blue.opacity(0.8),
         secondary: .blue.opacity(0.2)
@@ -123,11 +123,11 @@ SteppedProgressBar(
 |-----------|------|-------------|---------|
 | `currentStep` | `Int` | Current active step (1-based index) | Required |
 | `totalSteps` | `Int` | Total number of steps | Required |
-| `direction` | `ProgressDirection` | Layout orientation (.horizontal/.vertical) | `.horizontal` |
-| `palette` | `Palette` | Colour scheme configuration | `Palette()` |
+| `direction` | `SteppedProgressBar.ProgressDirection` | Layout orientation (.horizontal/.vertical) | `.horizontal` |
+| `palette` | `SteppedProgressBar.Palette` | Colour scheme configuration | `Palette()` |
 | `stepSize` | `CGSize` | Width and height of step indicators | `CGSize(width: 16, height: 16)` |
 | `cornerRadius` | `CGFloat?` | Corner radius of step indicators | `min(width, height) / 2` |
-| `stepConfigurations` | `[StepConfiguration]?` | Configuration for step labels and accessibility | `nil` |
+| `stepConfigurations` | `[SteppedProgressBar.StepConfiguration]?` | Configuration for step labels and accessibility | `nil` |
 | `showLabels` | `Bool` | Whether to show step labels | `false` |
 | `labelFont` | `Font` | Font for step labels | `.caption` |
 | `labelSpacing` | `CGFloat` | Space between step and label | `4` |
@@ -136,10 +136,10 @@ SteppedProgressBar(
 
 ### Step Configuration
 
-The `StepConfiguration` structure allows for detailed customisation of each step:
+The `SteppedProgressBar.StepConfiguration` structure allows for detailed customisation of each step:
 
 ```swift
-StepConfiguration(
+SteppedProgressBar.StepConfiguration(
     label: "Step 1",              // Visual label (optional)
     accessibilityLabel: "Start",  // VoiceOver label
     accessibilityHint: "Begin"    // Additional VoiceOver context
