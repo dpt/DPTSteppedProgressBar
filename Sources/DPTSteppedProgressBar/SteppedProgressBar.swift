@@ -16,7 +16,7 @@ public struct Palette {
     public let active: Color
     /// The colour used for incomplete steps
     public let secondary: Color
-    
+
     /// Creates a new colour palette for the progress bar
     /// - Parameters:
     ///   - primary: The colour for completed steps and connections
@@ -41,7 +41,7 @@ public struct StepConfiguration {
     public let accessibilityLabel: String?
     /// Additional accessibility hint about the step's purpose
     public let accessibilityHint: String?
-    
+
     public init(
         label: String? = nil,
         accessibilityLabel: String? = nil,
@@ -95,7 +95,9 @@ public struct SteppedProgressBar: View {
     let labelFont: Font
     /// Spacing between step and label
     let labelSpacing: CGFloat
-    
+    /// The width of the joining lines
+    let lineWidth: CGFloat
+
     /// Creates a new stepped progress bar
     /// - Parameters:
     ///   - currentStep: The current step (1-based index)
@@ -108,6 +110,7 @@ public struct SteppedProgressBar: View {
     ///   - showLabels: Whether to show labels
     ///   - labelFont: Font for the labels
     ///   - labelSpacing: Spacing between step and label
+    ///   - lineWidth: The width of the joining lines
     public init(
         currentStep: Int,
         totalSteps: Int,
@@ -118,7 +121,8 @@ public struct SteppedProgressBar: View {
         stepConfigurations: [StepConfiguration]? = nil,
         showLabels: Bool = false,
         labelFont: Font = .caption,
-        labelSpacing: CGFloat = 4
+        labelSpacing: CGFloat = 4,
+        lineWidth: CGFloat = 2
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
         self.totalSteps = totalSteps
@@ -130,6 +134,7 @@ public struct SteppedProgressBar: View {
         self.showLabels = showLabels
         self.labelFont = labelFont
         self.labelSpacing = labelSpacing
+        self.lineWidth = lineWidth
     }
     
     public var body: some View {
@@ -190,41 +195,40 @@ public struct SteppedProgressBar: View {
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
             VStack(spacing: labelSpacing) {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(colourForStep(index))
-                    .frame(width: stepSize.width, height: stepSize.height)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .strokeBorder(colourForStep(index), lineWidth: 2)
-                    )
-                    .overlay(
-                        Group {
-                            if index < currentStep - 1 {
-                                Rectangle()
-                                    .fill(palette.primary)
-                                    .frame(
-                                        width: direction == .horizontal ? stepSize.width : 2,
-                                        height: direction == .horizontal ? 2 : stepSize.height
-                                    )
-                                    .offset(
-                                        x: direction == .horizontal ? stepSize.width : 0,
-                                        y: direction == .horizontal ? 0 : stepSize.height
-                                    )
-                            }
-                        }
-                    )
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(stepAccessibilityLabel(for: index))
-                    .accessibilityHint(stepAccessibilityHint(for: index))
-                    .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
-                    .accessibilityAddTraits(index < currentStep ? .isButton : [])
-                
+                ZStack {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(colourForStep(index))
+                        .frame(width: stepSize.width, height: stepSize.height)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: cornerRadius)
+                                .strokeBorder(colourForStep(index), lineWidth: 2)
+                        )
+                    if index < currentStep - 1 {
+                        Rectangle()
+                            .fill(palette.primary)
+                            .frame(
+                                width: direction == .horizontal ? stepSize.width : lineWidth,
+                                height: direction == .horizontal ? lineWidth : stepSize.height
+                            )
+                            .offset(
+                                x: direction == .horizontal ? stepSize.width : 0,
+                                y: direction == .horizontal ? 0 : stepSize.height
+                            )
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(stepAccessibilityLabel(for: index))
+                .accessibilityHint(stepAccessibilityHint(for: index))
+                .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
+                .accessibilityAddTraits(index < currentStep ? .isButton : [])
+
                 if showLabels, let label = stepLabel(for: index) {
                     Text(label)
                         .font(labelFont)
                         .foregroundColor(colourForStep(index))
                 }
             }
+            .padding(.bottom, showLabels ? labelSpacing : 0)
         }
     }
 } 
