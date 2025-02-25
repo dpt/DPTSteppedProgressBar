@@ -145,18 +145,26 @@ public struct SteppedProgressBar: View {
     public var body: some View {
         Group {
             if direction == .horizontal {
-                HStack(spacing: stepSize.width) {
-                    progressContent
-                }
+                HStack(spacing: stepSize.width) { progressContent }
             } else {
-                VStack(spacing: stepSize.height) {
-                    progressContent
-                }
+                VStack(spacing: stepSize.height) { progressContent }
             }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(overallAccessibilityLabel)
         .accessibilityValue(progressPercentage)
+    }
+
+    private var lineFrame: CGSize {
+        direction == .horizontal
+            ? CGSize(width: stepSize.width, height: lineWidth)
+            : CGSize(width: lineWidth, height: stepSize.height)
+    }
+
+    private var lineOffset: CGPoint {
+        direction == .horizontal
+            ? CGPoint(x: stepSize.width, y: 0)
+            : CGPoint(x: 0, y: stepSize.height)
     }
 
     internal var overallAccessibilityLabel: String {
@@ -169,12 +177,7 @@ public struct SteppedProgressBar: View {
     }
 
     internal func stepAccessibilityLabel(for index: Int) -> String {
-        if let configs = stepConfigurations,
-           index < configs.count,
-           let label = configs[index].accessibilityLabel {
-            return label
-        }
-        return "Step \(index + 1)"
+        stepConfigurations?[index].accessibilityLabel ?? "Step \(index + 1)"
     }
 
     internal func stepAccessibilityHint(for index: Int) -> Text {
@@ -185,15 +188,9 @@ public struct SteppedProgressBar: View {
         stepConfigurations?[index].label
     }
 
-    /// Determines the appropriate colour for a step based on its index
     private func colourForStep(_ index: Int) -> Color {
-        if index + 1 == currentStep {
-            return palette.active
-        } else if index < currentStep {
-            return palette.primary
-        } else {
-            return palette.secondary
-        }
+        index + 1 == currentStep ? palette.active :
+            index < currentStep ? palette.primary : palette.secondary
     }
 
     /// Generates the step indicators and connecting lines
@@ -211,14 +208,8 @@ public struct SteppedProgressBar: View {
                     if index < currentStep - 1 {
                         Rectangle()
                             .fill(palette.primary)
-                            .frame(
-                                width: direction == .horizontal ? stepSize.width : lineWidth,
-                                height: direction == .horizontal ? lineWidth : stepSize.height
-                            )
-                            .offset(
-                                x: direction == .horizontal ? stepSize.width : 0,
-                                y: direction == .horizontal ? 0 : stepSize.height
-                            )
+                            .frame(width: lineFrame.width, height: lineFrame.height)
+                            .offset(x: lineOffset.x, y: lineOffset.y)
                     }
                 }
                 .accessibilityElement(children: .ignore)

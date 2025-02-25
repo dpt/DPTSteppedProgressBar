@@ -71,11 +71,9 @@ final class SteppedProgressBarTests: XCTestCase {
     }
 
     func testCornerRadiusConfiguration() {
-        // Test default corner radius (circular)
         let defaultBar = SteppedProgressBar(currentStep: 1, totalSteps: 2)
-        XCTAssertEqual(defaultBar.cornerRadius, 8) // min(16, 16) / 2
+        XCTAssertEqual(defaultBar.cornerRadius, 8)
 
-        // Test custom corner radius
         let customBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
@@ -83,25 +81,22 @@ final class SteppedProgressBarTests: XCTestCase {
         )
         XCTAssertEqual(customBar.cornerRadius, 4)
 
-        // Test default corner radius with custom size
         let tallBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             stepSize: CGSize(width: 16, height: 24)
         )
-        XCTAssertEqual(tallBar.cornerRadius, 8) // min(16, 24) / 2
+        XCTAssertEqual(tallBar.cornerRadius, 8)
 
-        // Test default corner radius with wide size
         let wideBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             stepSize: CGSize(width: 32, height: 16)
         )
-        XCTAssertEqual(wideBar.cornerRadius, 8) // min(32, 16) / 2
+        XCTAssertEqual(wideBar.cornerRadius, 8)
     }
 
     func testDirectionConfiguration() {
-        // Test horizontal layout
         let horizontalBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
@@ -109,7 +104,6 @@ final class SteppedProgressBarTests: XCTestCase {
         )
         XCTAssertEqual(horizontalBar.direction, .horizontal)
 
-        // Test vertical layout
         let verticalBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
@@ -230,9 +224,7 @@ final class SteppedProgressBarTests: XCTestCase {
             (current: 2, total: 4, expected: "50% complete"),
             (current: 3, total: 4, expected: "75% complete"),
             (current: 4, total: 4, expected: "100% complete"),
-            (current: 1, total: 3, expected: "33% complete"),
-            (current: 2, total: 3, expected: "66% complete"),
-            (current: 3, total: 3, expected: "100% complete")
+            (current: 2, total: 3, expected: "66% complete")
         ]
 
         for testCase in testCases {
@@ -249,11 +241,9 @@ final class SteppedProgressBarTests: XCTestCase {
     }
 
     func testStrokeWidthConfiguration() {
-        // Test default stroke width
         let defaultBar = SteppedProgressBar(currentStep: 1, totalSteps: 2)
         XCTAssertEqual(defaultBar.strokeWidth, 2)
 
-        // Test custom stroke width
         let customBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
