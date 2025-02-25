@@ -18,7 +18,7 @@ Add the following to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "your-repository-url", from: "1.0.0")
+    .package(url: "https://github.com/dpt/DPTSteppedProgressBar", from: "1.0.0")
 ]
 ```
 
