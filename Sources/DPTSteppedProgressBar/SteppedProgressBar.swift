@@ -8,6 +8,26 @@ public enum ProgressDirection {
     case vertical
 }
 
+/// Defines the colour scheme for the progress bar
+public struct Palette {
+    /// The colour used for completed steps and connections
+    public let primary: Color
+    /// The colour used for incomplete steps
+    public let secondary: Color
+    
+    /// Creates a new colour palette for the progress bar
+    /// - Parameters:
+    ///   - primary: The colour for completed steps and connections
+    ///   - secondary: The colour for incomplete steps
+    public init(
+        primary: Color = .blue,
+        secondary: Color = .gray.opacity(0.3)
+    ) {
+        self.primary = primary
+        self.secondary = secondary
+    }
+}
+
 /// A customisable stepped progress bar that shows progression through discrete steps
 ///
 /// `SteppedProgressBar` is a SwiftUI view that displays a series of connected circles
@@ -20,8 +40,7 @@ public enum ProgressDirection {
 ///     currentStep: 2,
 ///     totalSteps: 5,
 ///     direction: .horizontal,
-///     primaryColour: .blue,
-///     secondaryColour: .gray.opacity(0.3),
+///     palette: Palette(primary: .blue, secondary: .gray.opacity(0.3)),
 ///     stepSize: 16
 /// )
 /// ```
@@ -32,10 +51,8 @@ public struct SteppedProgressBar: View {
     let totalSteps: Int
     /// The layout direction of the progress bar
     let direction: ProgressDirection
-    /// The colour used for completed steps and connections
-    let primaryColour: Color
-    /// The colour used for incomplete steps
-    let secondaryColour: Color
+    /// The colour palette for the progress bar
+    let palette: Palette
     /// The diameter of each step indicator
     let stepSize: CGFloat
     
@@ -44,22 +61,19 @@ public struct SteppedProgressBar: View {
     ///   - currentStep: The current step (1-based index)
     ///   - totalSteps: The total number of steps
     ///   - direction: The layout direction (.horizontal or .vertical)
-    ///   - primaryColour: The colour for completed steps and connections
-    ///   - secondaryColour: The colour for incomplete steps
+    ///   - palette: The colour palette for the progress bar
     ///   - stepSize: The diameter of each step indicator
     public init(
         currentStep: Int,
         totalSteps: Int,
         direction: ProgressDirection = .horizontal,
-        primaryColour: Color = .blue,
-        secondaryColour: Color = .gray.opacity(0.3),
+        palette: Palette = Palette(),
         stepSize: CGFloat = 16
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
         self.totalSteps = totalSteps
         self.direction = direction
-        self.primaryColour = primaryColour
-        self.secondaryColour = secondaryColour
+        self.palette = palette
         self.stepSize = stepSize
     }
     
@@ -81,17 +95,17 @@ public struct SteppedProgressBar: View {
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
             Circle()
-                .fill(index < currentStep ? primaryColour : secondaryColour)
+                .fill(index < currentStep ? palette.primary : palette.secondary)
                 .frame(width: stepSize, height: stepSize)
                 .overlay(
                     Circle()
-                        .strokeBorder(index < currentStep ? primaryColour : secondaryColour, lineWidth: 2)
+                        .strokeBorder(index < currentStep ? palette.primary : palette.secondary, lineWidth: 2)
                 )
                 .overlay(
                     Group {
                         if index < currentStep - 1 {
                             Rectangle()
-                                .fill(primaryColour)
+                                .fill(palette.primary)
                                 .frame(
                                     width: (direction == .horizontal) ? stepSize : 2,
                                     height: (direction == .horizontal) ? 2 : stepSize

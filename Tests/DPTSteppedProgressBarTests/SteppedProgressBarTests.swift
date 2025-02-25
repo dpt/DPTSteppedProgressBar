@@ -5,10 +5,13 @@ import SwiftUI
 final class SteppedProgressBarTests: XCTestCase {
     func testDefaultInitialisation() {
         let progressBar = SteppedProgressBar(currentStep: 2, totalSteps: 5)
+        let defaultPalette = Palette()
         
         XCTAssertEqual(progressBar.currentStep, 2)
         XCTAssertEqual(progressBar.totalSteps, 5)
         XCTAssertEqual(progressBar.direction, .horizontal)
+        XCTAssertEqual(progressBar.palette.primary, defaultPalette.primary)
+        XCTAssertEqual(progressBar.palette.secondary, defaultPalette.secondary)
     }
     
     func testCurrentStepBoundaries() {
@@ -22,19 +25,29 @@ final class SteppedProgressBarTests: XCTestCase {
     }
     
     func testCustomisation() {
+        let customPalette = Palette(primary: .red, secondary: .green)
         let customBar = SteppedProgressBar(
             currentStep: 3,
             totalSteps: 5,
             direction: .vertical,
-            primaryColour: .red,
-            secondaryColour: .green,
+            palette: customPalette,
             stepSize: 24
         )
         
         XCTAssertEqual(customBar.direction, .vertical)
-        XCTAssertEqual(customBar.primaryColour, .red)
-        XCTAssertEqual(customBar.secondaryColour, .green)
+        XCTAssertEqual(customBar.palette.primary, .red)
+        XCTAssertEqual(customBar.palette.secondary, .green)
         XCTAssertEqual(customBar.stepSize, 24)
+    }
+    
+    func testPaletteInitialisation() {
+        let defaultPalette = Palette()
+        XCTAssertEqual(defaultPalette.primary, .blue)
+        XCTAssertEqual(defaultPalette.secondary, .gray.opacity(0.3))
+        
+        let customPalette = Palette(primary: .green, secondary: .red)
+        XCTAssertEqual(customPalette.primary, .green)
+        XCTAssertEqual(customPalette.secondary, .red)
     }
     
     func testViewHierarchy() {
