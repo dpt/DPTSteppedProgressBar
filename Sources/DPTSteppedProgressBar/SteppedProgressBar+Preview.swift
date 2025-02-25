@@ -3,15 +3,15 @@ import SwiftUI
 struct SteppedProgressBar_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 40) {
-            // Default palette
+            // Default style (circular)
             SteppedProgressBar(
                 currentStep: 3,
                 totalSteps: 5,
                 direction: .horizontal
             )
-            .previewDisplayName("Default Style")
+            .previewDisplayName("Default Style (Circular)")
             
-            // Custom blue palette
+            // Tall rounded rectangles
             SteppedProgressBar(
                 currentStep: 2,
                 totalSteps: 4,
@@ -21,11 +21,12 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     active: .blue.opacity(0.8),
                     secondary: .blue.opacity(0.2)
                 ),
-                stepSize: 24
+                stepSize: CGSize(width: 16, height: 24),
+                cornerRadius: 6
             )
-            .previewDisplayName("Blue Theme")
+            .previewDisplayName("Tall Rounded Rectangles")
             
-            // Success/progress palette
+            // Wide pill shapes
             SteppedProgressBar(
                 currentStep: 4,
                 totalSteps: 6,
@@ -35,11 +36,12 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     active: .yellow,
                     secondary: .gray.opacity(0.2)
                 ),
-                stepSize: 20
+                stepSize: CGSize(width: 32, height: 16),
+                cornerRadius: 8
             )
-            .previewDisplayName("Success Theme")
+            .previewDisplayName("Wide Pills")
             
-            // Brand accent palette
+            // Square steps
             SteppedProgressBar(
                 currentStep: 2,
                 totalSteps: 3,
@@ -49,11 +51,12 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     active: .pink,
                     secondary: .purple.opacity(0.15)
                 ),
-                stepSize: 16
+                stepSize: CGSize(width: 24, height: 24),
+                cornerRadius: 4
             )
-            .previewDisplayName("Brand Theme")
+            .previewDisplayName("Square Steps")
             
-            // High contrast palette
+            // Soft rectangles
             SteppedProgressBar(
                 currentStep: 3,
                 totalSteps: 5,
@@ -63,9 +66,10 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     active: .blue,
                     secondary: .gray.opacity(0.2)
                 ),
-                stepSize: 18
+                stepSize: CGSize(width: 24, height: 16),
+                cornerRadius: 3
             )
-            .previewDisplayName("High Contrast Theme")
+            .previewDisplayName("Soft Rectangles")
         }
         .padding()
         .previewLayout(.sizeThatFits)
