@@ -1,3 +1,8 @@
+//
+//  SteppedProgressBar+Preview.swift
+//  DPTSteppedProgressBar
+//
+
 import SwiftUI
 
 struct SteppedProgressBar_Previews: PreviewProvider {
@@ -20,7 +25,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         accessibilityHint: "Enter your information"
                     ),
                     StepConfiguration(
-                        label: "Review",
+                        label: "Review the agreement",
                         accessibilityLabel: "Review details",
                         accessibilityHint: "Check your information"
                     ),
@@ -39,7 +44,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 labelFont: .caption.bold()
             )
             .previewDisplayName("With Labels and Accessibility")
-            
+
             // Vertical with custom labels
             SteppedProgressBar(
                 currentStep: 2,
@@ -62,7 +67,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 labelFont: .footnote
             )
             .previewDisplayName("Vertical with Labels")
-            
+
             // Default style (circular)
             SteppedProgressBar(
                 currentStep: 3,
@@ -70,7 +75,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 direction: .horizontal
             )
             .previewDisplayName("Default Style (Circular)")
-            
+
             // Tall rounded rectangles
             SteppedProgressBar(
                 currentStep: 2,
@@ -85,7 +90,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 cornerRadius: 6
             )
             .previewDisplayName("Tall Rounded Rectangles")
-            
+
             // Wide pill shapes
             SteppedProgressBar(
                 currentStep: 4,
@@ -100,7 +105,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 cornerRadius: 8
             )
             .previewDisplayName("Wide Pills")
-            
+
             // Square steps
             SteppedProgressBar(
                 currentStep: 2,
@@ -115,7 +120,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 cornerRadius: 4
             )
             .previewDisplayName("Square Steps")
-            
+
             // Soft rectangles
             SteppedProgressBar(
                 currentStep: 3,
@@ -134,4 +139,4 @@ struct SteppedProgressBar_Previews: PreviewProvider {
         .padding()
         .previewLayout(.sizeThatFits)
     }
-} 
+}

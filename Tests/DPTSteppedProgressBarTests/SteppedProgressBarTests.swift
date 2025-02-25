@@ -1,3 +1,8 @@
+//
+//  SteppedProgressBarTests.swift
+//  DPTSteppedProgressBarTests
+//
+
 import XCTest
 import SwiftUI
 @testable import DPTSteppedProgressBar
