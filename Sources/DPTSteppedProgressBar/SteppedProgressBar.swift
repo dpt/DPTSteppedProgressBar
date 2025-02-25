@@ -20,8 +20,8 @@ public enum ProgressDirection {
 ///     currentStep: 2,
 ///     totalSteps: 5,
 ///     direction: .horizontal,
-///     primaryColor: .blue,
-///     secondaryColor: .gray.opacity(0.3),
+///     primaryColour: .blue,
+///     secondaryColour: .gray.opacity(0.3),
 ///     stepSize: 16
 /// )
 /// ```
@@ -33,9 +33,9 @@ public struct SteppedProgressBar: View {
     /// The layout direction of the progress bar
     let direction: ProgressDirection
     /// The colour used for completed steps and connections
-    let primaryColor: Color
+    let primaryColour: Color
     /// The colour used for incomplete steps
-    let secondaryColor: Color
+    let secondaryColour: Color
     /// The diameter of each step indicator
     let stepSize: CGFloat
     
@@ -44,22 +44,22 @@ public struct SteppedProgressBar: View {
     ///   - currentStep: The current step (1-based index)
     ///   - totalSteps: The total number of steps
     ///   - direction: The layout direction (.horizontal or .vertical)
-    ///   - primaryColor: The colour for completed steps and connections
-    ///   - secondaryColor: The colour for incomplete steps
+    ///   - primaryColour: The colour for completed steps and connections
+    ///   - secondaryColour: The colour for incomplete steps
     ///   - stepSize: The diameter of each step indicator
     public init(
         currentStep: Int,
         totalSteps: Int,
         direction: ProgressDirection = .horizontal,
-        primaryColor: Color = .blue,
-        secondaryColor: Color = .gray.opacity(0.3),
+        primaryColour: Color = .blue,
+        secondaryColour: Color = .gray.opacity(0.3),
         stepSize: CGFloat = 16
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
         self.totalSteps = totalSteps
         self.direction = direction
-        self.primaryColor = primaryColor
-        self.secondaryColor = secondaryColor
+        self.primaryColour = primaryColour
+        self.secondaryColour = secondaryColour
         self.stepSize = stepSize
     }
     
@@ -81,17 +81,17 @@ public struct SteppedProgressBar: View {
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
             Circle()
-                .fill(index < currentStep ? primaryColor : secondaryColor)
+                .fill(index < currentStep ? primaryColour : secondaryColour)
                 .frame(width: stepSize, height: stepSize)
                 .overlay(
                     Circle()
-                        .strokeBorder(index < currentStep ? primaryColor : secondaryColor, lineWidth: 2)
+                        .strokeBorder(index < currentStep ? primaryColour : secondaryColour, lineWidth: 2)
                 )
                 .overlay(
                     Group {
                         if index < currentStep - 1 {
                             Rectangle()
-                                .fill(primaryColor)
+                                .fill(primaryColour)
                                 .frame(
                                     width: (direction == .horizontal) ? stepSize : 2,
                                     height: (direction == .horizontal) ? 2 : stepSize

@@ -26,14 +26,14 @@ final class SteppedProgressBarTests: XCTestCase {
             currentStep: 3,
             totalSteps: 5,
             direction: .vertical,
-            primaryColor: .red,
-            secondaryColor: .green,
+            primaryColour: .red,
+            secondaryColour: .green,
             stepSize: 24
         )
         
         XCTAssertEqual(customBar.direction, .vertical)
-        XCTAssertEqual(customBar.primaryColor, .red)
-        XCTAssertEqual(customBar.secondaryColor, .green)
+        XCTAssertEqual(customBar.primaryColour, .red)
+        XCTAssertEqual(customBar.secondaryColour, .green)
         XCTAssertEqual(customBar.stepSize, 24)
     }
     
