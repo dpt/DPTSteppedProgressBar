@@ -167,8 +167,8 @@ public struct SteppedProgressBar: View {
         return "Step \(index + 1)"
     }
     
-    private func stepAccessibilityHint(for index: Int) -> String? {
-        stepConfigurations?[index].accessibilityHint
+    private func stepAccessibilityHint(for index: Int) -> Text {
+        Text(verbatim: stepConfigurations?[index].accessibilityHint ?? "")
     }
     
     private func stepLabel(for index: Int) -> String? {
@@ -209,22 +209,6 @@ public struct SteppedProgressBar: View {
                                     .offset(
                                         x: direction == .horizontal ? stepSize.width : 0,
                                         y: direction == .horizontal ? 0 : stepSize.height
-                                    )
-                            }
-                        }
-                    )
-                    .overlay(
-                        Group {
-                            if index < currentStep - 1 {
-                                Rectangle()
-                                    .fill(palette.primary)
-                                    .frame(
-                                        width: direction == .horizontal ? 2 : stepSize.width,
-                                        height: direction == .horizontal ? stepSize.height : 2
-                                    )
-                                    .offset(
-                                        x: direction == .horizontal ? 0 : stepSize.width,
-                                        y: direction == .horizontal ? stepSize.height : 0
                                     )
                             }
                         }
