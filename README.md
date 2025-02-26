@@ -69,7 +69,7 @@ SteppedProgressBar(
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    stepConfigurations: [
+    steps: [
         .init(
             label: "Start",
             accessibilityLabel: "Starting point",
@@ -139,7 +139,7 @@ SteppedProgressBar(
 ### Labels & Accessibility
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `stepConfigurations` | `[Step]?` | `nil` | Step labels and hints |
+| `steps` | `[Step]?` | `nil` | Step labels and hints |
 | `showLabels` | `Bool` | `false` | Show step labels |
 | `labelFont` | `Font` | `.caption` | Label font |
 | `labelSpacing` | `CGFloat` | `4` | Space between step and label |

@@ -165,7 +165,7 @@ final class SteppedProgressBarTests: XCTestCase {
         let progressBar = SteppedProgressBar(
             currentStep: 2,
             totalSteps: 3,
-            stepConfigurations: configs,
+            steps: configs,
             showLabels: true
         )
 
@@ -214,7 +214,7 @@ final class SteppedProgressBarTests: XCTestCase {
         let progressBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 3,
-            stepConfigurations: configs,
+            steps: configs,
             showLabels: true,
             labelFont: .title,
             labelSpacing: 8
@@ -275,7 +275,7 @@ final class SteppedProgressBarTests: XCTestCase {
         let progressBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 3,
-            stepConfigurations: configs,
+            steps: configs,
             showLabels: true
         )
 
