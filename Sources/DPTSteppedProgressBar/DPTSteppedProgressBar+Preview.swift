@@ -185,6 +185,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 24, height: 16),
+                    spacing: 24,
                     cornerRadius: 3
                 )
                 .previewDisplayName("Soft Rectangles")
