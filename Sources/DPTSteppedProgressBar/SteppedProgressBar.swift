@@ -198,7 +198,7 @@ public struct SteppedProgressBar: View {
     public var body: some View {
         Group {
             if direction == .horizontal {
-                HStack(spacing: stepSize.width) { allStepViews }
+                HStack(alignment: .top, spacing: stepSize.width) { allStepViews }
             } else {
                 VStack(spacing: stepSize.height) { allStepViews }
             }
