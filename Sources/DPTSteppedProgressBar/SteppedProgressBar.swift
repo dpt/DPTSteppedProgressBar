@@ -150,26 +150,25 @@ public struct SteppedProgressBar: View {
     public var body: some View {
         Group {
             if direction == .horizontal {
-                HStack(spacing: stepSize.width) { progressContent }
+                HStack(spacing: stepSize.width) { allStepViews }
             } else {
-                VStack(spacing: stepSize.height) { progressContent }
+                VStack(spacing: stepSize.height) { allStepViews }
+            }
+        }
+        .backgroundPreferenceValue(StepBoundsKey.self) { bounds in
+            GeometryReader { proxy in
+                ForEach(0..<totalSteps-1, id: \.self) { index in
+                    if let from = bounds[index], let to = bounds[index + 1] {
+                        Line(from: proxy[from][.center], to: proxy[to][.center])
+                            .stroke(lineWidth: lineWidth)
+                            .foregroundColor(palette.primary)
+                    }
+                }
             }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(overallAccessibilityLabel)
         .accessibilityValue(progressPercentage)
-    }
-
-    private var lineFrame: CGSize {
-        direction == .horizontal
-            ? .init(width: stepSize.width, height: lineWidth)
-            : .init(width: lineWidth, height: stepSize.height)
-    }
-
-    private var lineOffset: CGPoint {
-        direction == .horizontal
-            ? .init(x: stepSize.width, y: 0)
-            : .init(x: 0, y: stepSize.height)
     }
 
     internal var overallAccessibilityLabel: String {
@@ -198,38 +197,70 @@ public struct SteppedProgressBar: View {
             index < currentStep ? palette.primary : palette.secondary
     }
 
-    /// Generates the step indicators and connecting lines
-    private var progressContent: some View {
-        ForEach(0..<totalSteps, id: \.self) { index in
-            VStack(spacing: labelSpacing) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .fill(colourForStep(index))
-                        .frame(width: stepSize.width, height: stepSize.height)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: cornerRadius)
-                                .strokeBorder(colourForStep(index), lineWidth: strokeWidth)
-                        )
-                    if index < currentStep - 1 {
-                        Rectangle()
-                            .fill(palette.primary)
-                            .frame(width: lineFrame.width, height: lineFrame.height)
-                            .offset(x: lineOffset.x, y: lineOffset.y)
-                    }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(stepAccessibilityLabel(for: index))
-                .accessibilityHint(stepAccessibilityHint(for: index))
-                .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
-                .accessibilityAddTraits(index < currentStep ? .isButton : [])
-
-                if showLabels, let label = stepLabel(for: index) {
-                    Text(label)
-                        .font(labelFont)
-                        .foregroundColor(colourForStep(index))
-                }
+    private func singleStepView(index: Int) -> some View {
+        VStack(spacing: labelSpacing) {
+            ZStack {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(colourForStep(index))
+                    .frame(width: stepSize.width, height: stepSize.height)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: cornerRadius)
+                            .strokeBorder(colourForStep(index), lineWidth: strokeWidth)
+                    )
+                    .anchorPreference(key: StepBoundsKey.self,
+                                      value: .bounds,
+                                      transform: { [index: $0] })
             }
-            .padding(.bottom, showLabels ? labelSpacing : 0)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(stepAccessibilityLabel(for: index))
+            .accessibilityHint(stepAccessibilityHint(for: index))
+            .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
+            .accessibilityAddTraits(index < currentStep ? .isButton : [])
+
+            if showLabels, let label = stepLabel(for: index) {
+                Text(label)
+                    .font(labelFont)
+                    .foregroundColor(colourForStep(index))
+            }
         }
+        .padding(.bottom, showLabels ? labelSpacing : 0)
+    }
+
+    private var allStepViews: some View {
+        ForEach(0..<totalSteps, id: \.self) { index in
+            singleStepView(index: index)
+        }
+    }
+
+}
+
+// todo: avoid opacity for colour choices
+// todo: dotty lines, etc.
+
+private struct StepBoundsKey: PreferenceKey {
+    static let defaultValue: [Int: Anchor<CGRect>] = [:]
+
+    static func reduce(value: inout [Int : Anchor<CGRect>],
+                       nextValue: () -> [Int : Anchor<CGRect>]) {
+        value.merge(nextValue(),
+                    uniquingKeysWith: { $1 })
+    }
+}
+
+private struct Line: Shape {
+    var from: CGPoint
+    var to: CGPoint
+
+    func path(in rect: CGRect) -> Path {
+        Path { p in
+            p.move(to: from)
+            p.addLine(to: to)
+        }
+    }
+}
+
+private extension CGRect {
+    subscript(unitPoint: UnitPoint) -> CGPoint {
+        .init(x: minX + width * unitPoint.x, y: minY + height * unitPoint.y)
     }
 }
