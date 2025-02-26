@@ -219,35 +219,51 @@ public struct SteppedProgressBar: View {
     }
 
     private func singleStepView(index: Int) -> some View {
-        VStack(spacing: labelSpacing) {
-            ZStack {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(.white)
-                    .frame(width: stepSize.width, height: stepSize.height)
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(colourForStep(index))
-                    .frame(width: stepSize.width, height: stepSize.height)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .strokeBorder(colourForStep(index), lineWidth: strokeWidth)
-                    )
-                    .anchorPreference(key: StepBoundsKey.self,
-                                      value: .bounds,
-                                      transform: { [index: $0] })
-            }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(stepAccessibilityLabel(for: index))
-            .accessibilityHint(stepAccessibilityHint(for: index))
-            .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
-            .accessibilityAddTraits(index < currentStep ? .isButton : [])
-
-            if showLabels, let label = stepLabel(for: index) {
-                Text(label)
-                    .font(labelFont)
-                    .foregroundColor(colourForStep(index))
+        Group {
+            if direction == .horizontal {
+                VStack(spacing: labelSpacing) {
+                    stepIndicator(index: index)
+                    if showLabels, let label = stepLabel(for: index) {
+                        Text(label)
+                            .font(labelFont)
+                            .foregroundColor(colourForStep(index))
+                    }
+                }
+                .padding(.bottom, showLabels ? labelSpacing : 0)
+            } else {
+                HStack(spacing: labelSpacing) {
+                    stepIndicator(index: index)
+                    if showLabels, let label = stepLabel(for: index) {
+                        Text(label)
+                            .font(labelFont)
+                            .foregroundColor(colourForStep(index))
+                    }
+                }
             }
         }
-        .padding(.bottom, showLabels ? labelSpacing : 0)
+    }
+
+    private func stepIndicator(index: Int) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(.white)
+                .frame(width: stepSize.width, height: stepSize.height)
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(colourForStep(index))
+                .frame(width: stepSize.width, height: stepSize.height)
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .strokeBorder(colourForStep(index), lineWidth: strokeWidth)
+                )
+                .anchorPreference(key: StepBoundsKey.self,
+                                  value: .bounds,
+                                  transform: { [index: $0] })
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(stepAccessibilityLabel(for: index))
+        .accessibilityHint(stepAccessibilityHint(for: index))
+        .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
+        .accessibilityAddTraits(index < currentStep ? .isButton : [])
     }
 
     private func connectingLines(in bounds: [Int : Anchor<CGRect>]) -> some View {
