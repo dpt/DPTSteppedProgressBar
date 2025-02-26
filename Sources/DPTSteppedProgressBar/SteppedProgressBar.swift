@@ -226,7 +226,7 @@ public struct SteppedProgressBar: View {
                     if showLabels, let label = stepLabel(for: index) {
                         Text(label)
                             .font(labelFont)
-                            .foregroundColor(colourForStep(index))
+                            .foregroundColor(palette.primary)
                     }
                 }
                 .padding(.bottom, showLabels ? labelSpacing : 0)
@@ -236,7 +236,7 @@ public struct SteppedProgressBar: View {
                     if showLabels, let label = stepLabel(for: index) {
                         Text(label)
                             .font(labelFont)
-                            .foregroundColor(colourForStep(index))
+                            .foregroundColor(palette.primary)
                     }
                 }
             }
@@ -267,14 +267,12 @@ public struct SteppedProgressBar: View {
     }
 
     private func connectingLines(in bounds: [Int : Anchor<CGRect>]) -> some View {
-        Group {
-            GeometryReader { proxy in
-                ForEach(0..<totalSteps-1, id: \.self) { index in
-                    if let from = bounds[index], let to = bounds[index + 1] {
-                        Line(from: proxy[from][.center], to: proxy[to][.center], style: lineStyle)
-                            .stroke(lineWidth: lineStyle.width)
-                            .foregroundColor(index < currentStep - 1 ? palette.primary : palette.incompleteLine)
-                    }
+        GeometryReader { proxy in
+            ForEach(0..<totalSteps-1, id: \.self) { index in
+                if let from = bounds[index], let to = bounds[index + 1] {
+                    Line(from: proxy[from][.center], to: proxy[to][.center], style: lineStyle)
+                        .stroke(lineWidth: lineStyle.width)
+                        .foregroundColor(index < currentStep - 1 ? palette.primary : palette.incompleteLine)
                 }
             }
         }
