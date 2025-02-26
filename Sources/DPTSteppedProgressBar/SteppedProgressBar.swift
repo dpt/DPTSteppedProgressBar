@@ -273,6 +273,9 @@ public struct SteppedProgressBar: View {
                                   value: .bounds,
                                   transform: { [index: $0] })
         }
+        .scaleEffect(index + 1 == currentStep ? 1.1 : 1.0)
+        .animation(.spring(response: 0.3), value: currentStep)
+        .transition(.opacity.combined(with: .scale))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(stepAccessibilityLabel(for: index))
         .accessibilityHint(stepAccessibilityHint(for: index))
