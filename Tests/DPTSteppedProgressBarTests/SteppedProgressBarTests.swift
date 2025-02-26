@@ -40,25 +40,29 @@ final class SteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(defaultPalette.primary, .blue)
         XCTAssertEqual(defaultPalette.secondary, .gray.opacity(0.3))
         XCTAssertEqual(defaultPalette.active, .blue.opacity(0.6))
+        XCTAssertEqual(defaultPalette.incompleteLine, .gray.opacity(0.3))
 
-        // Test custom palette with explicit active colour
+        // Test custom palette with explicit active and incompleteLine colours
         let customPalette = SteppedProgressBar.Palette(
             primary: .green,
             active: .yellow,
-            secondary: .gray
+            secondary: .gray,
+            incompleteLine: .gray.opacity(0.5)
         )
         XCTAssertEqual(customPalette.primary, .green)
         XCTAssertEqual(customPalette.active, .yellow)
         XCTAssertEqual(customPalette.secondary, .gray)
+        XCTAssertEqual(customPalette.incompleteLine, .gray.opacity(0.5))
 
-        // Test custom palette with default active colour
-        let derivedActivePalette = SteppedProgressBar.Palette(
+        // Test custom palette with default active and incompleteLine colours
+        let derivedPalette = SteppedProgressBar.Palette(
             primary: .red,
             secondary: .gray
         )
-        XCTAssertEqual(derivedActivePalette.primary, .red)
-        XCTAssertEqual(derivedActivePalette.active, .red.opacity(0.6))
-        XCTAssertEqual(derivedActivePalette.secondary, .gray)
+        XCTAssertEqual(derivedPalette.primary, .red)
+        XCTAssertEqual(derivedPalette.active, .red.opacity(0.6))
+        XCTAssertEqual(derivedPalette.secondary, .gray)
+        XCTAssertEqual(derivedPalette.incompleteLine, .gray)
     }
 
     func testStepSizeConfiguration() {

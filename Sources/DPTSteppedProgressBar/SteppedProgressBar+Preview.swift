@@ -14,6 +14,12 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
+                    palette: .init(
+                        primary: .blue,
+                        active: Color(red: 0.4, green: 0.6, blue: 1.0),
+                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        incompleteLine: Color(red: 0.8, green: 0.8, blue: 0.8)
+                    ),
                     stepConfigurations: [
                         .init(
                             label: "Start",
@@ -46,6 +52,24 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("With Labels and Accessibility")
 
+                // Without connecting lines
+                SteppedProgressBar(
+                    currentStep: 3,
+                    totalSteps: 5,
+                    direction: .horizontal,
+                    lineWidth: nil
+                )
+                .previewDisplayName("Without Connecting Lines")
+
+                // Thin connecting lines
+                SteppedProgressBar(
+                    currentStep: 3,
+                    totalSteps: 5,
+                    direction: .horizontal,
+                    lineWidth: 1
+                )
+                .previewDisplayName("Thin Connecting Lines")
+
                 // Vertical with custom labels
                 SteppedProgressBar(
                     currentStep: 2,
@@ -53,8 +77,9 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     direction: .vertical,
                     palette: .init(
                         primary: .blue,
-                        active: .blue.opacity(0.8),
-                        secondary: .blue.opacity(0.2)
+                        active: Color(red: 0.4, green: 0.6, blue: 1.0),
+                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 16, height: 24),
                     cornerRadius: 6,
@@ -84,8 +109,9 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     direction: .vertical,
                     palette: .init(
                         primary: .blue,
-                        active: .blue.opacity(0.8),
-                        secondary: .blue.opacity(0.2)
+                        active: Color(red: 0.4, green: 0.6, blue: 1.0),
+                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        incompleteLine: Color(red: 0.9, green: 0.9, blue: 0.95)
                     ),
                     stepSize: .init(width: 16, height: 24),
                     cornerRadius: 6
@@ -99,8 +125,9 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     direction: .horizontal,
                     palette: .init(
                         primary: .green,
-                        active: .yellow,
-                        secondary: .gray.opacity(0.2)
+                        active: Color(red: 0.3, green: 0.8, blue: 0.3),
+                        secondary: Color(red: 0.95, green: 1.0, blue: 0.95),
+                        incompleteLine: Color(red: 0.9, green: 0.95, blue: 0.9)
                     ),
                     stepSize: .init(width: 32, height: 16),
                     cornerRadius: 8
@@ -114,8 +141,9 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     direction: .horizontal,
                     palette: .init(
                         primary: .purple,
-                        active: .pink,
-                        secondary: .purple.opacity(0.15)
+                        active: Color(red: 0.8, green: 0.4, blue: 0.8),
+                        secondary: Color(red: 0.95, green: 0.9, blue: 1.0),
+                        incompleteLine: Color(red: 0.9, green: 0.85, blue: 0.95)
                     ),
                     stepSize: .init(width: 24, height: 24),
                     cornerRadius: 4
@@ -129,8 +157,9 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     direction: .horizontal,
                     palette: .init(
                         primary: .black,
-                        active: .blue,
-                        secondary: .gray.opacity(0.2)
+                        active: Color(red: 0.3, green: 0.3, blue: 0.3),
+                        secondary: Color(red: 0.95, green: 0.95, blue: 0.95),
+                        incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 24, height: 16),
                     cornerRadius: 3
