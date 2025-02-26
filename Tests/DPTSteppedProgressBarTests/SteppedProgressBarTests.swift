@@ -10,13 +10,13 @@ import SwiftUI
 final class SteppedProgressBarTests: XCTestCase {
     func testDefaultInitialisation() {
         let progressBar = SteppedProgressBar(currentStep: 2, totalSteps: 5)
-        let defaultPalette = SteppedProgressBar.Palette()
+        let defaultPalette = Palette()
 
         XCTAssertEqual(progressBar.currentStep, 2)
         XCTAssertEqual(progressBar.totalSteps, 5)
         XCTAssertEqual(progressBar.direction, .horizontal)
         XCTAssertEqual(progressBar.stepSize, CGSize(width: 16, height: 16))
-        XCTAssertEqual(progressBar.cornerRadius, 8) // min(16, 16) / 2
+        XCTAssertEqual(progressBar.cornerRadius, 8)
         XCTAssertEqual(progressBar.palette.primary, defaultPalette.primary)
         XCTAssertEqual(progressBar.palette.secondary, defaultPalette.secondary)
         XCTAssertEqual(progressBar.palette.active, defaultPalette.active)
@@ -36,13 +36,13 @@ final class SteppedProgressBarTests: XCTestCase {
 
     func testPaletteConfiguration() {
         // Test default palette
-        let defaultPalette = SteppedProgressBar.Palette()
+        let defaultPalette = Palette()
         XCTAssertEqual(defaultPalette.primary, .blue)
         XCTAssertEqual(defaultPalette.secondary, .gray.opacity(0.3))
         XCTAssertEqual(defaultPalette.active, .blue.opacity(0.6))
 
         // Test custom palette with explicit active colour
-        let customPalette = SteppedProgressBar.Palette(
+        let customPalette = Palette(
             primary: .green,
             active: .yellow,
             secondary: .gray
@@ -52,7 +52,7 @@ final class SteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(customPalette.secondary, .gray)
 
         // Test custom palette with default active colour
-        let derivedActivePalette = SteppedProgressBar.Palette(
+        let derivedActivePalette = Palette(
             primary: .red,
             secondary: .gray
         )
@@ -124,7 +124,7 @@ final class SteppedProgressBarTests: XCTestCase {
     }
 
     func testStepConfigurationInitialisation() {
-        let config = SteppedProgressBar.Step(
+        let config = Step(
             label: "Test",
             accessibilityLabel: "Test Step",
             accessibilityHint: "Test Hint"
@@ -136,7 +136,7 @@ final class SteppedProgressBarTests: XCTestCase {
     }
 
     func testAccessibilityConfiguration() {
-        let configs: [SteppedProgressBar.Step] = [
+        let configs: [Step] = [
             .init(
                 label: "Start",
                 accessibilityLabel: "Starting point",
@@ -197,7 +197,7 @@ final class SteppedProgressBarTests: XCTestCase {
     }
 
     func testLabelConfiguration() {
-        let configs: [SteppedProgressBar.Step] = [
+        let configs: [Step] = [
             .init(label: "One"),
             .init(label: "Two"),
             .init(label: "Three")
@@ -258,7 +258,7 @@ final class SteppedProgressBarTests: XCTestCase {
     }
 
     func testPartialStepConfiguration() {
-        let configs: [SteppedProgressBar.Step] = [
+        let configs: [Step] = [
             .init(label: "One", accessibilityHint: "First hint"),
             .init(accessibilityLabel: "Second step"),
             .init(label: "Three", accessibilityLabel: "Third step", accessibilityHint: "Last hint")
