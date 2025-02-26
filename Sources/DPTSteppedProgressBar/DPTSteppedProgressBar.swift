@@ -1,5 +1,5 @@
 //
-//  SteppedProgressBar.swift
+//  DPTSteppedProgressBar.swift
 //  DPTSteppedProgressBar
 //
 
@@ -7,13 +7,13 @@ import SwiftUI
 
 /// A customisable stepped progress bar that shows progression through discrete steps
 ///
-/// `SteppedProgressBar` is a SwiftUI view that displays a series of connected rounded rectangles
+/// `DPTSteppedProgressBar` is a SwiftUI view that displays a series of connected rounded rectangles
 /// representing steps in a process. The current progress is shown by filling in the steps
 /// and connecting them with lines.
 ///
 /// Example usage:
 /// ```swift
-/// SteppedProgressBar(
+/// DPTSteppedProgressBar(
 ///     currentStep: 2,
 ///     totalSteps: 5,
 ///     direction: .horizontal,
@@ -26,7 +26,7 @@ import SwiftUI
 ///     cornerRadius: 8
 /// )
 /// ```
-public struct SteppedProgressBar: View {
+public struct DPTSteppedProgressBar: View {
     /// Defines the layout direction of the progress bar
     public enum Direction {
         /// Arranges steps horizontally from left to right
@@ -313,7 +313,7 @@ private struct StepBoundsKey: PreferenceKey {
 private struct Line: Shape {
     var from: CGPoint
     var to: CGPoint
-    var style: SteppedProgressBar.LineStyle
+    var style: DPTSteppedProgressBar.LineStyle
 
     func path(in rect: CGRect) -> Path {
         switch style {
