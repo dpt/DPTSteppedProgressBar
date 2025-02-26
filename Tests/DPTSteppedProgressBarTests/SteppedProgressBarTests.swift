@@ -20,7 +20,11 @@ final class SteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.palette.primary, defaultPalette.primary)
         XCTAssertEqual(progressBar.palette.secondary, defaultPalette.secondary)
         XCTAssertEqual(progressBar.palette.active, defaultPalette.active)
-        XCTAssertEqual(progressBar.lineWidth, 2)
+        if case .solid(let width) = progressBar.lineStyle {
+            XCTAssertEqual(width, 2)
+        } else {
+            XCTFail("Default line style should be solid with width 2")
+        }
         XCTAssertEqual(progressBar.strokeWidth, 2)
     }
 

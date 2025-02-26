@@ -56,8 +56,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 SteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
-                    direction: .horizontal,
-                    lineWidth: nil
+                    direction: .horizontal
                 )
                 .previewDisplayName("Without Connecting Lines")
 
@@ -66,9 +65,27 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
-                    lineWidth: 1
+                    lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Thin Connecting Lines")
+
+                // Dashed connecting lines
+                SteppedProgressBar(
+                    currentStep: 3,
+                    totalSteps: 5,
+                    direction: .horizontal,
+                    lineStyle: .dashed(width: 1)
+                )
+                .previewDisplayName("Dashed Connecting Lines")
+
+                // Dotted connecting lines
+                SteppedProgressBar(
+                    currentStep: 3,
+                    totalSteps: 5,
+                    direction: .horizontal,
+                    lineStyle: .dotted(width: 1)
+                )
+                .previewDisplayName("Dotted Connecting Lines")
 
                 // Vertical with custom labels
                 SteppedProgressBar(

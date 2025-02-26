@@ -98,7 +98,7 @@ SteppedProgressBar(
     ),
     stepSize: .init(width: 24, height: 16),
     cornerRadius: 6,
-    connectingLineWidth: 2,
+    lineStyle: .solid(width: 2),
     strokeWidth: 2
 )
 ```
@@ -118,16 +118,15 @@ SteppedProgressBar(
 |-----------|------|---------|-------------|
 | `palette` | `Palette` | `.init()` | Colour scheme for steps and lines |
 | `cornerRadius` | `CGFloat?` | `min(width, height) / 2` | Corner radius |
-| `connectingLineWidth` | `CGFloat?` | `2` | Width of connecting lines (nil for no lines) |
-| `lineStyle` | `LineStyle` | `.solid` | Style of connecting lines |
+| `lineStyle` | `LineStyle` | `.solid(width: 2)` | Style and width of connecting lines |
 | `strokeWidth` | `CGFloat` | `2` | Width of step borders |
 
 ### Line Styles
 | Style | Parameters | Description |
 |-------|------------|-------------|
-| `.solid` | None | Solid connecting lines |
-| `.dashed` | `segments: Int = 5` | Dashed lines with specified number of segments |
-| `.dotted` | `spacing: CGFloat = 4` | Dotted lines with specified spacing |
+| `.solid(width:)` | `width: CGFloat` | Solid connecting lines with specified width |
+| `.dashed(width:)` | `width: CGFloat` | Dashed lines with specified width |
+| `.dotted(width:)` | `width: CGFloat` | Dotted lines with specified width |
 
 ### Palette Properties
 | Property | Type | Default | Description |
@@ -164,14 +163,14 @@ The `incompleteLine` colour defaults to match `secondary` if not specified. This
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    lineStyle: .dashed(segments: 4)
+    lineStyle: .dashed(width: 2)
 )
 
 // Dotted connecting lines
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    lineStyle: .dotted(spacing: 6)
+    lineStyle: .dotted(width: 2)
 )
 
 // Custom connecting line colours
@@ -182,21 +181,21 @@ SteppedProgressBar(
         primary: .blue,
         secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
         incompleteLine: Color(red: 0.9, green: 0.9, blue: 1.0)
-    )
+    ),
+    lineStyle: .solid(width: 2)
 )
 
 // Without connecting lines
 SteppedProgressBar(
     currentStep: 2,
-    totalSteps: 4,
-    connectingLineWidth: nil
+    totalSteps: 4
 )
 
-// Custom line width
+// Thin connecting lines
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    connectingLineWidth: 1
+    lineStyle: .solid(width: 1)
 )
 ```
 

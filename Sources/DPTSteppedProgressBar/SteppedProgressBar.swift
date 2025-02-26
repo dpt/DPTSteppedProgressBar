@@ -34,7 +34,24 @@ public struct SteppedProgressBar: View {
         /// Arranges steps vertically from top to bottom
         case vertical
     }
-
+    
+    /// Defines the style of connecting lines
+    public enum LineStyle {
+        /// Solid connecting lines with specified width
+        case solid(width: CGFloat)
+        /// Dashed connecting lines with specified width
+        case dashed(width: CGFloat)
+        /// Dotted connecting lines with specified width
+        case dotted(width: CGFloat)
+        
+        var width: CGFloat {
+            switch self {
+            case .solid(let width), .dashed(let width), .dotted(let width):
+                return width
+            }
+        }
+    }
+    
     /// Defines the colour scheme for the progress bar
     public struct Palette {
         /// The colour used for completed steps and connections
@@ -45,7 +62,7 @@ public struct SteppedProgressBar: View {
         public let secondary: Color
         /// The colour used for incomplete connecting lines
         public let incompleteLine: Color
-
+        
         /// Creates a new colour palette for the progress bar
         /// - Parameters:
         ///   - primary: The colour for completed steps and connections
@@ -64,7 +81,7 @@ public struct SteppedProgressBar: View {
             self.incompleteLine = incompleteLine ?? secondary
         }
     }
-
+    
     /// Configuration for step labels and accessibility
     public struct Step {
         /// Label displayed below/beside the step (optional)
@@ -73,7 +90,7 @@ public struct SteppedProgressBar: View {
         public let accessibilityLabel: String?
         /// Additional accessibility hint about the step's purpose
         public let accessibilityHint: String?
-
+        
         public init(
             label: String? = nil,
             accessibilityLabel: String? = nil,
@@ -84,7 +101,7 @@ public struct SteppedProgressBar: View {
             self.accessibilityHint = accessibilityHint
         }
     }
-
+    
     /// The current step (1-based index)
     let currentStep: Int
     /// The total number of steps
@@ -105,11 +122,11 @@ public struct SteppedProgressBar: View {
     let labelFont: Font
     /// Spacing between step and label
     let labelSpacing: CGFloat
-    /// The width of the joining lines
-    let lineWidth: CGFloat?
+    /// The style and width of the connecting lines
+    let lineStyle: LineStyle
     /// The width of the step border strokes
     let strokeWidth: CGFloat
-
+    
     /// Creates a new stepped progress bar
     /// - Parameters:
     ///   - currentStep: The current step (1-based index)
@@ -122,7 +139,7 @@ public struct SteppedProgressBar: View {
     ///   - showLabels: Whether to show labels
     ///   - labelFont: Font for the labels
     ///   - labelSpacing: Spacing between step and label
-    ///   - lineWidth: The width of the joining lines (nil for no lines)
+    ///   - lineStyle: The style and width of the connecting lines
     ///   - strokeWidth: The width of the step border strokes
     public init(
         currentStep: Int,
@@ -135,7 +152,7 @@ public struct SteppedProgressBar: View {
         showLabels: Bool = false,
         labelFont: Font = .caption,
         labelSpacing: CGFloat = 4,
-        lineWidth: CGFloat? = 2,
+        lineStyle: LineStyle = .solid(width: 2),
         strokeWidth: CGFloat = 2
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
@@ -148,10 +165,36 @@ public struct SteppedProgressBar: View {
         self.showLabels = showLabels
         self.labelFont = labelFont
         self.labelSpacing = labelSpacing
-        self.lineWidth = lineWidth
+        self.lineStyle = lineStyle
         self.strokeWidth = strokeWidth
     }
-
+    
+    internal var overallAccessibilityLabel: String {
+        "Progress tracker: Step \(currentStep) of \(totalSteps)"
+    }
+    
+    internal var progressPercentage: String {
+        let percentage = Int((Double(currentStep) / Double(totalSteps)) * 100)
+        return "\(percentage)% complete"
+    }
+    
+    internal func stepAccessibilityLabel(for index: Int) -> String {
+        stepConfigurations?[index].accessibilityLabel ?? "Step \(index + 1)"
+    }
+    
+    internal func stepAccessibilityHint(for index: Int) -> Text {
+        Text(verbatim: stepConfigurations?[index].accessibilityHint ?? "")
+    }
+    
+    internal func stepLabel(for index: Int) -> String? {
+        stepConfigurations?[index].label
+    }
+    
+    private func colourForStep(_ index: Int) -> Color {
+        index + 1 == currentStep ? palette.active :
+        index < currentStep ? palette.primary : palette.secondary
+    }
+    
     public var body: some View {
         Group {
             if direction == .horizontal {
@@ -161,49 +204,19 @@ public struct SteppedProgressBar: View {
             }
         }
         .backgroundPreferenceValue(StepBoundsKey.self) { bounds in
-            if let lineWidth {
-                GeometryReader { proxy in
-                    ForEach(0..<totalSteps-1, id: \.self) { index in
-                        if let from = bounds[index], let to = bounds[index + 1] {
-                            Line(from: proxy[from][.center], to: proxy[to][.center])
-                                .stroke(lineWidth: lineWidth)
-                                .foregroundColor(index < currentStep - 1 ? palette.primary : palette.incompleteLine)
-                        }
-                    }
-                }
-            }
+            connectingLines(in: bounds)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(overallAccessibilityLabel)
         .accessibilityValue(progressPercentage)
     }
-
-    internal var overallAccessibilityLabel: String {
-        "Progress tracker: Step \(currentStep) of \(totalSteps)"
+    
+    private var allStepViews: some View {
+        ForEach(0..<totalSteps, id: \.self) { index in
+            singleStepView(index: index)
+        }
     }
-
-    internal var progressPercentage: String {
-        let percentage = Int((Double(currentStep) / Double(totalSteps)) * 100)
-        return "\(percentage)% complete"
-    }
-
-    internal func stepAccessibilityLabel(for index: Int) -> String {
-        stepConfigurations?[index].accessibilityLabel ?? "Step \(index + 1)"
-    }
-
-    internal func stepAccessibilityHint(for index: Int) -> Text {
-        Text(verbatim: stepConfigurations?[index].accessibilityHint ?? "")
-    }
-
-    internal func stepLabel(for index: Int) -> String? {
-        stepConfigurations?[index].label
-    }
-
-    private func colourForStep(_ index: Int) -> Color {
-        index + 1 == currentStep ? palette.active :
-            index < currentStep ? palette.primary : palette.secondary
-    }
-
+    
     private func singleStepView(index: Int) -> some View {
         VStack(spacing: labelSpacing) {
             ZStack {
@@ -226,7 +239,7 @@ public struct SteppedProgressBar: View {
             .accessibilityHint(stepAccessibilityHint(for: index))
             .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
             .accessibilityAddTraits(index < currentStep ? .isButton : [])
-
+            
             if showLabels, let label = stepLabel(for: index) {
                 Text(label)
                     .font(labelFont)
@@ -235,21 +248,25 @@ public struct SteppedProgressBar: View {
         }
         .padding(.bottom, showLabels ? labelSpacing : 0)
     }
-
-    private var allStepViews: some View {
-        ForEach(0..<totalSteps, id: \.self) { index in
-            singleStepView(index: index)
+    
+    private func connectingLines(in bounds: [Int : Anchor<CGRect>]) -> some View {
+        Group {
+            GeometryReader { proxy in
+                ForEach(0..<totalSteps-1, id: \.self) { index in
+                    if let from = bounds[index], let to = bounds[index + 1] {
+                        Line(from: proxy[from][.center], to: proxy[to][.center], style: lineStyle)
+                            .stroke(lineWidth: lineStyle.width)
+                            .foregroundColor(index < currentStep - 1 ? palette.primary : palette.incompleteLine)
+                    }
+                }
+            }
         }
     }
-
 }
-
-// todo: avoid opacity for colour choices
-// todo: dotty lines, etc.
 
 private struct StepBoundsKey: PreferenceKey {
     static let defaultValue: [Int: Anchor<CGRect>] = [:]
-
+    
     static func reduce(value: inout [Int : Anchor<CGRect>],
                        nextValue: () -> [Int : Anchor<CGRect>]) {
         value.merge(nextValue(),
@@ -260,8 +277,28 @@ private struct StepBoundsKey: PreferenceKey {
 private struct Line: Shape {
     var from: CGPoint
     var to: CGPoint
-
+    var style: SteppedProgressBar.LineStyle
+    
     func path(in rect: CGRect) -> Path {
+        switch style {
+        case .solid(let width):
+            return solidPath(width: width)
+        case .dashed(let width):
+            return solidPath(width: width)
+                .strokedPath(StrokeStyle(lineWidth: width,
+                                         lineCap: .butt,
+                                         lineJoin: .miter,
+                                         dash: [4, 5]))
+        case .dotted(let width):
+            return solidPath(width: width)
+                .strokedPath(StrokeStyle(lineWidth: width,
+                                         lineCap: .round,
+                                         lineJoin: .round,
+                                         dash: [1, 5]))
+        }
+    }
+    
+    private func solidPath(width: CGFloat) -> Path {
         Path { p in
             p.move(to: from)
             p.addLine(to: to)
