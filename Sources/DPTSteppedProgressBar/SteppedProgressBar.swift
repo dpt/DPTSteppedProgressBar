@@ -54,30 +54,35 @@ public struct SteppedProgressBar: View {
 
     /// Defines the colour scheme for the progress bar
     public struct Palette {
-        /// The colour used for completed steps and connections
+        /// The colour used for completed steps
         public let primary: Color
         /// The colour used for the currently active step
         public let active: Color
         /// The colour used for incomplete steps
         public let secondary: Color
+        /// The colour used for completed connecting lines
+        public let completeLine: Color
         /// The colour used for incomplete connecting lines
         public let incompleteLine: Color
 
         /// Creates a new colour palette for the progress bar
         /// - Parameters:
-        ///   - primary: The colour for completed steps and connections
+        ///   - primary: The colour for completed steps
         ///   - active: The colour for the currently active step
         ///   - secondary: The colour for incomplete steps
+        ///   - completeLine: The colour for completed connecting lines
         ///   - incompleteLine: The colour for incomplete connecting lines
         public init(
             primary: Color = .blue,
             active: Color? = nil,
             secondary: Color = .gray.opacity(0.3),
+            completeLine: Color? = nil,
             incompleteLine: Color? = nil
         ) {
             self.primary = primary
             self.active = active ?? primary.opacity(0.6)
             self.secondary = secondary
+            self.completeLine = completeLine ?? primary
             self.incompleteLine = incompleteLine ?? secondary
         }
     }
@@ -272,7 +277,7 @@ public struct SteppedProgressBar: View {
                 if let from = bounds[index], let to = bounds[index + 1] {
                     Line(from: proxy[from][.center], to: proxy[to][.center], style: lineStyle)
                         .stroke(lineWidth: lineStyle.width)
-                        .foregroundColor(index < currentStep - 1 ? palette.primary : palette.incompleteLine)
+                        .foregroundColor(index < currentStep - 1 ? palette.completeLine : palette.incompleteLine)
                 }
             }
         }
