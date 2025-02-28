@@ -9,6 +9,15 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(spacing: 40) {
+                // Default style (circular)
+                DPTSteppedProgressBar(
+                    currentStep: 3,
+                    totalSteps: 5
+                )
+                .previewDisplayName("Default Style (Circular)")
+
+                Divider()
+
                 // Default style with labels
                 DPTSteppedProgressBar(
                     currentStep: 3,
@@ -53,6 +62,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("With Labels and Accessibility")
 
+                Divider()
+
                 // Without connecting lines
                 DPTSteppedProgressBar(
                     currentStep: 1,
@@ -60,6 +71,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     direction: .horizontal
                 )
                 .previewDisplayName("Without Connecting Lines")
+
+                Divider()
 
                 // Thin connecting lines
                 DPTSteppedProgressBar(
@@ -70,6 +83,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("Thin Connecting Lines")
 
+                Divider()
+
                 // Dashed connecting lines
                 DPTSteppedProgressBar(
                     currentStep: 3,
@@ -79,6 +94,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("Dashed Connecting Lines")
 
+                Divider()
+
                 // Dotted connecting lines
                 DPTSteppedProgressBar(
                     currentStep: 4,
@@ -87,6 +104,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     lineStyle: .dotted(width: 1)
                 )
                 .previewDisplayName("Dotted Connecting Lines")
+
+                Divider()
 
                 // Vertical with custom labels
                 DPTSteppedProgressBar(
@@ -115,12 +134,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("Vertical with Labels")
 
-                // Default style (circular)
-                DPTSteppedProgressBar(
-                    currentStep: 3,
-                    totalSteps: 5
-                )
-                .previewDisplayName("Default Style (Circular)")
+                Divider()
 
                 // Tall rounded rectangles
                 DPTSteppedProgressBar(
@@ -140,6 +154,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("Tall Rounded Rectangles")
 
+                Divider()
+
                 // Wide pill shapes
                 DPTSteppedProgressBar(
                     currentStep: 4,
@@ -158,6 +174,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("Wide Pills")
 
+                Divider()
+
                 // Square steps
                 DPTSteppedProgressBar(
                     currentStep: 2,
@@ -175,6 +193,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     cornerRadius: 4
                 )
                 .previewDisplayName("Square Steps")
+
+                Divider()
 
                 // Soft rectangles
                 DPTSteppedProgressBar(
