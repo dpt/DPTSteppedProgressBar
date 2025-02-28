@@ -21,12 +21,8 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.palette.complete, defaultPalette.complete)
         XCTAssertEqual(progressBar.palette.incomplete, defaultPalette.incomplete)
         XCTAssertEqual(progressBar.palette.active, defaultPalette.active)
-        if case .solid(let width) = progressBar.lineStyle {
-            XCTAssertEqual(width, 2)
-        } else {
-            XCTFail("Default line style should be solid with width 2")
-        }
-        XCTAssertEqual(progressBar.strokeWidth, 2)
+        XCTAssertNil(progressBar.lineStyle)
+        XCTAssertNil(progressBar.strokeWidth)
     }
 
     func testCurrentStepBoundaries() {
@@ -259,7 +255,7 @@ final class DPTSteppedProgressBarTests: XCTestCase {
 
     func testStrokeWidthConfiguration() {
         let defaultBar = DPTSteppedProgressBar(currentStep: 1, totalSteps: 2)
-        XCTAssertEqual(defaultBar.strokeWidth, 2)
+        XCTAssertNil(defaultBar.strokeWidth)
 
         let customBar = DPTSteppedProgressBar(
             currentStep: 1,

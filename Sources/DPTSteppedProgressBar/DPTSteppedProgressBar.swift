@@ -118,7 +118,7 @@ public struct DPTSteppedProgressBar: View {
     /// The style and width of the connecting lines
     let lineStyle: LineStyle?
     /// The width of the step border strokes
-    let strokeWidth: CGFloat
+    let strokeWidth: CGFloat?
 
     /// The current step (1-based index)
     let currentStep: Int
@@ -167,7 +167,7 @@ public struct DPTSteppedProgressBar: View {
         labelFont: Font = .caption,
         labelSpacing: CGFloat = 4,
         lineStyle: LineStyle? = nil,
-        strokeWidth: CGFloat = 2
+        strokeWidth: CGFloat? = nil
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
         self.totalSteps = totalSteps
@@ -270,24 +270,22 @@ public struct DPTSteppedProgressBar: View {
     }
 
     private func stepIndicator(index: Int) -> some View {
+        let colour = colourForStep(index)
         let isCompleted = (index < currentStep)
         let isActive = (index + 1 == currentStep)
-        let stepSize = isActive ? activeStepSize : stepSize
+        let stepSize = (isActive) ? activeStepSize : stepSize
         return ZStack {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(.white)
-                .frame(width: stepSize.width, height: stepSize.height)
             RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(colourForStep(index))
-                .frame(width: stepSize.width, height: stepSize.height)
-                .overlay(
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .strokeBorder(colourForStep(index), lineWidth: strokeWidth)
-                )
-                .anchorPreference(key: StepBoundsKey.self,
-                                  value: .bounds,
-                                  transform: { [index: $0] })
+                .fill(colour)
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .strokeBorder(colour, lineWidth: strokeWidth ?? 0)
         }
+        .frame(width: stepSize.width, height: stepSize.height)
+        .anchorPreference(key: StepBoundsKey.self,
+                          value: .bounds,
+                          transform: { [index: $0] })
         .animation(.spring(response: 0.3), value: currentStep)
         .transition(.opacity.combined(with: .scale))
         .accessibilityElement(children: .ignore)

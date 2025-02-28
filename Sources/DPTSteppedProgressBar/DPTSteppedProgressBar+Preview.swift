@@ -184,13 +184,14 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     palette: .init(
                         complete: .purple,
                         active: Color(red: 0.8, green: 0.4, blue: 0.8),
-                        incomplete: Color(red: 0.95, green: 0.9, blue: 1.0),
+                        incomplete: Color(red: 0.95, green: 0.9, blue: 1.0, opacity: 0.5),
                         completeConnection: Color(red: 0.7, green: 0.5, blue: 0.9),
                         incompleteConnection: Color(red: 0.9, green: 0.85, blue: 0.95)
                     ),
                     stepSize: .init(width: 24, height: 24),
                     activeStepSize: .init(width: 48, height: 16),
-                    cornerRadius: 4
+                    cornerRadius: 4,
+                    strokeWidth: 2
                 )
                 .previewDisplayName("Square Steps")
 
