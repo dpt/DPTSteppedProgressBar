@@ -101,6 +101,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         incompleteConnection: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 16, height: 24),
+                    activeStepSize: .init(width: 24, height: 24),
                     cornerRadius: 6,
                     steps: [
                         .init(label: "Lorem ipsum"),
@@ -150,7 +151,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         completeConnection: Color(red: 0.5, green: 0.9, blue: 0.5),
                         incompleteConnection: Color(red: 0.9, green: 0.95, blue: 0.9)
                     ),
-                    stepSize: .init(width: 32, height: 16),
+                    stepSize: .init(width: 24, height: 16),
+                    activeStepSize: .init(width: 48, height: 16),
                     cornerRadius: 8
                 )
                 .previewDisplayName("Wide Pills")

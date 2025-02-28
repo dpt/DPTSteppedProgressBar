@@ -16,6 +16,7 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.totalSteps, 5)
         XCTAssertEqual(progressBar.direction, .horizontal)
         XCTAssertEqual(progressBar.stepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(progressBar.activeStepSize, CGSize(width: 16, height: 16))
         XCTAssertEqual(progressBar.cornerRadius, 8)
         XCTAssertEqual(progressBar.palette.complete, defaultPalette.complete)
         XCTAssertEqual(progressBar.palette.incomplete, defaultPalette.incomplete)
@@ -73,14 +74,17 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         // Test default size
         let defaultBar = DPTSteppedProgressBar(currentStep: 1, totalSteps: 2)
         XCTAssertEqual(defaultBar.stepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(defaultBar.activeStepSize, CGSize(width: 16, height: 16))
 
-        // Test custom size
+        // Test custom sizes
         let customBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
-            stepSize: CGSize(width: 24, height: 32)
+            stepSize: CGSize(width: 24, height: 32),
+            activeStepSize: CGSize(width: 48, height: 32)
         )
         XCTAssertEqual(customBar.stepSize, CGSize(width: 24, height: 32))
+        XCTAssertEqual(customBar.activeStepSize, CGSize(width: 48, height: 32))
     }
 
     func testCornerRadiusConfiguration() {

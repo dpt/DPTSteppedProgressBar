@@ -128,8 +128,10 @@ public struct DPTSteppedProgressBar: View {
     let direction: Direction
     /// The colour palette for the progress bar
     let palette: Palette
-    /// The size of each step indicator
+    /// The default size of the step indicators
     let stepSize: CGSize
+    /// The size of the active step indicator
+    let activeStepSize: CGSize
     /// The space between each step
     let spacing: CGFloat?
     /// The corner radius of the step indicators
@@ -141,7 +143,8 @@ public struct DPTSteppedProgressBar: View {
     ///   - totalSteps: The total number of steps
     ///   - direction: The layout direction (.horizontal or .vertical)
     ///   - palette: The colour palette for the progress bar
-    ///   - stepSize: The size of each step indicator
+    ///   - stepSize: The default size of the step indicators
+    ///   - activeStepSize: The size of the active step indicator
     ///   - cornerRadius: The corner radius of the step indicators
     ///   - steps: Configuration for each step
     ///   - showLabels: Whether to show labels
@@ -155,6 +158,7 @@ public struct DPTSteppedProgressBar: View {
         direction: Direction = .horizontal,
         palette: Palette = .init(),
         stepSize: CGSize = .init(width: 16, height: 16),
+        activeStepSize: CGSize? = nil,
         spacing: CGFloat? = nil,
         cornerRadius: CGFloat? = nil,
         steps: [Step]? = nil,
@@ -169,6 +173,7 @@ public struct DPTSteppedProgressBar: View {
         self.direction = direction
         self.palette = palette
         self.stepSize = stepSize
+        self.activeStepSize = activeStepSize ?? stepSize
         self.spacing = spacing
         self.cornerRadius = cornerRadius ?? min(stepSize.width, stepSize.height) / 2
         self.steps = steps
@@ -262,7 +267,10 @@ public struct DPTSteppedProgressBar: View {
     }
 
     private func stepIndicator(index: Int) -> some View {
-        ZStack {
+        let isCompleted = (index < currentStep)
+        let isActive = (index + 1 == currentStep)
+        let stepSize = isActive ? activeStepSize : stepSize
+        return ZStack {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(.white)
                 .frame(width: stepSize.width, height: stepSize.height)
@@ -277,14 +285,14 @@ public struct DPTSteppedProgressBar: View {
                                   value: .bounds,
                                   transform: { [index: $0] })
         }
-        .scaleEffect(index + 1 == currentStep ? 1.1 : 1.0)
+        .scaleEffect(isActive ? 1.1 : 1.0)
         .animation(.spring(response: 0.3), value: currentStep)
         .transition(.opacity.combined(with: .scale))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(stepAccessibilityLabel(for: index))
         .accessibilityHint(stepAccessibilityHint(for: index))
-        .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
-        .accessibilityAddTraits(index < currentStep ? .isButton : [])
+        .accessibilityAddTraits(isActive ? .isSelected : [])
+        .accessibilityAddTraits(isCompleted ? .isButton : [])
     }
 
     private func connectingLines(in bounds: [Int : Anchor<CGRect>]) -> some View {
