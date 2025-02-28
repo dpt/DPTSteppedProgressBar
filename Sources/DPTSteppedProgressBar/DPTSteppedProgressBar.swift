@@ -116,7 +116,7 @@ public struct DPTSteppedProgressBar: View {
     /// Spacing between step and label
     let labelSpacing: CGFloat
     /// The style and width of the connecting lines
-    let lineStyle: LineStyle
+    let lineStyle: LineStyle?
     /// The width of the step border strokes
     let strokeWidth: CGFloat
 
@@ -166,7 +166,7 @@ public struct DPTSteppedProgressBar: View {
         showLabels: Bool = false,
         labelFont: Font = .caption,
         labelSpacing: CGFloat = 4,
-        lineStyle: LineStyle = .solid(width: 2),
+        lineStyle: LineStyle? = nil,
         strokeWidth: CGFloat = 2
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
@@ -229,7 +229,9 @@ public struct DPTSteppedProgressBar: View {
             }
         }
         .backgroundPreferenceValue(StepBoundsKey.self) { bounds in
-            connectingLines(in: bounds)
+            if let lineStyle {
+                connectingLines(in: bounds, lineStyle: lineStyle)
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(overallAccessibilityLabel)
@@ -295,7 +297,8 @@ public struct DPTSteppedProgressBar: View {
         .accessibilityAddTraits(isCompleted ? .isButton : [])
     }
 
-    private func connectingLines(in bounds: [Int : Anchor<CGRect>]) -> some View {
+    private func connectingLines(in bounds: [Int : Anchor<CGRect>],
+                                 lineStyle: LineStyle) -> some View {
         GeometryReader { proxy in
             ForEach(0..<totalSteps-1, id: \.self) { index in
                 if let from = bounds[index], let to = bounds[index + 1] {
