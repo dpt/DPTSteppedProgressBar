@@ -18,9 +18,9 @@ import SwiftUI
 ///     totalSteps: 5,
 ///     direction: .horizontal,
 ///     palette: .init(
-///         primary: .blue,
+///         incomplete: .blue,
 ///         active: .blue.opacity(0.6),
-///         secondary: .gray.opacity(0.3)
+///         incomplete: .gray.opacity(0.3)
 ///     ),
 ///     stepSize: .init(width: 16, height: 16),
 ///     cornerRadius: 8
@@ -55,35 +55,35 @@ public struct DPTSteppedProgressBar: View {
     /// Defines the colour scheme for the progress bar
     public struct Palette {
         /// The colour used for completed steps
-        public let primary: Color
+        public let complete: Color
         /// The colour used for the currently active step
         public let active: Color
         /// The colour used for incomplete steps
-        public let secondary: Color
+        public let incomplete: Color
         /// The colour used for completed connecting lines
-        public let completeLine: Color
+        public let completeConnection: Color
         /// The colour used for incomplete connecting lines
-        public let incompleteLine: Color
+        public let incompleteConnection: Color
 
         /// Creates a new colour palette for the progress bar
         /// - Parameters:
-        ///   - primary: The colour for completed steps
+        ///   - complete: The colour for completed steps
         ///   - active: The colour for the currently active step
-        ///   - secondary: The colour for incomplete steps
-        ///   - completeLine: The colour for completed connecting lines
-        ///   - incompleteLine: The colour for incomplete connecting lines
+        ///   - incomplete: The colour for incomplete steps
+        ///   - completeConnection: The colour for completed connecting lines
+        ///   - incompleteConnection: The colour for incomplete connecting lines
         public init(
-            primary: Color = .blue,
+            complete: Color = .blue,
             active: Color? = nil,
-            secondary: Color = .gray.opacity(0.3),
-            completeLine: Color? = nil,
-            incompleteLine: Color? = nil
+            incomplete: Color = .gray.opacity(0.3),
+            completeConnection: Color? = nil,
+            incompleteConnection: Color? = nil
         ) {
-            self.primary = primary
-            self.active = active ?? primary.opacity(0.6)
-            self.secondary = secondary
-            self.completeLine = completeLine ?? primary
-            self.incompleteLine = incompleteLine ?? secondary
+            self.complete = complete
+            self.active = active ?? complete.opacity(0.6)
+            self.incomplete = incomplete
+            self.completeConnection = completeConnection ?? complete
+            self.incompleteConnection = incompleteConnection ?? incomplete
         }
     }
 
@@ -211,7 +211,7 @@ public struct DPTSteppedProgressBar: View {
 
     private func colourForStep(_ index: Int) -> Color {
         index + 1 == currentStep ? palette.active :
-        index < currentStep ? palette.primary : palette.secondary
+        index < currentStep ? palette.complete : palette.incomplete
     }
 
     public var body: some View {
@@ -244,7 +244,7 @@ public struct DPTSteppedProgressBar: View {
                     if showLabels, let label = stepLabel(for: index) {
                         Text(label)
                             .font(labelFont)
-                            .foregroundColor(palette.primary)
+                            .foregroundColor(palette.complete)
                     }
                 }
                 .padding(.bottom, showLabels ? labelSpacing : 0)
@@ -254,7 +254,7 @@ public struct DPTSteppedProgressBar: View {
                     if showLabels, let label = stepLabel(for: index) {
                         Text(label)
                             .font(labelFont)
-                            .foregroundColor(palette.primary)
+                            .foregroundColor(palette.complete)
                     }
                 }
             }
@@ -293,7 +293,7 @@ public struct DPTSteppedProgressBar: View {
                 if let from = bounds[index], let to = bounds[index + 1] {
                     Line(from: proxy[from][.center], to: proxy[to][.center], style: lineStyle)
                         .stroke(lineWidth: lineStyle.width)
-                        .foregroundColor(index < currentStep - 1 ? palette.completeLine : palette.incompleteLine)
+                        .foregroundColor(index < currentStep - 1 ? palette.completeConnection : palette.incompleteConnection)
                 }
             }
         }

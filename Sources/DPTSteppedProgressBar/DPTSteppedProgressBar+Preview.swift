@@ -15,11 +15,11 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 5,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .blue,
+                        complete: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
-                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
-                        incompleteLine: Color(red: 0.8, green: 0.8, blue: 0.8)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeConnection: Color(red: 0.6, green: 0.8, blue: 1.0),
+                        incompleteConnection: Color(red: 0.8, green: 0.8, blue: 0.8)
                     ),
                     steps: [
                         .init(
@@ -94,11 +94,11 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 4,
                     direction: .vertical,
                     palette: .init(
-                        primary: .blue,
+                        complete: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
-                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
-                        incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeConnection: Color(red: 0.6, green: 0.8, blue: 1.0),
+                        incompleteConnection: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 16, height: 24),
                     cornerRadius: 6,
@@ -127,11 +127,11 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 4,
                     direction: .vertical,
                     palette: .init(
-                        primary: .blue,
+                        complete: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
-                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
-                        incompleteLine: Color(red: 0.9, green: 0.9, blue: 0.95)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeConnection: Color(red: 0.6, green: 0.8, blue: 1.0),
+                        incompleteConnection: Color(red: 0.9, green: 0.9, blue: 0.95)
                     ),
                     stepSize: .init(width: 16, height: 24),
                     cornerRadius: 6
@@ -144,11 +144,11 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 6,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .green,
+                        complete: .green,
                         active: Color(red: 0.3, green: 0.8, blue: 0.3),
-                        secondary: Color(red: 0.95, green: 1.0, blue: 0.95),
-                        completeLine: Color(red: 0.5, green: 0.9, blue: 0.5),
-                        incompleteLine: Color(red: 0.9, green: 0.95, blue: 0.9)
+                        incomplete: Color(red: 0.95, green: 1.0, blue: 0.95),
+                        completeConnection: Color(red: 0.5, green: 0.9, blue: 0.5),
+                        incompleteConnection: Color(red: 0.9, green: 0.95, blue: 0.9)
                     ),
                     stepSize: .init(width: 32, height: 16),
                     cornerRadius: 8
@@ -161,11 +161,11 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 3,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .purple,
+                        complete: .purple,
                         active: Color(red: 0.8, green: 0.4, blue: 0.8),
-                        secondary: Color(red: 0.95, green: 0.9, blue: 1.0),
-                        completeLine: Color(red: 0.7, green: 0.5, blue: 0.9),
-                        incompleteLine: Color(red: 0.9, green: 0.85, blue: 0.95)
+                        incomplete: Color(red: 0.95, green: 0.9, blue: 1.0),
+                        completeConnection: Color(red: 0.7, green: 0.5, blue: 0.9),
+                        incompleteConnection: Color(red: 0.9, green: 0.85, blue: 0.95)
                     ),
                     stepSize: .init(width: 24, height: 24),
                     cornerRadius: 4
@@ -178,11 +178,11 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 5,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .black,
+                        complete: .black,
                         active: Color(red: 0.3, green: 0.3, blue: 0.3),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 0.95),
-                        completeLine: Color(red: 0.5, green: 0.5, blue: 0.5),
-                        incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 0.95),
+                        completeConnection: Color(red: 0.5, green: 0.5, blue: 0.5),
+                        incompleteConnection: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 24, height: 16),
                     spacing: 24,
