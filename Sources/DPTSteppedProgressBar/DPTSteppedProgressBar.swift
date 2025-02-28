@@ -285,7 +285,6 @@ public struct DPTSteppedProgressBar: View {
                                   value: .bounds,
                                   transform: { [index: $0] })
         }
-        .scaleEffect(isActive ? 1.1 : 1.0)
         .animation(.spring(response: 0.3), value: currentStep)
         .transition(.opacity.combined(with: .scale))
         .accessibilityElement(children: .ignore)
