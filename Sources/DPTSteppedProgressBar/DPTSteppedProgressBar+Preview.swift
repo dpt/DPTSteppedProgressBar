@@ -9,17 +9,26 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(spacing: 40) {
+                // Default style (circular)
+                DPTSteppedProgressBar(
+                    currentStep: 3,
+                    totalSteps: 5
+                )
+                .previewDisplayName("Default Style (Circular)")
+
+                Divider()
+
                 // Default style with labels
                 DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .blue,
+                        complete: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
-                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
-                        incompleteLine: Color(red: 0.8, green: 0.8, blue: 0.8)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeConnection: Color(red: 0.6, green: 0.8, blue: 1.0),
+                        incompleteConnection: Color(red: 0.8, green: 0.8, blue: 0.8)
                     ),
                     steps: [
                         .init(
@@ -53,22 +62,28 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("With Labels and Accessibility")
 
+                Divider()
+
                 // Without connecting lines
                 DPTSteppedProgressBar(
-                    currentStep: 3,
+                    currentStep: 1,
                     totalSteps: 5,
                     direction: .horizontal
                 )
                 .previewDisplayName("Without Connecting Lines")
 
+                Divider()
+
                 // Thin connecting lines
                 DPTSteppedProgressBar(
-                    currentStep: 3,
+                    currentStep: 2,
                     totalSteps: 5,
                     direction: .horizontal,
                     lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Thin Connecting Lines")
+
+                Divider()
 
                 // Dashed connecting lines
                 DPTSteppedProgressBar(
@@ -79,14 +94,18 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 )
                 .previewDisplayName("Dashed Connecting Lines")
 
+                Divider()
+
                 // Dotted connecting lines
                 DPTSteppedProgressBar(
-                    currentStep: 3,
+                    currentStep: 4,
                     totalSteps: 5,
                     direction: .horizontal,
                     lineStyle: .dotted(width: 1)
                 )
                 .previewDisplayName("Dotted Connecting Lines")
+
+                Divider()
 
                 // Vertical with custom labels
                 DPTSteppedProgressBar(
@@ -94,32 +113,28 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 4,
                     direction: .vertical,
                     palette: .init(
-                        primary: .blue,
+                        complete: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
-                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
-                        incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeConnection: Color(red: 0.6, green: 0.8, blue: 1.0),
+                        incompleteConnection: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 16, height: 24),
+                    activeStepSize: .init(width: 32, height: 24),
                     cornerRadius: 6,
                     steps: [
-                        .init(label: "Lorem ipsum"),
-                        .init(label: "dolor"),
-                        .init(label: "sit"),
-                        .init(label: "amet")
+                        .init(label: "Lorem ipsum dolor sit amet"),
+                        .init(label: "Consectetur adipiscing elit"),
+                        .init(label: "Sed do eiusmod tempor"),
+                        .init(label: "Incididunt ut labore et dolore magna aliqua")
                     ],
                     showLabels: true,
-                    labelFont: .footnote
+                    labelFont: .footnote,
+                    lineStyle: .solid(width: 8)
                 )
                 .previewDisplayName("Vertical with Labels")
 
-                // Default style (circular)
-                DPTSteppedProgressBar(
-                    currentStep: 3,
-                    totalSteps: 5,
-                    direction: .horizontal
-                )
-                .previewDisplayName("Default Style (Circular)")
+                Divider()
 
                 // Tall rounded rectangles
                 DPTSteppedProgressBar(
@@ -127,16 +142,19 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 4,
                     direction: .vertical,
                     palette: .init(
-                        primary: .blue,
+                        complete: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
-                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
-                        incompleteLine: Color(red: 0.9, green: 0.9, blue: 0.95)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeConnection: Color(red: 0.6, green: 0.8, blue: 1.0),
+                        incompleteConnection: Color(red: 0.9, green: 0.9, blue: 0.95)
                     ),
                     stepSize: .init(width: 16, height: 24),
-                    cornerRadius: 6
+                    cornerRadius: 6,
+                    lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Tall Rounded Rectangles")
+
+                Divider()
 
                 // Wide pill shapes
                 DPTSteppedProgressBar(
@@ -144,33 +162,40 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 6,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .green,
+                        complete: .green,
                         active: Color(red: 0.3, green: 0.8, blue: 0.3),
-                        secondary: Color(red: 0.95, green: 1.0, blue: 0.95),
-                        completeLine: Color(red: 0.5, green: 0.9, blue: 0.5),
-                        incompleteLine: Color(red: 0.9, green: 0.95, blue: 0.9)
+                        incomplete: Color(red: 0.95, green: 1.0, blue: 0.95),
+                        completeConnection: Color(red: 0.5, green: 0.9, blue: 0.5),
+                        incompleteConnection: Color(red: 0.9, green: 0.95, blue: 0.9)
                     ),
-                    stepSize: .init(width: 32, height: 16),
+                    stepSize: .init(width: 24, height: 16),
+                    activeStepSize: .init(width: 48, height: 16),
                     cornerRadius: 8
                 )
                 .previewDisplayName("Wide Pills")
 
+                Divider()
+
                 // Square steps
                 DPTSteppedProgressBar(
                     currentStep: 2,
-                    totalSteps: 3,
+                    totalSteps: 6,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .purple,
+                        complete: .purple,
                         active: Color(red: 0.8, green: 0.4, blue: 0.8),
-                        secondary: Color(red: 0.95, green: 0.9, blue: 1.0),
-                        completeLine: Color(red: 0.7, green: 0.5, blue: 0.9),
-                        incompleteLine: Color(red: 0.9, green: 0.85, blue: 0.95)
+                        incomplete: Color(red: 0.95, green: 0.9, blue: 1.0, opacity: 0.5),
+                        completeConnection: Color(red: 0.7, green: 0.5, blue: 0.9),
+                        incompleteConnection: Color(red: 0.9, green: 0.85, blue: 0.95)
                     ),
                     stepSize: .init(width: 24, height: 24),
-                    cornerRadius: 4
+                    activeStepSize: .init(width: 48, height: 16),
+                    cornerRadius: 4,
+                    strokeWidth: 2
                 )
                 .previewDisplayName("Square Steps")
+
+                Divider()
 
                 // Soft rectangles
                 DPTSteppedProgressBar(
@@ -178,15 +203,16 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     totalSteps: 5,
                     direction: .horizontal,
                     palette: .init(
-                        primary: .black,
+                        complete: .black,
                         active: Color(red: 0.3, green: 0.3, blue: 0.3),
-                        secondary: Color(red: 0.95, green: 0.95, blue: 0.95),
-                        completeLine: Color(red: 0.5, green: 0.5, blue: 0.5),
-                        incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
+                        incomplete: Color(red: 0.95, green: 0.95, blue: 0.95),
+                        completeConnection: Color(red: 0.5, green: 0.5, blue: 0.5),
+                        incompleteConnection: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 24, height: 16),
                     spacing: 24,
-                    cornerRadius: 3
+                    cornerRadius: 3,
+                    lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Soft Rectangles")
             }

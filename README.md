@@ -92,11 +92,12 @@ DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     palette: .init(
-        primary: .blue,
+        complete: .blue,
         active: .blue.opacity(0.8),
-        secondary: .blue.opacity(0.2)
+        incomplete: .blue.opacity(0.2)
     ),
     stepSize: .init(width: 24, height: 16),
+    activeStepSize: .init(width: 48, height: 16),
     spacing: 16,
     cornerRadius: 6,
     lineStyle: .solid(width: 2),
@@ -112,7 +113,8 @@ DPTSteppedProgressBar(
 | `currentStep` | `Int` | Required | Current active step (1-based) |
 | `totalSteps` | `Int` | Required | Total number of steps |
 | `direction` | `Direction` | `.horizontal` | Layout orientation |
-| `stepSize` | `CGSize` | `.init(width: 16, height: 16)` | Size of step indicators |
+| `stepSize` | `CGSize` | `.init(width: 16, height: 16)` | Default size of step indicators |
+| `activeStepSize` | `CGSize` | `stepSize` | Size of active step indicator |
 | `spacing` | `CGFloat` | nil | Space between step indicators |
 
 ### Visual Styling
@@ -120,8 +122,8 @@ DPTSteppedProgressBar(
 |-----------|------|---------|-------------|
 | `palette` | `Palette` | `.init()` | Colour scheme for steps and lines |
 | `cornerRadius` | `CGFloat?` | `min(width, height) / 2` | Corner radius |
-| `lineStyle` | `LineStyle` | `.solid(width: 2)` | Style and width of connecting lines |
-| `strokeWidth` | `CGFloat` | `2` | Width of step borders |
+| `lineStyle` | `LineStyle` | `.solid(width: 2)` | Style and width of connecting lines (optional) |
+| `strokeWidth` | `CGFloat` | `nil` | Width of step borders (optional) |
 
 ### Line Styles
 | Style | Parameters | Description |
@@ -133,10 +135,11 @@ DPTSteppedProgressBar(
 ### Palette Properties
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `primary` | `Color` | `.blue` | Completed steps and connections |
-| `active` | `Color` | `primary.opacity(0.6)` | Currently active step |
-| `secondary` | `Color` | `.gray.opacity(0.3)` | Incomplete steps |
-| `incompleteLine` | `Color` | `secondary` | Incomplete connecting lines |
+| `complete` | `Color` | `.blue` | Completed steps and connections |
+| `active` | `Color` | `complete.opacity(0.6)` | Currently active step (optional) |
+| `incomplete` | `Color` | `.gray.opacity(0.3)` | Incomplete steps |
+| `completeConnection` | `Color` | `complete` | Complete connecting lines (optional) |
+| `incompleteConnection` | `Color` | `incomplete` | Incomplete connecting lines (optional) |
 
 ### Labels & Accessibility
 | Parameter | Type | Default | Description |
@@ -149,14 +152,15 @@ DPTSteppedProgressBar(
 ### Palette Configuration
 ```swift
 .init(
-    primary: .blue,         // Completed steps and lines
-    active: .blue.opacity(0.8), // Current step (optional)
-    secondary: .gray.opacity(0.3), // Incomplete steps
-    incompleteLine: .gray.opacity(0.2) // Incomplete connecting lines (optional)
+    complete: .blue,         // Completed steps and connections
+    active: .blue.opacity(0.8), // Currently active step
+    incomplete: .gray.opacity(0.3), // Incomplete steps
+    completeConnection: .blue, // Complete connecting lines
+    incompleteConnection: .gray.opacity(0.2) // Incomplete connecting lines
 )
 ```
 
-The `incompleteLine` colour defaults to match `secondary` if not specified. This allows for separate styling of incomplete connecting lines.
+The `incompleteConnection` colour defaults to match `incomplete` if not specified. This allows for separate styling of incomplete connecting lines.
 
 ### Examples
 
@@ -180,8 +184,8 @@ DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     palette: .init(
-        primary: .blue,
-        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+        complete: .blue,
+        incomplete: Color(red: 0.95, green: 0.95, blue: 1.0),
         incompleteLine: Color(red: 0.9, green: 0.9, blue: 1.0)
     ),
     lineStyle: .solid(width: 2)
