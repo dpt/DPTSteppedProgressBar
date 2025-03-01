@@ -122,8 +122,8 @@ DPTSteppedProgressBar(
 |-----------|------|---------|-------------|
 | `palette` | `Palette` | `.init()` | Colour scheme for steps and lines |
 | `cornerRadius` | `CGFloat?` | `min(width, height) / 2` | Corner radius |
-| `lineStyle` | `LineStyle` | `.solid(width: 2)` | Style and width of connecting lines |
-| `strokeWidth` | `CGFloat` | `2` | Width of step borders |
+| `lineStyle` | `LineStyle` | `.solid(width: 2)` | Style and width of connecting lines (optional) |
+| `strokeWidth` | `CGFloat` | `nil` | Width of step borders (optional) |
 
 ### Line Styles
 | Style | Parameters | Description |
