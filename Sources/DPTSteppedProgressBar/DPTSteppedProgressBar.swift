@@ -216,8 +216,11 @@ public struct DPTSteppedProgressBar: View {
     }
 
     private func colourForStep(_ index: Int) -> Color {
-        index + 1 == currentStep ? palette.active :
-        index < currentStep ? palette.complete : palette.incomplete
+        switch index {
+        case currentStep - 1: return palette.active
+        case ..<currentStep: return palette.complete
+        default: return palette.incomplete
+        }
     }
 
     public var body: some View {
