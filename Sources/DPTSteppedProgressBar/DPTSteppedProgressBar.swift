@@ -107,6 +107,8 @@ public struct DPTSteppedProgressBar: View {
         }
     }
 
+    @Environment(\.colorScheme) private var colorScheme
+
     /// Configuration for each step
     let steps: [Step]?
     /// Whether to show labels
@@ -279,7 +281,7 @@ public struct DPTSteppedProgressBar: View {
         let stepSize = (isActive) ? activeStepSize : stepSize
         return ZStack {
             RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(.white)
+                .fill(colorScheme == .dark ? .black : .white)
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(colour)
             RoundedRectangle(cornerRadius: cornerRadius)
