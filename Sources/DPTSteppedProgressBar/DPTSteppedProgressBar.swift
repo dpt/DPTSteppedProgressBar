@@ -130,6 +130,8 @@ public struct DPTSteppedProgressBar: View {
     let palette: Palette
     /// The size of each step indicator
     let stepSize: CGSize
+    /// The space between each step
+    let spacing: CGFloat?
     /// The corner radius of the step indicators
     let cornerRadius: CGFloat
 
@@ -153,6 +155,7 @@ public struct DPTSteppedProgressBar: View {
         direction: Direction = .horizontal,
         palette: Palette = .init(),
         stepSize: CGSize = .init(width: 16, height: 16),
+        spacing: CGFloat? = nil,
         cornerRadius: CGFloat? = nil,
         steps: [Step]? = nil,
         showLabels: Bool = false,
@@ -166,6 +169,7 @@ public struct DPTSteppedProgressBar: View {
         self.direction = direction
         self.palette = palette
         self.stepSize = stepSize
+        self.spacing = spacing
         self.cornerRadius = cornerRadius ?? min(stepSize.width, stepSize.height) / 2
         self.steps = steps
         self.showLabels = showLabels
@@ -213,9 +217,9 @@ public struct DPTSteppedProgressBar: View {
     public var body: some View {
         Group {
             if direction == .horizontal {
-                HStack(alignment: .top, spacing: stepSize.width) { allStepViews }
+                HStack(alignment: .top, spacing: spacing) { allStepViews }
             } else {
-                VStack(alignment: .leading, spacing: stepSize.height) { allStepViews }
+                VStack(alignment: .leading, spacing: spacing) { allStepViews }
             }
         }
         .backgroundPreferenceValue(StepBoundsKey.self) { bounds in
