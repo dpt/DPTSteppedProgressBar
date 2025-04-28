@@ -4,30 +4,26 @@
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2014.0+%20%7C%20macOS%2011.0+-333333.svg)](https://developer.apple.com)
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 
-A highly customisable stepped progress indicator for SwiftUI applications. Perfect for multi-step forms, onboarding flows, and process tracking interfaces.
+A customisable stepped progress indicator for SwiftUI. Perfect for multi-step forms, onboarding flows, and process tracking.
 
 ## Features
 
 - 📱 Native SwiftUI implementation
 - 🎨 Rich colour customisation with active state highlighting
-- ↔️ Horizontal and vertical orientations
-- 🔲 Flexible step shapes with adjustable corner radius
-- 📐 Independent width and height control
-- ♿️ Comprehensive accessibility support
-- 🏷️ Optional step labels with customisable styling
-- ⚡️ Lightweight and performant
-- 🎯 iOS 14.0+ and macOS 11.0+ compatibility
+- ↔️ Horizontal and vertical layouts
+- 🔲 Flexible shapes with adjustable corner radius
+- ♿️ Full VoiceOver support
+- 🏷️ Optional step labels
+- 🎯 iOS 14.0+ and macOS 11.0+
 
 ## Installation
 
-### Swift Package Manager
+Add via Xcode: File → Swift Packages → Add Package Dependency
+```
+https://github.com/dpt/DPTSteppedProgressBar
+```
 
-Add DPTSteppedProgressBar to your project through Xcode:
-1. File → Swift Packages → Add Package Dependency
-2. Enter package URL: `https://github.com/dpt/DPTSteppedProgressBar`
-
-Or add it to your `Package.swift`:
-
+Or in `Package.swift`:
 ```swift
 dependencies: [
     .package(url: "https://github.com/dpt/DPTSteppedProgressBar", from: "1.0.0")
@@ -50,14 +46,21 @@ struct ContentView: View {
 }
 ```
 
-## Usage Examples
+## Examples
 
-### Default Style (Circular)
+### Basic Usage
 ```swift
+// Horizontal (default)
 SteppedProgressBar(
     currentStep: 3,
-    totalSteps: 5,
-    direction: .horizontal
+    totalSteps: 5
+)
+
+// Vertical
+SteppedProgressBar(
+    currentStep: 2,
+    totalSteps: 4,
+    direction: .vertical
 )
 ```
 
@@ -76,16 +79,6 @@ SteppedProgressBar(
             label: "Details",
             accessibilityLabel: "Personal details",
             accessibilityHint: "Enter your information"
-        ),
-        .init(
-            label: "Review",
-            accessibilityLabel: "Review details",
-            accessibilityHint: "Check your information"
-        ),
-        .init(
-            label: "Done",
-            accessibilityLabel: "Completion",
-            accessibilityHint: "Process complete"
         )
     ],
     showLabels: true,
@@ -93,7 +86,7 @@ SteppedProgressBar(
 )
 ```
 
-### Custom Colours with Active State
+### Custom Styling
 ```swift
 SteppedProgressBar(
     currentStep: 2,
@@ -102,46 +95,132 @@ SteppedProgressBar(
         primary: .blue,
         active: .blue.opacity(0.8),
         secondary: .blue.opacity(0.2)
-    )
+    ),
+    stepSize: .init(width: 24, height: 16),
+    cornerRadius: 6,
+    connectingLineWidth: 2,
+    strokeWidth: 2
 )
 ```
 
-### Vertical Layout with Custom Dimensions
+## Configuration
+
+### Core Parameters
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `currentStep` | `Int` | Required | Current active step (1-based) |
+| `totalSteps` | `Int` | Required | Total number of steps |
+| `direction` | `Direction` | `.horizontal` | Layout orientation |
+| `stepSize` | `CGSize` | `.init(width: 16, height: 16)` | Size of step indicators |
+
+### Visual Styling
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `palette` | `Palette` | `.init()` | Colour scheme for steps and lines |
+| `cornerRadius` | `CGFloat?` | `min(width, height) / 2` | Corner radius |
+| `connectingLineWidth` | `CGFloat?` | `2` | Width of connecting lines (nil for no lines) |
+| `lineStyle` | `LineStyle` | `.solid` | Style of connecting lines |
+| `strokeWidth` | `CGFloat` | `2` | Width of step borders |
+
+### Line Styles
+| Style | Parameters | Description |
+|-------|------------|-------------|
+| `.solid` | None | Solid connecting lines |
+| `.dashed` | `segments: Int = 5` | Dashed lines with specified number of segments |
+| `.dotted` | `spacing: CGFloat = 4` | Dotted lines with specified spacing |
+
+### Palette Properties
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `primary` | `Color` | `.blue` | Completed steps and connections |
+| `active` | `Color` | `primary.opacity(0.6)` | Currently active step |
+| `secondary` | `Color` | `.gray.opacity(0.3)` | Incomplete steps |
+| `incompleteLine` | `Color` | `secondary` | Incomplete connecting lines |
+
+### Labels & Accessibility
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `stepConfigurations` | `[Step]?` | `nil` | Step labels and hints |
+| `showLabels` | `Bool` | `false` | Show step labels |
+| `labelFont` | `Font` | `.caption` | Label font |
+| `labelSpacing` | `CGFloat` | `4` | Space between step and label |
+
+### Palette Configuration
 ```swift
+.init(
+    primary: .blue,         // Completed steps and lines
+    active: .blue.opacity(0.8), // Current step (optional)
+    secondary: .gray.opacity(0.3), // Incomplete steps
+    incompleteLine: .gray.opacity(0.2) // Incomplete connecting lines (optional)
+)
+```
+
+The `incompleteLine` colour defaults to match `secondary` if not specified. This allows for separate styling of incomplete connecting lines.
+
+### Examples
+
+```swift
+// Dashed connecting lines
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    direction: .vertical,
-    stepSize: .init(width: 16, height: 24),
-    cornerRadius: 6
+    lineStyle: .dashed(segments: 4)
+)
+
+// Dotted connecting lines
+SteppedProgressBar(
+    currentStep: 2,
+    totalSteps: 4,
+    lineStyle: .dotted(spacing: 6)
+)
+
+// Custom connecting line colours
+SteppedProgressBar(
+    currentStep: 2,
+    totalSteps: 4,
+    palette: .init(
+        primary: .blue,
+        secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+        incompleteLine: Color(red: 0.9, green: 0.9, blue: 1.0)
+    )
+)
+
+// Without connecting lines
+SteppedProgressBar(
+    currentStep: 2,
+    totalSteps: 4,
+    connectingLineWidth: nil
+)
+
+// Custom line width
+SteppedProgressBar(
+    currentStep: 2,
+    totalSteps: 4,
+    connectingLineWidth: 1
 )
 ```
 
-## Configuration Options
+## Accessibility
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `currentStep` | `Int` | Current active step (1-based index) | Required |
-| `totalSteps` | `Int` | Total number of steps | Required |
-| `direction` | `Direction` | Layout orientation (.horizontal/.vertical) | `.horizontal` |
-| `palette` | `Palette` | Colour scheme configuration | `.init()` |
-| `stepSize` | `CGSize` | Width and height of step indicators | `.init(width: 16, height: 16)` |
-| `cornerRadius` | `CGFloat?` | Corner radius of step indicators | `min(width, height) / 2` |
-| `stepConfigurations` | `[Step]?` | Configuration for step labels and accessibility | `nil` |
-| `showLabels` | `Bool` | Whether to show step labels | `false` |
-| `labelFont` | `Font` | Font for step labels | `.caption` |
-| `labelSpacing` | `CGFloat` | Space between step and label | `4` |
-| `lineWidth` | `CGFloat` | Width of connecting lines | `2` |
-| `strokeWidth` | `CGFloat` | Width of step border strokes | `2` |
+- Overall progress announced (e.g. "Progress tracker: Step 2 of 5")
+- Progress percentage provided (e.g. "40% complete")
+- Custom labels and hints per step
+- Active step marked as selected
+- Completed steps marked as buttons
+- Dynamic Type support for labels
 
-### Step Configuration
+## Best Practices
 
-The `Step` structure allows for detailed customisation of each step:
+- Use equal width/height for circular steps
+- Use larger width for pill shapes
+- Consider colour contrast for accessibility
+- Provide meaningful step labels and hints
+- Test with VoiceOver enabled
 
-```swift
-.init(
-    label: "Step 1",              // Visual label (optional)
-    accessibilityLabel: "Start",  // VoiceOver label
-    accessibilityHint: "Begin"    // Additional VoiceOver context
-)
-```
+## Contributing
+
+Contributions welcome! See [Contributing Guidelines](CONTRIBUTING.md).
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).

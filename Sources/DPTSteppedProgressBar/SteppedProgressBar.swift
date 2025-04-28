@@ -43,20 +43,25 @@ public struct SteppedProgressBar: View {
         public let active: Color
         /// The colour used for incomplete steps
         public let secondary: Color
+        /// The colour used for incomplete connecting lines
+        public let incompleteLine: Color
 
         /// Creates a new colour palette for the progress bar
         /// - Parameters:
         ///   - primary: The colour for completed steps and connections
         ///   - active: The colour for the currently active step
         ///   - secondary: The colour for incomplete steps
+        ///   - incompleteLine: The colour for incomplete connecting lines
         public init(
             primary: Color = .blue,
             active: Color? = nil,
-            secondary: Color = .gray.opacity(0.3)
+            secondary: Color = .gray.opacity(0.3),
+            incompleteLine: Color? = nil
         ) {
             self.primary = primary
             self.active = active ?? primary.opacity(0.6)
             self.secondary = secondary
+            self.incompleteLine = incompleteLine ?? secondary
         }
     }
 
@@ -101,7 +106,7 @@ public struct SteppedProgressBar: View {
     /// Spacing between step and label
     let labelSpacing: CGFloat
     /// The width of the joining lines
-    let lineWidth: CGFloat
+    let lineWidth: CGFloat?
     /// The width of the step border strokes
     let strokeWidth: CGFloat
 
@@ -117,7 +122,7 @@ public struct SteppedProgressBar: View {
     ///   - showLabels: Whether to show labels
     ///   - labelFont: Font for the labels
     ///   - labelSpacing: Spacing between step and label
-    ///   - lineWidth: The width of the joining lines
+    ///   - lineWidth: The width of the joining lines (nil for no lines)
     ///   - strokeWidth: The width of the step border strokes
     public init(
         currentStep: Int,
@@ -130,7 +135,7 @@ public struct SteppedProgressBar: View {
         showLabels: Bool = false,
         labelFont: Font = .caption,
         labelSpacing: CGFloat = 4,
-        lineWidth: CGFloat = 2,
+        lineWidth: CGFloat? = 2,
         strokeWidth: CGFloat = 2
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
@@ -156,12 +161,14 @@ public struct SteppedProgressBar: View {
             }
         }
         .backgroundPreferenceValue(StepBoundsKey.self) { bounds in
-            GeometryReader { proxy in
-                ForEach(0..<totalSteps-1, id: \.self) { index in
-                    if let from = bounds[index], let to = bounds[index + 1] {
-                        Line(from: proxy[from][.center], to: proxy[to][.center])
-                            .stroke(lineWidth: lineWidth)
-                            .foregroundColor(palette.primary)
+            if let lineWidth {
+                GeometryReader { proxy in
+                    ForEach(0..<totalSteps-1, id: \.self) { index in
+                        if let from = bounds[index], let to = bounds[index + 1] {
+                            Line(from: proxy[from][.center], to: proxy[to][.center])
+                                .stroke(lineWidth: lineWidth)
+                                .foregroundColor(index < currentStep - 1 ? palette.primary : palette.incompleteLine)
+                        }
                     }
                 }
             }
@@ -200,6 +207,9 @@ public struct SteppedProgressBar: View {
     private func singleStepView(index: Int) -> some View {
         VStack(spacing: labelSpacing) {
             ZStack {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(.white)
+                    .frame(width: stepSize.width, height: stepSize.height)
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(colourForStep(index))
                     .frame(width: stepSize.width, height: stepSize.height)
