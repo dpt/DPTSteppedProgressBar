@@ -101,10 +101,10 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     stepSize: .init(width: 16, height: 24),
                     cornerRadius: 6,
                     steps: [
-                        .init(label: "Q1"),
-                        .init(label: "Q2"),
-                        .init(label: "Q3"),
-                        .init(label: "Q4")
+                        .init(label: "Lorem ipsum"),
+                        .init(label: "dolor"),
+                        .init(label: "sit"),
+                        .init(label: "amet")
                     ],
                     showLabels: true,
                     labelFont: .footnote

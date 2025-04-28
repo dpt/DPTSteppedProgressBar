@@ -201,7 +201,7 @@ public struct SteppedProgressBar: View {
             if direction == .horizontal {
                 HStack(alignment: .top, spacing: stepSize.width) { allStepViews }
             } else {
-                VStack(spacing: stepSize.height) { allStepViews }
+                VStack(alignment: .leading, spacing: stepSize.height) { allStepViews }
             }
         }
         .backgroundPreferenceValue(StepBoundsKey.self) { bounds in
