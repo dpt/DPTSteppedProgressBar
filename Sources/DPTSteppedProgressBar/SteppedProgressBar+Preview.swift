@@ -20,7 +20,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
                         incompleteLine: Color(red: 0.8, green: 0.8, blue: 0.8)
                     ),
-                    stepConfigurations: [
+                    steps: [
                         .init(
                             label: "Start",
                             accessibilityLabel: "Starting point",
@@ -100,7 +100,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                     ),
                     stepSize: .init(width: 16, height: 24),
                     cornerRadius: 6,
-                    stepConfigurations: [
+                    steps: [
                         .init(label: "Q1"),
                         .init(label: "Q2"),
                         .init(label: "Q3"),
