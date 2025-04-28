@@ -55,7 +55,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 // Without connecting lines
                 DPTSteppedProgressBar(
-                    currentStep: 3,
+                    currentStep: 1,
                     totalSteps: 5,
                     direction: .horizontal
                 )
@@ -63,7 +63,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 // Thin connecting lines
                 DPTSteppedProgressBar(
-                    currentStep: 3,
+                    currentStep: 2,
                     totalSteps: 5,
                     direction: .horizontal,
                     lineStyle: .solid(width: 1)
@@ -81,7 +81,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 // Dotted connecting lines
                 DPTSteppedProgressBar(
-                    currentStep: 3,
+                    currentStep: 4,
                     totalSteps: 5,
                     direction: .horizontal,
                     lineStyle: .dotted(width: 1)
@@ -101,17 +101,17 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         incompleteConnection: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 16, height: 24),
-                    activeStepSize: .init(width: 24, height: 24),
+                    activeStepSize: .init(width: 32, height: 24),
                     cornerRadius: 6,
                     steps: [
-                        .init(label: "Lorem ipsum"),
-                        .init(label: "dolor"),
-                        .init(label: "sit"),
-                        .init(label: "amet")
+                        .init(label: "Lorem ipsum dolor sit amet"),
+                        .init(label: "Consectetur adipiscing elit"),
+                        .init(label: "Sed do eiusmod tempor"),
+                        .init(label: "Incididunt ut labore et dolore magna aliqua")
                     ],
                     showLabels: true,
                     labelFont: .footnote,
-                    lineStyle: .solid(width: 1)
+                    lineStyle: .solid(width: 8)
                 )
                 .previewDisplayName("Vertical with Labels")
 
