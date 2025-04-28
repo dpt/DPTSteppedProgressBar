@@ -284,6 +284,9 @@ public struct SteppedProgressBar: View {
     }
 }
 
+/// A preference key for storing the bounds of each step.
+///
+/// This is used to calculate the position of the connecting lines between steps.
 private struct StepBoundsKey: PreferenceKey {
     static let defaultValue: [Int: Anchor<CGRect>] = [:]
 
@@ -294,6 +297,7 @@ private struct StepBoundsKey: PreferenceKey {
     }
 }
 
+/// A line that can be used to draw between two points.
 private struct Line: Shape {
     var from: CGPoint
     var to: CGPoint
@@ -327,6 +331,10 @@ private struct Line: Shape {
 }
 
 private extension CGRect {
+
+    /// Access a point in the rectangle based on a unit point
+    /// - Parameter unitPoint: The unit point to access
+    /// - Returns: The point in the rectangle
     subscript(unitPoint: UnitPoint) -> CGPoint {
         .init(x: minX + width * unitPoint.x, y: minY + height * unitPoint.y)
     }
