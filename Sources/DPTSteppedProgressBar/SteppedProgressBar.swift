@@ -185,15 +185,24 @@ public struct SteppedProgressBar: View {
     }
 
     internal func stepAccessibilityLabel(for index: Int) -> String {
-        steps?[index].accessibilityLabel ?? "Step \(index + 1)"
+        guard let steps = steps, index >= 0, index < steps.count else {
+            return "Step \(index + 1)"
+        }
+        return steps[index].accessibilityLabel ?? "Step \(index + 1)"
     }
 
     internal func stepAccessibilityHint(for index: Int) -> Text {
-        Text(verbatim: steps?[index].accessibilityHint ?? "")
+        guard let steps = steps, index >= 0, index < steps.count else {
+            return Text(verbatim: "")
+        }
+        return Text(verbatim: steps[index].accessibilityHint ?? "")
     }
 
     internal func stepLabel(for index: Int) -> String? {
-        steps?[index].label
+        guard let steps = steps, index >= 0, index < steps.count else {
+            return nil
+        }
+        return steps[index].label
     }
 
     private func colourForStep(_ index: Int) -> Color {
