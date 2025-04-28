@@ -18,6 +18,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 direction: .vertical,
                 palette: Palette(
                     primary: .blue,
+                    active: .blue.opacity(0.8),
                     secondary: .blue.opacity(0.2)
                 ),
                 stepSize: 24
@@ -31,6 +32,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 direction: .horizontal,
                 palette: Palette(
                     primary: .green,
+                    active: .yellow,
                     secondary: .gray.opacity(0.2)
                 ),
                 stepSize: 20
@@ -44,11 +46,26 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 direction: .horizontal,
                 palette: Palette(
                     primary: .purple,
+                    active: .pink,
                     secondary: .purple.opacity(0.15)
                 ),
                 stepSize: 16
             )
             .previewDisplayName("Brand Theme")
+            
+            // High contrast palette
+            SteppedProgressBar(
+                currentStep: 3,
+                totalSteps: 5,
+                direction: .horizontal,
+                palette: Palette(
+                    primary: .black,
+                    active: .blue,
+                    secondary: .gray.opacity(0.2)
+                ),
+                stepSize: 18
+            )
+            .previewDisplayName("High Contrast Theme")
         }
         .padding()
         .previewLayout(.sizeThatFits)

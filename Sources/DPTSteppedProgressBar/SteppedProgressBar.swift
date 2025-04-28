@@ -12,18 +12,23 @@ public enum ProgressDirection {
 public struct Palette {
     /// The colour used for completed steps and connections
     public let primary: Color
+    /// The colour used for the currently active step
+    public let active: Color
     /// The colour used for incomplete steps
     public let secondary: Color
     
     /// Creates a new colour palette for the progress bar
     /// - Parameters:
     ///   - primary: The colour for completed steps and connections
+    ///   - active: The colour for the currently active step
     ///   - secondary: The colour for incomplete steps
     public init(
         primary: Color = .blue,
+        active: Color? = nil,
         secondary: Color = .gray.opacity(0.3)
     ) {
         self.primary = primary
+        self.active = active ?? primary.opacity(0.6)
         self.secondary = secondary
     }
 }
@@ -40,7 +45,11 @@ public struct Palette {
 ///     currentStep: 2,
 ///     totalSteps: 5,
 ///     direction: .horizontal,
-///     palette: Palette(primary: .blue, secondary: .gray.opacity(0.3)),
+///     palette: Palette(
+///         primary: .blue,
+///         active: .blue.opacity(0.6),
+///         secondary: .gray.opacity(0.3)
+///     ),
 ///     stepSize: 16
 /// )
 /// ```
@@ -91,15 +100,26 @@ public struct SteppedProgressBar: View {
         }
     }
     
+    /// Determines the appropriate colour for a step based on its index
+    private func colourForStep(_ index: Int) -> Color {
+        if index + 1 == currentStep {
+            return palette.active
+        } else if index < currentStep {
+            return palette.primary
+        } else {
+            return palette.secondary
+        }
+    }
+    
     /// Generates the step indicators and connecting lines
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
             Circle()
-                .fill(index < currentStep ? palette.primary : palette.secondary)
+                .fill(colourForStep(index))
                 .frame(width: stepSize, height: stepSize)
                 .overlay(
                     Circle()
-                        .strokeBorder(index < currentStep ? palette.primary : palette.secondary, lineWidth: 2)
+                        .strokeBorder(colourForStep(index), lineWidth: 2)
                 )
                 .overlay(
                     Group {
