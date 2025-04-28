@@ -1,3 +1,8 @@
+//
+//  SteppedProgressBar.swift
+//  DPTSteppedProgressBar
+//
+
 import SwiftUI
 
 /// Defines the layout direction of the progress bar
