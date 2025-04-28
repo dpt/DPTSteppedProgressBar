@@ -58,12 +58,12 @@ public struct SteppedProgressBar: View {
                             Rectangle()
                                 .fill(primaryColor)
                                 .frame(
-                                    width: direction == .horizontal ? stepSize : 2,
-                                    height: direction == .horizontal ? 2 : stepSize
+                                    width: (direction == .horizontal) ? stepSize : 2,
+                                    height: (direction == .horizontal) ? 2 : stepSize
                                 )
                                 .offset(
-                                    x: direction == .horizontal ? stepSize/2 : 0,
-                                    y: direction == .horizontal ? 0 : stepSize/2
+                                    x: (direction == .horizontal) ? stepSize : 0,
+                                    y: (direction == .horizontal) ? 0 : stepSize
                                 )
                         }
                     }
