@@ -160,7 +160,7 @@ DPTSteppedProgressBar(
 )
 ```
 
-The `incompleteConnection` colour defaults to match `secondary` if not specified. This allows for separate styling of incomplete connecting lines.
+The `incompleteConnection` colour defaults to match `incomplete` if not specified. This allows for separate styling of incomplete connecting lines.
 
 ### Examples
 
