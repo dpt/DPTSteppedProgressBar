@@ -131,6 +131,8 @@ SteppedProgressBar(
 | `showLabels` | `Bool` | Whether to show step labels | `false` |
 | `labelFont` | `Font` | Font for step labels | `.caption` |
 | `labelSpacing` | `CGFloat` | Space between step and label | `4` |
+| `lineWidth` | `CGFloat` | Width of connecting lines | `2` |
+| `strokeWidth` | `CGFloat` | Width of step border strokes | `2` |
 
 ### Step Configuration
 
