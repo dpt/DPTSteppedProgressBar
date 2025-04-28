@@ -97,6 +97,7 @@ DPTSteppedProgressBar(
         incomplete: .blue.opacity(0.2)
     ),
     stepSize: .init(width: 24, height: 16),
+    activeStepSize: .init(width: 48, height: 16),
     spacing: 16,
     cornerRadius: 6,
     lineStyle: .solid(width: 2),
@@ -112,7 +113,8 @@ DPTSteppedProgressBar(
 | `currentStep` | `Int` | Required | Current active step (1-based) |
 | `totalSteps` | `Int` | Required | Total number of steps |
 | `direction` | `Direction` | `.horizontal` | Layout orientation |
-| `stepSize` | `CGSize` | `.init(width: 16, height: 16)` | Size of step indicators |
+| `stepSize` | `CGSize` | `.init(width: 16, height: 16)` | Default size of step indicators |
+| `activeStepSize` | `CGSize` | `stepSize` | Size of active step indicator |
 | `spacing` | `CGFloat` | nil | Space between step indicators |
 
 ### Visual Styling
