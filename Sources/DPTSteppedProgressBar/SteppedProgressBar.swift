@@ -35,8 +35,8 @@ public struct Palette {
 
 /// A customisable stepped progress bar that shows progression through discrete steps
 ///
-/// `SteppedProgressBar` is a SwiftUI view that displays a series of connected circles
-/// representing steps in a process. The current progress is shown by filling in the circles
+/// `SteppedProgressBar` is a SwiftUI view that displays a series of connected rounded rectangles
+/// representing steps in a process. The current progress is shown by filling in the steps
 /// and connecting them with lines.
 ///
 /// Example usage:
@@ -50,7 +50,8 @@ public struct Palette {
 ///         active: .blue.opacity(0.6),
 ///         secondary: .gray.opacity(0.3)
 ///     ),
-///     stepSize: 16
+///     stepSize: CGSize(width: 16, height: 16),
+///     cornerRadius: 8
 /// )
 /// ```
 public struct SteppedProgressBar: View {
@@ -62,8 +63,10 @@ public struct SteppedProgressBar: View {
     let direction: ProgressDirection
     /// The colour palette for the progress bar
     let palette: Palette
-    /// The diameter of each step indicator
-    let stepSize: CGFloat
+    /// The size of each step indicator
+    let stepSize: CGSize
+    /// The corner radius of the step indicators
+    let cornerRadius: CGFloat
     
     /// Creates a new stepped progress bar
     /// - Parameters:
@@ -71,29 +74,32 @@ public struct SteppedProgressBar: View {
     ///   - totalSteps: The total number of steps
     ///   - direction: The layout direction (.horizontal or .vertical)
     ///   - palette: The colour palette for the progress bar
-    ///   - stepSize: The diameter of each step indicator
+    ///   - stepSize: The size of each step indicator
+    ///   - cornerRadius: The corner radius of the step indicators
     public init(
         currentStep: Int,
         totalSteps: Int,
         direction: ProgressDirection = .horizontal,
         palette: Palette = Palette(),
-        stepSize: CGFloat = 16
+        stepSize: CGSize = CGSize(width: 16, height: 16),
+        cornerRadius: CGFloat? = nil
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
         self.totalSteps = totalSteps
         self.direction = direction
         self.palette = palette
         self.stepSize = stepSize
+        self.cornerRadius = cornerRadius ?? min(stepSize.width, stepSize.height) / 2
     }
     
     public var body: some View {
         Group {
             if direction == .horizontal {
-                HStack(spacing: stepSize) {
+                HStack(spacing: stepSize.width) {
                     progressContent
                 }
             } else {
-                VStack(spacing: stepSize) {
+                VStack(spacing: stepSize.height) {
                     progressContent
                 }
             }
@@ -114,11 +120,11 @@ public struct SteppedProgressBar: View {
     /// Generates the step indicators and connecting lines
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
-            Circle()
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(colourForStep(index))
-                .frame(width: stepSize, height: stepSize)
+                .frame(width: stepSize.width, height: stepSize.height)
                 .overlay(
-                    Circle()
+                    RoundedRectangle(cornerRadius: cornerRadius)
                         .strokeBorder(colourForStep(index), lineWidth: 2)
                 )
                 .overlay(
@@ -127,12 +133,12 @@ public struct SteppedProgressBar: View {
                             Rectangle()
                                 .fill(palette.primary)
                                 .frame(
-                                    width: (direction == .horizontal) ? stepSize : 2,
-                                    height: (direction == .horizontal) ? 2 : stepSize
+                                    width: direction == .horizontal ? stepSize.width : 2,
+                                    height: direction == .horizontal ? 2 : stepSize.height
                                 )
                                 .offset(
-                                    x: (direction == .horizontal) ? stepSize : 0,
-                                    y: (direction == .horizontal) ? 0 : stepSize
+                                    x: direction == .horizontal ? stepSize.width : 0,
+                                    y: direction == .horizontal ? 0 : stepSize.height
                                 )
                         }
                     }

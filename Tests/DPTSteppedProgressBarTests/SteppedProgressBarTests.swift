@@ -10,8 +10,11 @@ final class SteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.currentStep, 2)
         XCTAssertEqual(progressBar.totalSteps, 5)
         XCTAssertEqual(progressBar.direction, .horizontal)
+        XCTAssertEqual(progressBar.stepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(progressBar.cornerRadius, 8) // min(16, 16) / 2
         XCTAssertEqual(progressBar.palette.primary, defaultPalette.primary)
         XCTAssertEqual(progressBar.palette.secondary, defaultPalette.secondary)
+        XCTAssertEqual(progressBar.palette.active, defaultPalette.active)
     }
     
     func testCurrentStepBoundaries() {
@@ -24,47 +27,85 @@ final class SteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(upperBoundBar.currentStep, 5, "Current step should be clamped to totalSteps")
     }
     
-    func testCustomisation() {
-        let customPalette = Palette(primary: .red, secondary: .green)
-        let customBar = SteppedProgressBar(
-            currentStep: 3,
-            totalSteps: 5,
-            direction: .vertical,
-            palette: customPalette,
-            stepSize: 24
-        )
-        
-        XCTAssertEqual(customBar.direction, .vertical)
-        XCTAssertEqual(customBar.palette.primary, .red)
-        XCTAssertEqual(customBar.palette.secondary, .green)
-        XCTAssertEqual(customBar.stepSize, 24)
-    }
-    
-    func testPaletteInitialisation() {
+    func testPaletteConfiguration() {
+        // Test default palette
         let defaultPalette = Palette()
         XCTAssertEqual(defaultPalette.primary, .blue)
         XCTAssertEqual(defaultPalette.secondary, .gray.opacity(0.3))
+        XCTAssertEqual(defaultPalette.active, .blue.opacity(0.6))
         
-        let customPalette = Palette(primary: .green, secondary: .red)
+        // Test custom palette with explicit active colour
+        let customPalette = Palette(
+            primary: .green,
+            active: .yellow,
+            secondary: .gray
+        )
         XCTAssertEqual(customPalette.primary, .green)
-        XCTAssertEqual(customPalette.secondary, .red)
+        XCTAssertEqual(customPalette.active, .yellow)
+        XCTAssertEqual(customPalette.secondary, .gray)
+        
+        // Test custom palette with default active colour
+        let derivedActivePalette = Palette(
+            primary: .red,
+            secondary: .gray
+        )
+        XCTAssertEqual(derivedActivePalette.primary, .red)
+        XCTAssertEqual(derivedActivePalette.active, .red.opacity(0.6))
+        XCTAssertEqual(derivedActivePalette.secondary, .gray)
     }
     
-    func testViewHierarchy() {
-        let progressBar = SteppedProgressBar(currentStep: 2, totalSteps: 3)
-        let view = progressBar.body
+    func testStepSizeConfiguration() {
+        // Test default size
+        let defaultBar = SteppedProgressBar(currentStep: 1, totalSteps: 2)
+        XCTAssertEqual(defaultBar.stepSize, CGSize(width: 16, height: 16))
         
-        // Test that the view exists and has the correct structure
-        XCTAssertNotNil(view)
+        // Test custom size
+        let customBar = SteppedProgressBar(
+            currentStep: 1,
+            totalSteps: 2,
+            stepSize: CGSize(width: 24, height: 32)
+        )
+        XCTAssertEqual(customBar.stepSize, CGSize(width: 24, height: 32))
+    }
+    
+    func testCornerRadiusConfiguration() {
+        // Test default corner radius (circular)
+        let defaultBar = SteppedProgressBar(currentStep: 1, totalSteps: 2)
+        XCTAssertEqual(defaultBar.cornerRadius, 8) // min(16, 16) / 2
         
+        // Test custom corner radius
+        let customBar = SteppedProgressBar(
+            currentStep: 1,
+            totalSteps: 2,
+            cornerRadius: 4
+        )
+        XCTAssertEqual(customBar.cornerRadius, 4)
+        
+        // Test default corner radius with custom size
+        let tallBar = SteppedProgressBar(
+            currentStep: 1,
+            totalSteps: 2,
+            stepSize: CGSize(width: 16, height: 24)
+        )
+        XCTAssertEqual(tallBar.cornerRadius, 8) // min(16, 24) / 2
+        
+        // Test default corner radius with wide size
+        let wideBar = SteppedProgressBar(
+            currentStep: 1,
+            totalSteps: 2,
+            stepSize: CGSize(width: 32, height: 16)
+        )
+        XCTAssertEqual(wideBar.cornerRadius, 8) // min(32, 16) / 2
+    }
+    
+    func testDirectionConfiguration() {
         // Test horizontal layout
         let horizontalBar = SteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             direction: .horizontal
         )
-        let horizontalView = horizontalBar.body
-        XCTAssertNotNil(horizontalView)
+        XCTAssertEqual(horizontalBar.direction, .horizontal)
         
         // Test vertical layout
         let verticalBar = SteppedProgressBar(
@@ -72,7 +113,12 @@ final class SteppedProgressBarTests: XCTestCase {
             totalSteps: 2,
             direction: .vertical
         )
-        let verticalView = verticalBar.body
-        XCTAssertNotNil(verticalView)
+        XCTAssertEqual(verticalBar.direction, .vertical)
+    }
+    
+    func testViewHierarchy() {
+        let progressBar = SteppedProgressBar(currentStep: 2, totalSteps: 3)
+        let view = progressBar.body
+        XCTAssertNotNil(view)
     }
 } 
