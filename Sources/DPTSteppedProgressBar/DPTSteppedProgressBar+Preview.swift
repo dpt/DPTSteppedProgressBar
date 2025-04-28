@@ -110,15 +110,15 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         .init(label: "amet")
                     ],
                     showLabels: true,
-                    labelFont: .footnote
+                    labelFont: .footnote,
+                    lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Vertical with Labels")
 
                 // Default style (circular)
                 DPTSteppedProgressBar(
                     currentStep: 3,
-                    totalSteps: 5,
-                    direction: .horizontal
+                    totalSteps: 5
                 )
                 .previewDisplayName("Default Style (Circular)")
 
@@ -135,7 +135,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         incompleteConnection: Color(red: 0.9, green: 0.9, blue: 0.95)
                     ),
                     stepSize: .init(width: 16, height: 24),
-                    cornerRadius: 6
+                    cornerRadius: 6,
+                    lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Tall Rounded Rectangles")
 
@@ -160,7 +161,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 // Square steps
                 DPTSteppedProgressBar(
                     currentStep: 2,
-                    totalSteps: 3,
+                    totalSteps: 6,
                     direction: .horizontal,
                     palette: .init(
                         complete: .purple,
@@ -170,6 +171,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                         incompleteConnection: Color(red: 0.9, green: 0.85, blue: 0.95)
                     ),
                     stepSize: .init(width: 24, height: 24),
+                    activeStepSize: .init(width: 48, height: 16),
                     cornerRadius: 4
                 )
                 .previewDisplayName("Square Steps")
@@ -188,7 +190,8 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                     ),
                     stepSize: .init(width: 24, height: 16),
                     spacing: 24,
-                    cornerRadius: 3
+                    cornerRadius: 3,
+                    lineStyle: .solid(width: 1)
                 )
                 .previewDisplayName("Soft Rectangles")
             }
