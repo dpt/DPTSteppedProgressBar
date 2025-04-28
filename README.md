@@ -4,7 +4,8 @@
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2014.0+%20%7C%20macOS%2011.0+-333333.svg)](https://developer.apple.com)
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 
-A customisable stepped progress indicator for SwiftUI. Perfect for multi-step forms, onboarding flows, and process tracking.
+A customisable stepped progress indicator for SwiftUI. Perfect for multi-step
+forms, onboarding flows, and process tracking.
 
 ## Features
 
@@ -19,11 +20,13 @@ A customisable stepped progress indicator for SwiftUI. Perfect for multi-step fo
 ## Installation
 
 Add via Xcode: File → Swift Packages → Add Package Dependency
+
 ```
 https://github.com/dpt/DPTSteppedProgressBar
 ```
 
 Or in `Package.swift`:
+
 ```swift
 dependencies: [
     .package(url: "https://github.com/dpt/DPTSteppedProgressBar", from: "1.0.0")
@@ -49,6 +52,7 @@ struct ContentView: View {
 ## Examples
 
 ### Basic Usage
+
 ```swift
 // Horizontal (default)
 DPTSteppedProgressBar(
@@ -65,6 +69,7 @@ DPTSteppedProgressBar(
 ```
 
 ### With Labels and Accessibility
+
 ```swift
 DPTSteppedProgressBar(
     currentStep: 2,
@@ -87,6 +92,7 @@ DPTSteppedProgressBar(
 ```
 
 ### Custom Styling
+
 ```swift
 DPTSteppedProgressBar(
     currentStep: 2,
@@ -108,48 +114,54 @@ DPTSteppedProgressBar(
 ## Configuration
 
 ### Core Parameters
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `currentStep` | `Int` | Required | Current active step (1-based) |
-| `totalSteps` | `Int` | Required | Total number of steps |
-| `direction` | `Direction` | `.horizontal` | Layout orientation |
-| `stepSize` | `CGSize` | `.init(width: 16, height: 16)` | Default size of step indicators |
-| `activeStepSize` | `CGSize` | `stepSize` | Size of active step indicator |
-| `spacing` | `CGFloat` | nil | Space between step indicators |
+
+| Parameter        | Type        | Default                        | Description                     |
+| ---------------- | ----------- | ------------------------------ | ------------------------------- |
+| `currentStep`    | `Int`       | Required                       | Current active step (1-based)   |
+| `totalSteps`     | `Int`       | Required                       | Total number of steps           |
+| `direction`      | `Direction` | `.horizontal`                  | Layout orientation              |
+| `stepSize`       | `CGSize`    | `.init(width: 16, height: 16)` | Default size of step indicators |
+| `activeStepSize` | `CGSize`    | `stepSize`                     | Size of active step indicator   |
+| `spacing`        | `CGFloat`   | nil                            | Space between step indicators   |
 
 ### Visual Styling
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `palette` | `Palette` | `.init()` | Colour scheme for steps and lines |
-| `cornerRadius` | `CGFloat?` | `min(width, height) / 2` | Corner radius |
-| `lineStyle` | `LineStyle` | `.solid(width: 2)` | Style and width of connecting lines (optional) |
-| `strokeWidth` | `CGFloat` | `nil` | Width of step borders (optional) |
+
+| Parameter      | Type        | Default                  | Description                                    |
+| -------------- | ----------- | ------------------------ | ---------------------------------------------- |
+| `palette`      | `Palette`   | `.init()`                | Colour scheme for steps and lines              |
+| `cornerRadius` | `CGFloat?`  | `min(width, height) / 2` | Corner radius                                  |
+| `lineStyle`    | `LineStyle` | `.solid(width: 2)`       | Style and width of connecting lines (optional) |
+| `strokeWidth`  | `CGFloat`   | `nil`                    | Width of step borders (optional)               |
 
 ### Line Styles
-| Style | Parameters | Description |
-|-------|------------|-------------|
-| `.solid(width:)` | `width: CGFloat` | Solid connecting lines with specified width |
-| `.dashed(width:)` | `width: CGFloat` | Dashed lines with specified width |
-| `.dotted(width:)` | `width: CGFloat` | Dotted lines with specified width |
+
+| Style             | Parameters       | Description                                 |
+| ----------------- | ---------------- | ------------------------------------------- |
+| `.solid(width:)`  | `width: CGFloat` | Solid connecting lines with specified width |
+| `.dashed(width:)` | `width: CGFloat` | Dashed lines with specified width           |
+| `.dotted(width:)` | `width: CGFloat` | Dotted lines with specified width           |
 
 ### Palette Properties
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `complete` | `Color` | `.blue` | Completed steps and connections |
-| `active` | `Color` | `complete.opacity(0.6)` | Currently active step (optional) |
-| `incomplete` | `Color` | `.gray.opacity(0.3)` | Incomplete steps |
-| `completeConnection` | `Color` | `complete` | Complete connecting lines (optional) |
-| `incompleteConnection` | `Color` | `incomplete` | Incomplete connecting lines (optional) |
+
+| Property               | Type    | Default                 | Description                            |
+| ---------------------- | ------- | ----------------------- | -------------------------------------- |
+| `complete`             | `Color` | `.blue`                 | Completed steps and connections        |
+| `active`               | `Color` | `complete.opacity(0.6)` | Currently active step (optional)       |
+| `incomplete`           | `Color` | `.gray.opacity(0.3)`    | Incomplete steps                       |
+| `completeConnection`   | `Color` | `complete`              | Complete connecting lines (optional)   |
+| `incompleteConnection` | `Color` | `incomplete`            | Incomplete connecting lines (optional) |
 
 ### Labels & Accessibility
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `steps` | `[Step]?` | `nil` | Step labels and hints |
-| `showLabels` | `Bool` | `false` | Show step labels |
-| `labelFont` | `Font` | `.caption` | Label font |
-| `labelSpacing` | `CGFloat` | `4` | Space between step and label |
+
+| Parameter      | Type      | Default    | Description                  |
+| -------------- | --------- | ---------- | ---------------------------- |
+| `steps`        | `[Step]?` | `nil`      | Step labels and hints        |
+| `showLabels`   | `Bool`    | `false`    | Show step labels             |
+| `labelFont`    | `Font`    | `.caption` | Label font                   |
+| `labelSpacing` | `CGFloat` | `4`        | Space between step and label |
 
 ### Palette Configuration
+
 ```swift
 .init(
     complete: .blue,         // Completed steps and connections
@@ -160,7 +172,8 @@ DPTSteppedProgressBar(
 )
 ```
 
-The `incompleteConnection` colour defaults to match `incomplete` if not specified. This allows for separate styling of incomplete connecting lines.
+The `incompleteConnection` colour defaults to match `incomplete` if not
+specified. This allows for separate styling of incomplete connecting lines.
 
 ### Examples
 
