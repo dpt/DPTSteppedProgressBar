@@ -38,7 +38,7 @@ import DPTSteppedProgressBar
 
 struct ContentView: View {
     var body: some View {
-        SteppedProgressBar(
+        DPTSteppedProgressBar(
             currentStep: 2,
             totalSteps: 5
         )
@@ -51,13 +51,13 @@ struct ContentView: View {
 ### Basic Usage
 ```swift
 // Horizontal (default)
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 3,
     totalSteps: 5
 )
 
 // Vertical
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     direction: .vertical
@@ -66,7 +66,7 @@ SteppedProgressBar(
 
 ### With Labels and Accessibility
 ```swift
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     steps: [
@@ -88,7 +88,7 @@ SteppedProgressBar(
 
 ### Custom Styling
 ```swift
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     palette: .init(
@@ -160,21 +160,21 @@ The `incompleteLine` colour defaults to match `secondary` if not specified. This
 
 ```swift
 // Dashed connecting lines
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     lineStyle: .dashed(width: 2)
 )
 
 // Dotted connecting lines
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     lineStyle: .dotted(width: 2)
 )
 
 // Custom connecting line colours
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     palette: .init(
@@ -186,13 +186,13 @@ SteppedProgressBar(
 )
 
 // Without connecting lines
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4
 )
 
 // Thin connecting lines
-SteppedProgressBar(
+DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     lineStyle: .solid(width: 1)

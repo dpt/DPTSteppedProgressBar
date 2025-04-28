@@ -1,16 +1,16 @@
 //
-//  SteppedProgressBar+Preview.swift
+//  DPTSteppedProgressBar+Preview.swift
 //  DPTSteppedProgressBar
 //
 
 import SwiftUI
 
-struct SteppedProgressBar_Previews: PreviewProvider {
+struct DPTSteppedProgressBar_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(spacing: 40) {
                 // Default style with labels
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
@@ -54,7 +54,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("With Labels and Accessibility")
 
                 // Without connecting lines
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal
@@ -62,7 +62,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Without Connecting Lines")
 
                 // Thin connecting lines
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
@@ -71,7 +71,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Thin Connecting Lines")
 
                 // Dashed connecting lines
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
@@ -80,7 +80,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Dashed Connecting Lines")
 
                 // Dotted connecting lines
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
@@ -89,7 +89,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Dotted Connecting Lines")
 
                 // Vertical with custom labels
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 4,
                     direction: .vertical,
@@ -114,7 +114,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Vertical with Labels")
 
                 // Default style (circular)
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal
@@ -122,7 +122,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Default Style (Circular)")
 
                 // Tall rounded rectangles
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 4,
                     direction: .vertical,
@@ -139,7 +139,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Tall Rounded Rectangles")
 
                 // Wide pill shapes
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 4,
                     totalSteps: 6,
                     direction: .horizontal,
@@ -156,7 +156,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Wide Pills")
 
                 // Square steps
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 3,
                     direction: .horizontal,
@@ -173,7 +173,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Square Steps")
 
                 // Soft rectangles
-                SteppedProgressBar(
+                DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
                     direction: .horizontal,
