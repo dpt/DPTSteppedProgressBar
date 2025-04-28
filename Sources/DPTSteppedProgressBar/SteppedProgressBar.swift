@@ -5,59 +5,6 @@
 
 import SwiftUI
 
-/// Defines the layout direction of the progress bar
-public enum ProgressDirection {
-    /// Arranges steps horizontally from left to right
-    case horizontal
-    /// Arranges steps vertically from top to bottom
-    case vertical
-}
-
-/// Defines the colour scheme for the progress bar
-public struct Palette {
-    /// The colour used for completed steps and connections
-    public let primary: Color
-    /// The colour used for the currently active step
-    public let active: Color
-    /// The colour used for incomplete steps
-    public let secondary: Color
-
-    /// Creates a new colour palette for the progress bar
-    /// - Parameters:
-    ///   - primary: The colour for completed steps and connections
-    ///   - active: The colour for the currently active step
-    ///   - secondary: The colour for incomplete steps
-    public init(
-        primary: Color = .blue,
-        active: Color? = nil,
-        secondary: Color = .gray.opacity(0.3)
-    ) {
-        self.primary = primary
-        self.active = active ?? primary.opacity(0.6)
-        self.secondary = secondary
-    }
-}
-
-/// Configuration for step labels and accessibility
-public struct StepConfiguration {
-    /// Label displayed below/beside the step (optional)
-    public let label: String?
-    /// Detailed accessibility description of the step
-    public let accessibilityLabel: String?
-    /// Additional accessibility hint about the step's purpose
-    public let accessibilityHint: String?
-
-    public init(
-        label: String? = nil,
-        accessibilityLabel: String? = nil,
-        accessibilityHint: String? = nil
-    ) {
-        self.label = label
-        self.accessibilityLabel = accessibilityLabel
-        self.accessibilityHint = accessibilityHint
-    }
-}
-
 /// A customisable stepped progress bar that shows progression through discrete steps
 ///
 /// `SteppedProgressBar` is a SwiftUI view that displays a series of connected rounded rectangles
@@ -80,6 +27,59 @@ public struct StepConfiguration {
 /// )
 /// ```
 public struct SteppedProgressBar: View {
+    /// Defines the layout direction of the progress bar
+    public enum ProgressDirection {
+        /// Arranges steps horizontally from left to right
+        case horizontal
+        /// Arranges steps vertically from top to bottom
+        case vertical
+    }
+
+    /// Defines the colour scheme for the progress bar
+    public struct Palette {
+        /// The colour used for completed steps and connections
+        public let primary: Color
+        /// The colour used for the currently active step
+        public let active: Color
+        /// The colour used for incomplete steps
+        public let secondary: Color
+
+        /// Creates a new colour palette for the progress bar
+        /// - Parameters:
+        ///   - primary: The colour for completed steps and connections
+        ///   - active: The colour for the currently active step
+        ///   - secondary: The colour for incomplete steps
+        public init(
+            primary: Color = .blue,
+            active: Color? = nil,
+            secondary: Color = .gray.opacity(0.3)
+        ) {
+            self.primary = primary
+            self.active = active ?? primary.opacity(0.6)
+            self.secondary = secondary
+        }
+    }
+
+    /// Configuration for step labels and accessibility
+    public struct Step {
+        /// Label displayed below/beside the step (optional)
+        public let label: String?
+        /// Detailed accessibility description of the step
+        public let accessibilityLabel: String?
+        /// Additional accessibility hint about the step's purpose
+        public let accessibilityHint: String?
+
+        public init(
+            label: String? = nil,
+            accessibilityLabel: String? = nil,
+            accessibilityHint: String? = nil
+        ) {
+            self.label = label
+            self.accessibilityLabel = accessibilityLabel
+            self.accessibilityHint = accessibilityHint
+        }
+    }
+
     /// The current step (1-based index)
     let currentStep: Int
     /// The total number of steps
@@ -93,7 +93,7 @@ public struct SteppedProgressBar: View {
     /// The corner radius of the step indicators
     let cornerRadius: CGFloat
     /// Configuration for each step
-    let stepConfigurations: [StepConfiguration]?
+    let stepConfigurations: [Step]?
     /// Whether to show labels
     let showLabels: Bool
     /// Font for the labels
@@ -123,10 +123,10 @@ public struct SteppedProgressBar: View {
         currentStep: Int,
         totalSteps: Int,
         direction: ProgressDirection = .horizontal,
-        palette: Palette = Palette(),
-        stepSize: CGSize = CGSize(width: 16, height: 16),
+        palette: Palette = .init(),
+        stepSize: CGSize = .init(width: 16, height: 16),
         cornerRadius: CGFloat? = nil,
-        stepConfigurations: [StepConfiguration]? = nil,
+        stepConfigurations: [Step]? = nil,
         showLabels: Bool = false,
         labelFont: Font = .caption,
         labelSpacing: CGFloat = 4,
@@ -162,14 +162,14 @@ public struct SteppedProgressBar: View {
 
     private var lineFrame: CGSize {
         direction == .horizontal
-            ? CGSize(width: stepSize.width, height: lineWidth)
-            : CGSize(width: lineWidth, height: stepSize.height)
+            ? .init(width: stepSize.width, height: lineWidth)
+            : .init(width: lineWidth, height: stepSize.height)
     }
 
     private var lineOffset: CGPoint {
         direction == .horizontal
-            ? CGPoint(x: stepSize.width, y: 0)
-            : CGPoint(x: 0, y: stepSize.height)
+            ? .init(x: stepSize.width, y: 0)
+            : .init(x: 0, y: stepSize.height)
     }
 
     internal var overallAccessibilityLabel: String {
