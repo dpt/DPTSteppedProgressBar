@@ -1,18 +1,52 @@
 import SwiftUI
 
+/// Defines the layout direction of the progress bar
 public enum ProgressDirection {
+    /// Arranges steps horizontally from left to right
     case horizontal
+    /// Arranges steps vertically from top to bottom
     case vertical
 }
 
+/// A customisable stepped progress bar that shows progression through discrete steps
+///
+/// `SteppedProgressBar` is a SwiftUI view that displays a series of connected circles
+/// representing steps in a process. The current progress is shown by filling in the circles
+/// and connecting them with lines.
+///
+/// Example usage:
+/// ```swift
+/// SteppedProgressBar(
+///     currentStep: 2,
+///     totalSteps: 5,
+///     direction: .horizontal,
+///     primaryColor: .blue,
+///     secondaryColor: .gray.opacity(0.3),
+///     stepSize: 16
+/// )
+/// ```
 public struct SteppedProgressBar: View {
+    /// The current step (1-based index)
     let currentStep: Int
+    /// The total number of steps
     let totalSteps: Int
+    /// The layout direction of the progress bar
     let direction: ProgressDirection
+    /// The colour used for completed steps and connections
     let primaryColor: Color
+    /// The colour used for incomplete steps
     let secondaryColor: Color
+    /// The diameter of each step indicator
     let stepSize: CGFloat
     
+    /// Creates a new stepped progress bar
+    /// - Parameters:
+    ///   - currentStep: The current step (1-based index)
+    ///   - totalSteps: The total number of steps
+    ///   - direction: The layout direction (.horizontal or .vertical)
+    ///   - primaryColor: The colour for completed steps and connections
+    ///   - secondaryColor: The colour for incomplete steps
+    ///   - stepSize: The diameter of each step indicator
     public init(
         currentStep: Int,
         totalSteps: Int,
@@ -43,6 +77,7 @@ public struct SteppedProgressBar: View {
         }
     }
     
+    /// Generates the step indicators and connecting lines
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
             Circle()
