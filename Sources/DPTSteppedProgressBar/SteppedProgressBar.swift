@@ -17,18 +17,18 @@ import SwiftUI
 ///     currentStep: 2,
 ///     totalSteps: 5,
 ///     direction: .horizontal,
-///     palette: Palette(
+///     palette: .init(
 ///         primary: .blue,
 ///         active: .blue.opacity(0.6),
 ///         secondary: .gray.opacity(0.3)
 ///     ),
-///     stepSize: CGSize(width: 16, height: 16),
+///     stepSize: .init(width: 16, height: 16),
 ///     cornerRadius: 8
 /// )
 /// ```
 public struct SteppedProgressBar: View {
     /// Defines the layout direction of the progress bar
-    public enum ProgressDirection {
+    public enum Direction {
         /// Arranges steps horizontally from left to right
         case horizontal
         /// Arranges steps vertically from top to bottom
@@ -85,7 +85,7 @@ public struct SteppedProgressBar: View {
     /// The total number of steps
     let totalSteps: Int
     /// The layout direction of the progress bar
-    let direction: ProgressDirection
+    let direction: Direction
     /// The colour palette for the progress bar
     let palette: Palette
     /// The size of each step indicator
@@ -122,7 +122,7 @@ public struct SteppedProgressBar: View {
     public init(
         currentStep: Int,
         totalSteps: Int,
-        direction: ProgressDirection = .horizontal,
+        direction: Direction = .horizontal,
         palette: Palette = .init(),
         stepSize: CGSize = .init(width: 16, height: 16),
         cornerRadius: CGFloat? = nil,

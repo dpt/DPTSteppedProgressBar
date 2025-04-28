@@ -67,22 +67,22 @@ SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     stepConfigurations: [
-        SteppedProgressBar.StepConfiguration(
+        .init(
             label: "Start",
             accessibilityLabel: "Starting point",
             accessibilityHint: "Initial setup complete"
         ),
-        SteppedProgressBar.StepConfiguration(
+        .init(
             label: "Details",
             accessibilityLabel: "Personal details",
             accessibilityHint: "Enter your information"
         ),
-        SteppedProgressBar.StepConfiguration(
+        .init(
             label: "Review",
             accessibilityLabel: "Review details",
             accessibilityHint: "Check your information"
         ),
-        SteppedProgressBar.StepConfiguration(
+        .init(
             label: "Done",
             accessibilityLabel: "Completion",
             accessibilityHint: "Process complete"
@@ -98,7 +98,7 @@ SteppedProgressBar(
 SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
-    palette: SteppedProgressBar.Palette(
+    palette: .init(
         primary: .blue,
         active: .blue.opacity(0.8),
         secondary: .blue.opacity(0.2)
@@ -112,7 +112,7 @@ SteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
     direction: .vertical,
-    stepSize: CGSize(width: 16, height: 24),
+    stepSize: .init(width: 16, height: 24),
     cornerRadius: 6
 )
 ```
@@ -123,11 +123,11 @@ SteppedProgressBar(
 |-----------|------|-------------|---------|
 | `currentStep` | `Int` | Current active step (1-based index) | Required |
 | `totalSteps` | `Int` | Total number of steps | Required |
-| `direction` | `SteppedProgressBar.ProgressDirection` | Layout orientation (.horizontal/.vertical) | `.horizontal` |
-| `palette` | `SteppedProgressBar.Palette` | Colour scheme configuration | `Palette()` |
-| `stepSize` | `CGSize` | Width and height of step indicators | `CGSize(width: 16, height: 16)` |
+| `direction` | `Direction` | Layout orientation (.horizontal/.vertical) | `.horizontal` |
+| `palette` | `Palette` | Colour scheme configuration | `.init()` |
+| `stepSize` | `CGSize` | Width and height of step indicators | `.init(width: 16, height: 16)` |
 | `cornerRadius` | `CGFloat?` | Corner radius of step indicators | `min(width, height) / 2` |
-| `stepConfigurations` | `[SteppedProgressBar.StepConfiguration]?` | Configuration for step labels and accessibility | `nil` |
+| `stepConfigurations` | `[Step]?` | Configuration for step labels and accessibility | `nil` |
 | `showLabels` | `Bool` | Whether to show step labels | `false` |
 | `labelFont` | `Font` | Font for step labels | `.caption` |
 | `labelSpacing` | `CGFloat` | Space between step and label | `4` |
@@ -136,60 +136,12 @@ SteppedProgressBar(
 
 ### Step Configuration
 
-The `SteppedProgressBar.StepConfiguration` structure allows for detailed customisation of each step:
+The `Step` structure allows for detailed customisation of each step:
 
 ```swift
-SteppedProgressBar.StepConfiguration(
+.init(
     label: "Step 1",              // Visual label (optional)
     accessibilityLabel: "Start",  // VoiceOver label
     accessibilityHint: "Begin"    // Additional VoiceOver context
 )
 ```
-
-### Accessibility Features
-
-The progress bar includes comprehensive accessibility support:
-
-1. **Overall Progress**
-   - VoiceOver announces current progress (e.g., "Progress tracker: Step 2 of 5")
-   - Progress percentage is provided (e.g., "40% complete")
-
-2. **Step-Specific Information**
-   - Each step can have a custom accessibility label and hint
-   - Default labels are provided if not specified
-   - Active step is marked as selected
-   - Completed steps are marked as buttons
-
-3. **Visual Labels**
-   - Optional text labels for each step
-   - Customisable font and spacing
-   - Labels inherit step colours for visual consistency
-
-4. **Dynamic Type Support**
-   - Labels scale with system font size settings
-   - Proper spacing management
-
-## Best Practices
-
-1. **Step Counting**: Steps are 1-indexed for intuitive usage
-2. **Boundary Handling**: Values are automatically clamped between 1 and totalSteps
-3. **Shape Control**: 
-   - Use equal width and height for circular steps
-   - Adjust cornerRadius for different shape styles
-   - Use larger width for pill shapes
-4. **Colour Schemes**:
-   - Use contrasting colours for better visibility
-   - Consider accessibility when choosing colours
-   - Utilise opacity for subtle variations
-5. **Accessibility**:
-   - Provide meaningful labels and hints for each step
-   - Use clear, concise descriptions
-   - Test with VoiceOver enabled
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-## Licence
-
-This project is licensed under the MIT Licence. See the [LICENSE](LICENSE) file for details. 
