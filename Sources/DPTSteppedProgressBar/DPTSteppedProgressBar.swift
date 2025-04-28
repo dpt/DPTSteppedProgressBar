@@ -145,6 +145,7 @@ public struct DPTSteppedProgressBar: View {
     ///   - palette: The colour palette for the progress bar
     ///   - stepSize: The default size of the step indicators
     ///   - activeStepSize: The size of the active step indicator
+    ///   - spacing: Space between step indicators
     ///   - cornerRadius: The corner radius of the step indicators
     ///   - steps: Configuration for each step
     ///   - showLabels: Whether to show labels
