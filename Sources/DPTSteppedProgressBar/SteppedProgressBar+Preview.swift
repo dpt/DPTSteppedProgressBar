@@ -18,6 +18,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         primary: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
                         secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
                         incompleteLine: Color(red: 0.8, green: 0.8, blue: 0.8)
                     ),
                     steps: [
@@ -96,6 +97,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         primary: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
                         secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
                         incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 16, height: 24),
@@ -128,6 +130,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         primary: .blue,
                         active: Color(red: 0.4, green: 0.6, blue: 1.0),
                         secondary: Color(red: 0.95, green: 0.95, blue: 1.0),
+                        completeLine: Color(red: 0.6, green: 0.8, blue: 1.0),
                         incompleteLine: Color(red: 0.9, green: 0.9, blue: 0.95)
                     ),
                     stepSize: .init(width: 16, height: 24),
@@ -144,6 +147,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         primary: .green,
                         active: Color(red: 0.3, green: 0.8, blue: 0.3),
                         secondary: Color(red: 0.95, green: 1.0, blue: 0.95),
+                        completeLine: Color(red: 0.5, green: 0.9, blue: 0.5),
                         incompleteLine: Color(red: 0.9, green: 0.95, blue: 0.9)
                     ),
                     stepSize: .init(width: 32, height: 16),
@@ -160,6 +164,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         primary: .purple,
                         active: Color(red: 0.8, green: 0.4, blue: 0.8),
                         secondary: Color(red: 0.95, green: 0.9, blue: 1.0),
+                        completeLine: Color(red: 0.7, green: 0.5, blue: 0.9),
                         incompleteLine: Color(red: 0.9, green: 0.85, blue: 0.95)
                     ),
                     stepSize: .init(width: 24, height: 24),
@@ -176,6 +181,7 @@ struct SteppedProgressBar_Previews: PreviewProvider {
                         primary: .black,
                         active: Color(red: 0.3, green: 0.3, blue: 0.3),
                         secondary: Color(red: 0.95, green: 0.95, blue: 0.95),
+                        completeLine: Color(red: 0.5, green: 0.5, blue: 0.5),
                         incompleteLine: Color(red: 0.85, green: 0.85, blue: 0.85)
                     ),
                     stepSize: .init(width: 24, height: 16),
