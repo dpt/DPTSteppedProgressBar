@@ -6,12 +6,12 @@ public enum ProgressDirection {
 }
 
 public struct SteppedProgressBar: View {
-    private let currentStep: Int
-    private let totalSteps: Int
-    private let direction: ProgressDirection
-    private let primaryColor: Color
-    private let secondaryColor: Color
-    private let stepSize: CGFloat
+    internal let currentStep: Int
+    internal let totalSteps: Int
+    internal let direction: ProgressDirection
+    internal let primaryColor: Color
+    internal let secondaryColor: Color
+    internal let stepSize: CGFloat
     
     public init(
         currentStep: Int,
