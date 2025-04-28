@@ -33,6 +33,26 @@ public struct Palette {
     }
 }
 
+/// Configuration for step labels and accessibility
+public struct StepConfiguration {
+    /// Label displayed below/beside the step (optional)
+    public let label: String?
+    /// Detailed accessibility description of the step
+    public let accessibilityLabel: String?
+    /// Additional accessibility hint about the step's purpose
+    public let accessibilityHint: String?
+    
+    public init(
+        label: String? = nil,
+        accessibilityLabel: String? = nil,
+        accessibilityHint: String? = nil
+    ) {
+        self.label = label
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
+    }
+}
+
 /// A customisable stepped progress bar that shows progression through discrete steps
 ///
 /// `SteppedProgressBar` is a SwiftUI view that displays a series of connected rounded rectangles
@@ -67,6 +87,14 @@ public struct SteppedProgressBar: View {
     let stepSize: CGSize
     /// The corner radius of the step indicators
     let cornerRadius: CGFloat
+    /// Configuration for each step
+    let stepConfigurations: [StepConfiguration]?
+    /// Whether to show labels
+    let showLabels: Bool
+    /// Font for the labels
+    let labelFont: Font
+    /// Spacing between step and label
+    let labelSpacing: CGFloat
     
     /// Creates a new stepped progress bar
     /// - Parameters:
@@ -76,13 +104,21 @@ public struct SteppedProgressBar: View {
     ///   - palette: The colour palette for the progress bar
     ///   - stepSize: The size of each step indicator
     ///   - cornerRadius: The corner radius of the step indicators
+    ///   - stepConfigurations: Configuration for each step
+    ///   - showLabels: Whether to show labels
+    ///   - labelFont: Font for the labels
+    ///   - labelSpacing: Spacing between step and label
     public init(
         currentStep: Int,
         totalSteps: Int,
         direction: ProgressDirection = .horizontal,
         palette: Palette = Palette(),
         stepSize: CGSize = CGSize(width: 16, height: 16),
-        cornerRadius: CGFloat? = nil
+        cornerRadius: CGFloat? = nil,
+        stepConfigurations: [StepConfiguration]? = nil,
+        showLabels: Bool = false,
+        labelFont: Font = .caption,
+        labelSpacing: CGFloat = 4
     ) {
         self.currentStep = min(max(1, currentStep), totalSteps)
         self.totalSteps = totalSteps
@@ -90,6 +126,10 @@ public struct SteppedProgressBar: View {
         self.palette = palette
         self.stepSize = stepSize
         self.cornerRadius = cornerRadius ?? min(stepSize.width, stepSize.height) / 2
+        self.stepConfigurations = stepConfigurations
+        self.showLabels = showLabels
+        self.labelFont = labelFont
+        self.labelSpacing = labelSpacing
     }
     
     public var body: some View {
@@ -104,6 +144,35 @@ public struct SteppedProgressBar: View {
                 }
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(overallAccessibilityLabel)
+        .accessibilityValue(progressPercentage)
+    }
+    
+    private var overallAccessibilityLabel: String {
+        "Progress tracker: Step \(currentStep) of \(totalSteps)"
+    }
+    
+    private var progressPercentage: String {
+        let percentage = Int((Double(currentStep) / Double(totalSteps)) * 100)
+        return "\(percentage)% complete"
+    }
+    
+    private func stepAccessibilityLabel(for index: Int) -> String {
+        if let configs = stepConfigurations,
+           index < configs.count,
+           let label = configs[index].accessibilityLabel {
+            return label
+        }
+        return "Step \(index + 1)"
+    }
+    
+    private func stepAccessibilityHint(for index: Int) -> String? {
+        stepConfigurations?[index].accessibilityHint
+    }
+    
+    private func stepLabel(for index: Int) -> String? {
+        stepConfigurations?[index].label
     }
     
     /// Determines the appropriate colour for a step based on its index
@@ -120,29 +189,58 @@ public struct SteppedProgressBar: View {
     /// Generates the step indicators and connecting lines
     private var progressContent: some View {
         ForEach(0..<totalSteps, id: \.self) { index in
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(colourForStep(index))
-                .frame(width: stepSize.width, height: stepSize.height)
-                .overlay(
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .strokeBorder(colourForStep(index), lineWidth: 2)
-                )
-                .overlay(
-                    Group {
-                        if index < currentStep - 1 {
-                            Rectangle()
-                                .fill(palette.primary)
-                                .frame(
-                                    width: direction == .horizontal ? stepSize.width : 2,
-                                    height: direction == .horizontal ? 2 : stepSize.height
-                                )
-                                .offset(
-                                    x: direction == .horizontal ? stepSize.width : 0,
-                                    y: direction == .horizontal ? 0 : stepSize.height
-                                )
+            VStack(spacing: labelSpacing) {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(colourForStep(index))
+                    .frame(width: stepSize.width, height: stepSize.height)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: cornerRadius)
+                            .strokeBorder(colourForStep(index), lineWidth: 2)
+                    )
+                    .overlay(
+                        Group {
+                            if index < currentStep - 1 {
+                                Rectangle()
+                                    .fill(palette.primary)
+                                    .frame(
+                                        width: direction == .horizontal ? stepSize.width : 2,
+                                        height: direction == .horizontal ? 2 : stepSize.height
+                                    )
+                                    .offset(
+                                        x: direction == .horizontal ? stepSize.width : 0,
+                                        y: direction == .horizontal ? 0 : stepSize.height
+                                    )
+                            }
                         }
-                    }
-                )
+                    )
+                    .overlay(
+                        Group {
+                            if index < currentStep - 1 {
+                                Rectangle()
+                                    .fill(palette.primary)
+                                    .frame(
+                                        width: direction == .horizontal ? 2 : stepSize.width,
+                                        height: direction == .horizontal ? stepSize.height : 2
+                                    )
+                                    .offset(
+                                        x: direction == .horizontal ? 0 : stepSize.width,
+                                        y: direction == .horizontal ? stepSize.height : 0
+                                    )
+                            }
+                        }
+                    )
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(stepAccessibilityLabel(for: index))
+                    .accessibilityHint(stepAccessibilityHint(for: index))
+                    .accessibilityAddTraits(index + 1 == currentStep ? .isSelected : [])
+                    .accessibilityAddTraits(index < currentStep ? .isButton : [])
+                
+                if showLabels, let label = stepLabel(for: index) {
+                    Text(label)
+                        .font(labelFont)
+                        .foregroundColor(colourForStep(index))
+                }
+            }
         }
     }
 } 
