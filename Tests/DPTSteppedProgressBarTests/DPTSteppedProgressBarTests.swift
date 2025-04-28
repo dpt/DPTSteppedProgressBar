@@ -3,8 +3,9 @@
 //  DPTSteppedProgressBarTests
 //
 
-import XCTest
 import SwiftUI
+import XCTest
+
 @testable import DPTSteppedProgressBar
 
 final class DPTSteppedProgressBarTests: XCTestCase {
@@ -14,15 +15,15 @@ final class DPTSteppedProgressBarTests: XCTestCase {
 
         XCTAssertEqual(progressBar.currentStep, 2)
         XCTAssertEqual(progressBar.totalSteps, 5)
-        XCTAssertEqual(progressBar.direction, .horizontal)
-        XCTAssertEqual(progressBar.stepSize, CGSize(width: 16, height: 16))
-        XCTAssertEqual(progressBar.activeStepSize, CGSize(width: 16, height: 16))
-        XCTAssertEqual(progressBar.cornerRadius, 8)
-        XCTAssertEqual(progressBar.palette.complete, defaultPalette.complete)
-        XCTAssertEqual(progressBar.palette.incomplete, defaultPalette.incomplete)
-        XCTAssertEqual(progressBar.palette.active, defaultPalette.active)
-        XCTAssertNil(progressBar.lineStyle)
-        XCTAssertNil(progressBar.strokeWidth)
+        XCTAssertEqual(progressBar.style.direction, .horizontal)
+        XCTAssertEqual(progressBar.style.stepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(progressBar.style.activeStepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(progressBar.style.cornerRadius, 8)
+        XCTAssertEqual(progressBar.style.palette.complete, defaultPalette.complete)
+        XCTAssertEqual(progressBar.style.palette.incomplete, defaultPalette.incomplete)
+        XCTAssertEqual(progressBar.style.palette.active, defaultPalette.active)
+        XCTAssertNil(progressBar.style.lineStyle)
+        XCTAssertNil(progressBar.style.strokeWidth)
     }
 
     func testCurrentStepBoundaries() {
@@ -69,8 +70,8 @@ final class DPTSteppedProgressBarTests: XCTestCase {
     func testStepSizeConfiguration() {
         // Test default size
         let defaultBar = DPTSteppedProgressBar(currentStep: 1, totalSteps: 2)
-        XCTAssertEqual(defaultBar.stepSize, CGSize(width: 16, height: 16))
-        XCTAssertEqual(defaultBar.activeStepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(defaultBar.style.stepSize, CGSize(width: 16, height: 16))
+        XCTAssertEqual(defaultBar.style.activeStepSize, CGSize(width: 16, height: 16))
 
         // Test custom sizes
         let customBar = DPTSteppedProgressBar(
@@ -79,34 +80,34 @@ final class DPTSteppedProgressBarTests: XCTestCase {
             stepSize: CGSize(width: 24, height: 32),
             activeStepSize: CGSize(width: 48, height: 32)
         )
-        XCTAssertEqual(customBar.stepSize, CGSize(width: 24, height: 32))
-        XCTAssertEqual(customBar.activeStepSize, CGSize(width: 48, height: 32))
+        XCTAssertEqual(customBar.style.stepSize, CGSize(width: 24, height: 32))
+        XCTAssertEqual(customBar.style.activeStepSize, CGSize(width: 48, height: 32))
     }
 
     func testCornerRadiusConfiguration() {
         let defaultBar = DPTSteppedProgressBar(currentStep: 1, totalSteps: 2)
-        XCTAssertEqual(defaultBar.cornerRadius, 8)
+        XCTAssertEqual(defaultBar.style.cornerRadius, 8)
 
         let customBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             cornerRadius: 4
         )
-        XCTAssertEqual(customBar.cornerRadius, 4)
+        XCTAssertEqual(customBar.style.cornerRadius, 4)
 
         let tallBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             stepSize: CGSize(width: 16, height: 24)
         )
-        XCTAssertEqual(tallBar.cornerRadius, 8)
+        XCTAssertEqual(tallBar.style.cornerRadius, 8)
 
         let wideBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             stepSize: CGSize(width: 32, height: 16)
         )
-        XCTAssertEqual(wideBar.cornerRadius, 8)
+        XCTAssertEqual(wideBar.style.cornerRadius, 8)
     }
 
     func testDirectionConfiguration() {
@@ -115,14 +116,14 @@ final class DPTSteppedProgressBarTests: XCTestCase {
             totalSteps: 2,
             direction: .horizontal
         )
-        XCTAssertEqual(horizontalBar.direction, .horizontal)
+        XCTAssertEqual(horizontalBar.style.direction, .horizontal)
 
         let verticalBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             direction: .vertical
         )
-        XCTAssertEqual(verticalBar.direction, .vertical)
+        XCTAssertEqual(verticalBar.style.direction, .vertical)
     }
 
     func testViewHierarchy() {
@@ -159,14 +160,15 @@ final class DPTSteppedProgressBarTests: XCTestCase {
                 label: "End",
                 accessibilityLabel: "Endpoint",
                 accessibilityHint: "Complete"
-            )
+            ),
         ]
 
+        let style = DPTSteppedProgressBar.Style(showLabels: true)
         let progressBar = DPTSteppedProgressBar(
             currentStep: 2,
             totalSteps: 3,
-            steps: configs,
-            showLabels: true
+            style: style,
+            steps: configs
         )
 
         // Test overall accessibility
@@ -208,16 +210,20 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         let configs: [DPTSteppedProgressBar.Step] = [
             .init(label: "One"),
             .init(label: "Two"),
-            .init(label: "Three")
+            .init(label: "Three"),
         ]
+
+        let style = DPTSteppedProgressBar.Style(
+            showLabels: true,
+            labelFont: .title,
+            labelSpacing: 8
+        )
 
         let progressBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 3,
-            steps: configs,
-            showLabels: true,
-            labelFont: .title,
-            labelSpacing: 8
+            style: style,
+            steps: configs
         )
 
         // Test label retrieval
@@ -226,9 +232,9 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.stepLabel(for: 2), "Three")
 
         // Test label configuration
-        XCTAssertEqual(progressBar.labelFont, .title)
-        XCTAssertEqual(progressBar.labelSpacing, 8)
-        XCTAssertTrue(progressBar.showLabels)
+        XCTAssertEqual(progressBar.style.labelFont, .title)
+        XCTAssertEqual(progressBar.style.labelSpacing, 8)
+        XCTAssertTrue(progressBar.style.showLabels)
     }
 
     func testProgressPercentageCalculation() {
@@ -237,7 +243,7 @@ final class DPTSteppedProgressBarTests: XCTestCase {
             (current: 2, total: 4, expected: "50% complete"),
             (current: 3, total: 4, expected: "75% complete"),
             (current: 4, total: 4, expected: "100% complete"),
-            (current: 2, total: 3, expected: "66% complete")
+            (current: 2, total: 3, expected: "66% complete"),
         ]
 
         for testCase in testCases {
@@ -255,28 +261,30 @@ final class DPTSteppedProgressBarTests: XCTestCase {
 
     func testStrokeWidthConfiguration() {
         let defaultBar = DPTSteppedProgressBar(currentStep: 1, totalSteps: 2)
-        XCTAssertNil(defaultBar.strokeWidth)
+        XCTAssertNil(defaultBar.style.strokeWidth)
 
         let customBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 2,
             strokeWidth: 4
         )
-        XCTAssertEqual(customBar.strokeWidth, 4)
+        XCTAssertEqual(customBar.style.strokeWidth, 4)
     }
 
     func testPartialStepConfiguration() {
         let configs: [DPTSteppedProgressBar.Step] = [
             .init(label: "One", accessibilityHint: "First hint"),
             .init(accessibilityLabel: "Second step"),
-            .init(label: "Three", accessibilityLabel: "Third step", accessibilityHint: "Last hint")
+            .init(label: "Three", accessibilityLabel: "Third step", accessibilityHint: "Last hint"),
         ]
+
+        let style = DPTSteppedProgressBar.Style(showLabels: true)
 
         let progressBar = DPTSteppedProgressBar(
             currentStep: 1,
             totalSteps: 3,
-            steps: configs,
-            showLabels: true
+            style: style,
+            steps: configs
         )
 
         // Test mixed configuration handling
@@ -291,5 +299,67 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.stepAccessibilityHint(for: 0), Text(verbatim: "First hint"))
         XCTAssertEqual(progressBar.stepAccessibilityHint(for: 1), Text(verbatim: ""))
         XCTAssertEqual(progressBar.stepAccessibilityHint(for: 2), Text(verbatim: "Last hint"))
+    }
+
+    func testStyleConfiguration() {
+        // Test explicit style creation
+        let customStyle = DPTSteppedProgressBar.Style(
+            direction: .vertical,
+            palette: .init(complete: .red, active: .orange),
+            stepSize: CGSize(width: 20, height: 20),
+            activeStepSize: CGSize(width: 24, height: 24),
+            spacing: 12,
+            cornerRadius: 6,
+            showLabels: true,
+            labelFont: .headline,
+            labelSpacing: 6,
+            lineStyle: .dashed(width: 2),
+            strokeWidth: 1.5
+        )
+
+        let progressBar = DPTSteppedProgressBar(
+            currentStep: 2,
+            totalSteps: 4,
+            style: customStyle
+        )
+
+        XCTAssertEqual(progressBar.style.direction, .vertical)
+        XCTAssertEqual(progressBar.style.palette.complete, .red)
+        XCTAssertEqual(progressBar.style.palette.active, .orange)
+        XCTAssertEqual(progressBar.style.stepSize, CGSize(width: 20, height: 20))
+        XCTAssertEqual(progressBar.style.activeStepSize, CGSize(width: 24, height: 24))
+        XCTAssertEqual(progressBar.style.spacing, 12)
+        XCTAssertEqual(progressBar.style.cornerRadius, 6)
+        XCTAssertTrue(progressBar.style.showLabels)
+        XCTAssertEqual(progressBar.style.labelFont, .headline)
+        XCTAssertEqual(progressBar.style.labelSpacing, 6)
+
+        // Test line style
+        if case let .dashed(width) = progressBar.style.lineStyle {
+            XCTAssertEqual(width, 2)
+        } else {
+            XCTFail("Line style should be dashed")
+        }
+
+        XCTAssertEqual(progressBar.style.strokeWidth, 1.5)
+    }
+
+    func testStandardStyle() {
+        let standardStyle = DPTSteppedProgressBar.Style.standard
+        let progressBar = DPTSteppedProgressBar(
+            currentStep: 1,
+            totalSteps: 3,
+            style: standardStyle
+        )
+
+        // Verify standard style matches default initializer
+        let defaultBar = DPTSteppedProgressBar(currentStep: 1, totalSteps: 3)
+
+        XCTAssertEqual(progressBar.style.direction, defaultBar.style.direction)
+        XCTAssertEqual(progressBar.style.stepSize, defaultBar.style.stepSize)
+        XCTAssertEqual(progressBar.style.activeStepSize, defaultBar.style.activeStepSize)
+        XCTAssertEqual(progressBar.style.cornerRadius, defaultBar.style.cornerRadius)
+        XCTAssertEqual(progressBar.style.showLabels, defaultBar.style.showLabels)
+        XCTAssertEqual(progressBar.style.labelSpacing, defaultBar.style.labelSpacing)
     }
 }
