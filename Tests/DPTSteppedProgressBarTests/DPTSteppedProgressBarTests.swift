@@ -42,21 +42,24 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(defaultPalette.complete, .blue)
         XCTAssertEqual(defaultPalette.incomplete, .gray.opacity(0.3))
         XCTAssertEqual(defaultPalette.active, .blue.opacity(0.6))
+        XCTAssertEqual(defaultPalette.completeConnection, .blue)
         XCTAssertEqual(defaultPalette.incompleteConnection, .gray.opacity(0.3))
 
-        // Test custom palette with explicit active and incompleteConnection colours
+        // Test custom palette with explicit active and connection colours
         let customPalette = DPTSteppedProgressBar.Palette(
             complete: .green,
             active: .yellow,
             incomplete: .gray,
+            completeConnection: .blue,
             incompleteConnection: .gray.opacity(0.5)
         )
         XCTAssertEqual(customPalette.complete, .green)
         XCTAssertEqual(customPalette.active, .yellow)
         XCTAssertEqual(customPalette.incomplete, .gray)
+        XCTAssertEqual(customPalette.completeConnection, .blue)
         XCTAssertEqual(customPalette.incompleteConnection, .gray.opacity(0.5))
 
-        // Test custom palette with default active and incompleteConnection colours
+        // Test custom palette with default active and connection colours
         let derivedPalette = DPTSteppedProgressBar.Palette(
             complete: .red,
             incomplete: .gray
@@ -64,6 +67,7 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(derivedPalette.complete, .red)
         XCTAssertEqual(derivedPalette.active, .red.opacity(0.6))
         XCTAssertEqual(derivedPalette.incomplete, .gray)
+        XCTAssertEqual(derivedPalette.completeConnection, .red)
         XCTAssertEqual(derivedPalette.incompleteConnection, .gray)
     }
 
@@ -361,5 +365,19 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.style.cornerRadius, defaultBar.style.cornerRadius)
         XCTAssertEqual(progressBar.style.showLabels, defaultBar.style.showLabels)
         XCTAssertEqual(progressBar.style.labelSpacing, defaultBar.style.labelSpacing)
+    }
+
+    func testLineStyleWidth() {
+        // Test solid line style
+        let solidLineStyle = DPTSteppedProgressBar.LineStyle.solid(width: 2)
+        XCTAssertEqual(solidLineStyle.width, 2)
+
+        // Test dashed line style
+        let dashedLineStyle = DPTSteppedProgressBar.LineStyle.dashed(width: 3)
+        XCTAssertEqual(dashedLineStyle.width, 3)
+
+        // Test dotted line style
+        let dottedLineStyle = DPTSteppedProgressBar.LineStyle.dotted(width: 1.5)
+        XCTAssertEqual(dottedLineStyle.width, 1.5)
     }
 }
