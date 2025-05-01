@@ -18,7 +18,7 @@ import SwiftUI
 ///     totalSteps: 5,
 ///     direction: .horizontal,
 ///     palette: .init(
-///         incomplete: .blue,
+///         complete: .blue,
 ///         active: .blue.opacity(0.6),
 ///         incomplete: .gray.opacity(0.3)
 ///     ),
