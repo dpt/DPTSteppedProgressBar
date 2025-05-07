@@ -15,6 +15,7 @@ forms, onboarding flows, and process tracking.
 - 🔲 Flexible shapes with adjustable corner radius
 - ♿️ Full VoiceOver support
 - 🏷️ Optional step labels
+- 🔄 Two-way binding support for interactive steps
 - 🎯 iOS 14.0+ and macOS 11.0+
 
 ## Installation
@@ -45,6 +46,44 @@ struct ContentView: View {
             currentStep: 2,
             totalSteps: 5
         )
+    }
+}
+```
+
+### With Binding Support
+
+```swift
+import SwiftUI
+import DPTSteppedProgressBar
+
+struct ContentView: View {
+    @State private var currentStep = 2
+
+    var body: some View {
+        VStack {
+            DPTSteppedProgressBar(
+                currentStep: $currentStep,
+                totalSteps: 5,
+                isInteractive: true
+            )
+
+            HStack {
+                Button("Previous") {
+                    if currentStep > 1 {
+                        currentStep -= 1
+                    }
+                }
+
+                Spacer()
+
+                Button("Next") {
+                    if currentStep < 5 {
+                        currentStep += 1
+                    }
+                }
+            }
+            .padding()
+        }
     }
 }
 ```
@@ -126,12 +165,13 @@ DPTSteppedProgressBar(
 
 ### Visual Styling
 
-| Parameter      | Type        | Default                  | Description                                    |
-| -------------- | ----------- | ------------------------ | ---------------------------------------------- |
-| `palette`      | `Palette`   | `.init()`                | Colour scheme for steps and lines              |
-| `cornerRadius` | `CGFloat?`  | `min(width, height) / 2` | Corner radius                                  |
-| `lineStyle`    | `LineStyle` | `.solid(width: 2)`       | Style and width of connecting lines (optional) |
-| `strokeWidth`  | `CGFloat`   | `nil`                    | Width of step borders (optional)               |
+| Parameter       | Type        | Default                  | Description                                    |
+| --------------- | ----------- | ------------------------ | ---------------------------------------------- |
+| `palette`       | `Palette`   | `.init()`                | Colour scheme for steps and lines              |
+| `cornerRadius`  | `CGFloat?`  | `min(width, height) / 2` | Corner radius                                  |
+| `lineStyle`     | `LineStyle` | `.solid(width: 2)`       | Style and width of connecting lines (optional) |
+| `strokeWidth`   | `CGFloat`   | `nil`                    | Width of step borders (optional)               |
+| `isInteractive` | `Bool`      | `false`                  | Whether steps can be tapped to navigate        |
 
 ### Line Styles
 
@@ -153,12 +193,13 @@ DPTSteppedProgressBar(
 
 ### Labels & Accessibility
 
-| Parameter      | Type      | Default    | Description                  |
-| -------------- | --------- | ---------- | ---------------------------- |
-| `steps`        | `[Step]?` | `nil`      | Step labels and hints        |
-| `showLabels`   | `Bool`    | `false`    | Show step labels             |
-| `labelFont`    | `Font`    | `.caption` | Label font                   |
-| `labelSpacing` | `CGFloat` | `4`        | Space between step and label |
+| Parameter      | Type               | Default    | Description                  |
+| -------------- | ------------------ | ---------- | ---------------------------- |
+| `steps`        | `[Step]?`          | `nil`      | Step labels and hints        |
+| `showLabels`   | `Bool`             | `false`    | Show step labels             |
+| `labelFont`    | `Font`             | `.caption` | Label font                   |
+| `labelSpacing` | `CGFloat`          | `4`        | Space between step and label |
+| `onStepChange` | `((Int) -> Void)?` | `nil`      | Callback when step changes   |
 
 ### Palette Configuration
 
@@ -177,7 +218,7 @@ specified. This allows for separate styling of incomplete connecting lines.
 
 ### Examples
 
-```swift
+````swift
 // Dashed connecting lines
 DPTSteppedProgressBar(
     currentStep: 2,
@@ -192,7 +233,7 @@ DPTSteppedProgressBar(
     lineStyle: .dotted(width: 2)
 )
 
-// Custom connecting line colours
+### Custom connecting line colours
 DPTSteppedProgressBar(
     currentStep: 2,
     totalSteps: 4,
@@ -204,18 +245,26 @@ DPTSteppedProgressBar(
     lineStyle: .solid(width: 2)
 )
 
-// Without connecting lines
+### Interactive steps with binding
+```swift
+@State private var currentStep = 2
+
 DPTSteppedProgressBar(
-    currentStep: 2,
-    totalSteps: 4
+    currentStep: $currentStep,
+    totalSteps: 4,
+    isInteractive: true,
+    onStepChange: { newStep in
+        print("Step changed to \(newStep)")
+    }
+)
+````
+
+// Without connecting lines DPTSteppedProgressBar( currentStep: 2, totalSteps: 4
 )
 
-// Thin connecting lines
-DPTSteppedProgressBar(
-    currentStep: 2,
-    totalSteps: 4,
-    lineStyle: .solid(width: 1)
-)
+// Thin connecting lines DPTSteppedProgressBar( currentStep: 2, totalSteps: 4,
+lineStyle: .solid(width: 1) )
+
 ```
 
 ## Accessibility
@@ -242,3 +291,4 @@ Contributions welcome! See [Contributing Guidelines](CONTRIBUTING.md).
 ## Licence
 
 MIT. See [LICENSE](LICENSE).
+```

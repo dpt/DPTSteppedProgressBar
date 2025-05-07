@@ -5,6 +5,67 @@
 
 import SwiftUI
 
+private struct InteractiveStepsExample: View {
+    @State private var currentStep = 2
+    let totalSteps = 4
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Interactive Example")
+                .font(.headline)
+            
+            DPTSteppedProgressBar(
+                currentStep: $currentStep,
+                totalSteps: totalSteps,
+                palette: .init(
+                    complete: .blue,
+                    active: .blue.opacity(0.8),
+                    incomplete: .gray.opacity(0.3)
+                ),
+                steps: [
+                    .init(label: "Personal Info"),
+                    .init(label: "Address"),
+                    .init(label: "Payment"),
+                    .init(label: "Confirm")
+                ],
+                showLabels: true,
+                isInteractive: true,
+                onStepChange: { newStep in
+                    print("Step changed to \(newStep)")
+                }
+            )
+            
+            // Navigation controls
+            HStack {
+                Button("Previous") {
+                    if currentStep > 1 {
+                        currentStep -= 1
+                    }
+                }
+                .disabled(currentStep <= 1)
+                .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Text("Step \(currentStep) of \(totalSteps)")
+                    .font(.caption)
+                
+                Spacer()
+                
+                Button("Next") {
+                    if currentStep < totalSteps {
+                        currentStep += 1
+                    }
+                }
+                .disabled(currentStep >= totalSteps)
+                .buttonStyle(.bordered)
+            }
+            .padding(.horizontal)
+        }
+        .padding()
+    }
+}
+
 struct DPTSteppedProgressBar_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
@@ -217,6 +278,14 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
                 .previewDisplayName("Soft Rectangles")
             }
             .padding()
+            
+            Divider()
+                .padding(.horizontal)
+            
+            // Interactive binding example
+            InteractiveStepsExample()
+                .previewDisplayName("Interactive Binding Example")
+            
             .previewLayout(.sizeThatFits)
         }
     }

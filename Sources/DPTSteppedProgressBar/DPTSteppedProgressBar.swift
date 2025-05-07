@@ -131,6 +131,8 @@ public struct DPTSteppedProgressBar: View {
         let lineStyle: LineStyle?
         /// The width of the step border strokes
         let strokeWidth: CGFloat?
+        /// Whether steps can be tapped to navigate
+        let isInteractive: Bool
 
         /// Creates a new style configuration for the progress bar
         /// - Parameters:
@@ -156,7 +158,8 @@ public struct DPTSteppedProgressBar: View {
             labelFont: Font = .caption,
             labelSpacing: CGFloat = 4,
             lineStyle: LineStyle? = nil,
-            strokeWidth: CGFloat? = nil
+            strokeWidth: CGFloat? = nil,
+            isInteractive: Bool = false
         ) {
             self.direction = direction
             self.palette = palette
@@ -169,6 +172,7 @@ public struct DPTSteppedProgressBar: View {
             self.labelSpacing = labelSpacing
             self.lineStyle = lineStyle
             self.strokeWidth = strokeWidth
+            self.isInteractive = isInteractive
         }
 
         /// Default style
@@ -178,15 +182,43 @@ public struct DPTSteppedProgressBar: View {
     @Environment(\.colorScheme) private var colorScheme
 
     /// The current step (1-based index)
-    let currentStep: Int
+    @Binding private var currentStep: Int
+
+    // Bounded version of currentStep to ensure it's within valid range
+    private var boundedCurrentStep: Int {
+        min(max(1, currentStep), totalSteps)
+    }
+
     /// The total number of steps
     let totalSteps: Int
     /// The style configuration for the progress bar
     let style: Style
     /// Configuration for each step
     let steps: [Step]?
+    /// Optional callback when step changes
+    var onStepChange: ((Int) -> Void)?
 
     /// Creates a new stepped progress bar
+    /// - Parameters:
+    ///   - currentStep: The current step (1-based index)
+    ///   - totalSteps: The total number of steps
+    ///   - style: The style configuration for the progress bar
+    ///   - steps: Configuration for each step
+    public init(
+        currentStep: Binding<Int>,
+        totalSteps: Int,
+        style: Style = .standard,
+        steps: [Step]? = nil,
+        onStepChange: ((Int) -> Void)? = nil
+    ) {
+        self._currentStep = currentStep
+        self.totalSteps = totalSteps
+        self.style = style
+        self.steps = steps
+        self.onStepChange = onStepChange
+    }
+
+    /// Creates a new stepped progress bar with individual style parameters
     /// - Parameters:
     ///   - currentStep: The current step (1-based index)
     ///   - totalSteps: The total number of steps
@@ -198,10 +230,11 @@ public struct DPTSteppedProgressBar: View {
         style: Style = .standard,
         steps: [Step]? = nil
     ) {
-        self.currentStep = min(max(1, currentStep), totalSteps)
+        self._currentStep = .constant(min(max(1, currentStep), totalSteps))
         self.totalSteps = totalSteps
         self.style = style
         self.steps = steps
+        self.onStepChange = nil
     }
 
     /// Creates a new stepped progress bar with individual style parameters
@@ -220,6 +253,8 @@ public struct DPTSteppedProgressBar: View {
     ///   - labelSpacing: Spacing between step and label
     ///   - lineStyle: The style and width of the connecting lines
     ///   - strokeWidth: The width of the step border strokes (defaults to 0 if nil)
+    ///   - isInteractive: Whether steps can be tapped to navigate
+    ///   - onStepChange: Optional callback when step changes
     public init(
         currentStep: Int,
         totalSteps: Int,
@@ -234,7 +269,67 @@ public struct DPTSteppedProgressBar: View {
         labelFont: Font = .caption,
         labelSpacing: CGFloat = 4,
         lineStyle: LineStyle? = nil,
-        strokeWidth: CGFloat? = nil
+        strokeWidth: CGFloat? = nil,
+        isInteractive: Bool = false,
+        onStepChange: ((Int) -> Void)? = nil
+    ) {
+        self.init(
+            currentStep: .constant(min(max(1, currentStep), totalSteps)),
+            totalSteps: totalSteps,
+            style: Style(
+                direction: direction,
+                palette: palette,
+                stepSize: stepSize,
+                activeStepSize: activeStepSize,
+                spacing: spacing,
+                cornerRadius: cornerRadius,
+                showLabels: showLabels,
+                labelFont: labelFont,
+                labelSpacing: labelSpacing,
+                lineStyle: lineStyle,
+                strokeWidth: strokeWidth,
+                isInteractive: isInteractive
+            ),
+            steps: steps,
+            onStepChange: onStepChange
+        )
+    }
+
+    /// Creates a new stepped progress bar with a binding and individual style parameters
+    /// - Parameters:
+    ///   - currentStep: Binding to the current step (1-based index)
+    ///   - totalSteps: The total number of steps
+    ///   - direction: The layout direction (.horizontal or .vertical)
+    ///   - palette: The colour palette for the progress bar
+    ///   - stepSize: The default size of the step indicators
+    ///   - activeStepSize: The size of the active step indicator (defaults to stepSize if nil)
+    ///   - spacing: Space between step indicators (uses SwiftUI's default spacing if nil)
+    ///   - cornerRadius: The corner radius of the step indicators
+    ///   - steps: Configuration for each step
+    ///   - showLabels: Whether to show labels
+    ///   - labelFont: Font for the labels
+    ///   - labelSpacing: Spacing between step and label
+    ///   - lineStyle: The style and width of the connecting lines
+    ///   - strokeWidth: The width of the step border strokes (defaults to 0 if nil)
+    ///   - isInteractive: Whether steps can be tapped to navigate
+    ///   - onStepChange: Optional callback when step changes
+    public init(
+        currentStep: Binding<Int>,
+        totalSteps: Int,
+        direction: Direction = .horizontal,
+        palette: Palette = .init(),
+        stepSize: CGSize = .init(width: 16, height: 16),
+        activeStepSize: CGSize? = nil,
+        spacing: CGFloat? = nil,
+        cornerRadius: CGFloat? = nil,
+        steps: [Step]? = nil,
+        showLabels: Bool = false,
+        labelFont: Font = .caption,
+        labelSpacing: CGFloat = 4,
+        lineStyle: LineStyle? = nil,
+        strokeWidth: CGFloat? = nil,
+        isInteractive: Bool = false,
+        onStepChange: ((Int) -> Void)? = nil
     ) {
         self.init(
             currentStep: currentStep,
@@ -250,18 +345,20 @@ public struct DPTSteppedProgressBar: View {
                 labelFont: labelFont,
                 labelSpacing: labelSpacing,
                 lineStyle: lineStyle,
-                strokeWidth: strokeWidth
+                strokeWidth: strokeWidth,
+                isInteractive: isInteractive
             ),
-            steps: steps
+            steps: steps,
+            onStepChange: onStepChange
         )
     }
 
-    internal var overallAccessibilityLabel: String {
-        "Progress tracker: Step \(currentStep) of \(totalSteps)"
+    var overallAccessibilityLabel: String {
+        "Progress tracker: Step \(boundedCurrentStep) of \(totalSteps)"
     }
 
-    internal var progressPercentage: String {
-        let percentage = Int((Double(currentStep) / Double(totalSteps)) * 100)
+    var progressPercentage: String {
+        let percentage = Int(Double(boundedCurrentStep) / Double(totalSteps) * 100)
         return "\(percentage)% complete"
     }
 
@@ -288,8 +385,8 @@ public struct DPTSteppedProgressBar: View {
 
     private func colourForStep(_ index: Int) -> Color {
         switch index {
-        case currentStep - 1: return style.palette.active
-        case ..<currentStep: return style.palette.complete
+        case boundedCurrentStep - 1: return style.palette.active
+        case ..<boundedCurrentStep: return style.palette.complete
         default: return style.palette.incomplete
         }
     }
@@ -323,6 +420,9 @@ public struct DPTSteppedProgressBar: View {
             if style.direction == .horizontal {
                 VStack(spacing: style.labelSpacing) {
                     stepIndicator(index: index)
+                        .onTapGesture {
+                            handleStepTap(index: index)
+                        }
                     if style.showLabels, let label = stepLabel(for: index) {
                         Text(label)
                             .font(style.labelFont)
@@ -333,6 +433,9 @@ public struct DPTSteppedProgressBar: View {
             } else {
                 HStack(spacing: style.labelSpacing) {
                     stepIndicator(index: index)
+                        .onTapGesture {
+                            handleStepTap(index: index)
+                        }
                     if style.showLabels, let label = stepLabel(for: index) {
                         Text(label)
                             .font(style.labelFont)
@@ -343,10 +446,24 @@ public struct DPTSteppedProgressBar: View {
         }
     }
 
+    private func handleStepTap(index: Int) {
+        guard style.isInteractive else { return }
+
+        // Only allow moving to completed steps or the next available step
+        if index + 1 <= boundedCurrentStep || index + 1 == boundedCurrentStep + 1 {
+            let oldStep = currentStep
+            currentStep = index + 1
+
+            if oldStep != currentStep, let onStepChange = onStepChange {
+                onStepChange(currentStep)
+            }
+        }
+    }
+
     private func stepIndicator(index: Int) -> some View {
         let colour = colourForStep(index)
-        let isCompleted = (index < currentStep)
-        let isActive = (index + 1 == currentStep)
+        let isCompleted = (index < boundedCurrentStep)
+        let isActive = (index + 1 == boundedCurrentStep)
         let stepSize = (isActive) ? style.activeStepSize : style.stepSize
         return ZStack {
             RoundedRectangle(cornerRadius: style.cornerRadius)
@@ -362,7 +479,7 @@ public struct DPTSteppedProgressBar: View {
             value: .bounds,
             transform: { [index: $0] }
         )
-        .animation(.spring(response: 0.3), value: currentStep)
+        .animation(.spring(response: 0.3), value: boundedCurrentStep)
         .transition(.opacity.combined(with: .scale))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(stepAccessibilityLabel(for: index))
@@ -381,7 +498,7 @@ public struct DPTSteppedProgressBar: View {
                     Line(from: proxy[from][.center], to: proxy[to][.center], style: lineStyle)
                         .stroke(lineWidth: lineStyle.width)
                         .foregroundColor(
-                            index < currentStep - 1
+                            index < boundedCurrentStep - 1
                                 ? style.palette.completeConnection
                                 : style.palette.incompleteConnection)
                 }

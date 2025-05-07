@@ -3,6 +3,7 @@
 //  DPTSteppedProgressBarTests
 //
 
+import Combine
 import SwiftUI
 import XCTest
 
@@ -13,7 +14,13 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         let progressBar = DPTSteppedProgressBar(currentStep: 2, totalSteps: 5)
         let defaultPalette = DPTSteppedProgressBar.Palette()
 
-        XCTAssertEqual(progressBar.currentStep, 2)
+        // Access currentStep via binding
+        let mirror = Mirror(reflecting: progressBar)
+        let currentStepBinding =
+            mirror.children.first { $0.label == "_currentStep" }?.value as? Binding<Int>
+        XCTAssertNotNil(currentStepBinding)
+        XCTAssertEqual(currentStepBinding?.wrappedValue, 2)
+
         XCTAssertEqual(progressBar.totalSteps, 5)
         XCTAssertEqual(progressBar.style.direction, .horizontal)
         XCTAssertEqual(progressBar.style.stepSize, CGSize(width: 16, height: 16))
@@ -24,16 +31,24 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.style.palette.active, defaultPalette.active)
         XCTAssertNil(progressBar.style.lineStyle)
         XCTAssertNil(progressBar.style.strokeWidth)
+        XCTAssertFalse(progressBar.style.isInteractive)
     }
 
     func testCurrentStepBoundaries() {
         // Test lower bound
         let lowerBoundBar = DPTSteppedProgressBar(currentStep: 0, totalSteps: 5)
-        XCTAssertEqual(lowerBoundBar.currentStep, 1, "Current step should be clamped to minimum 1")
+        let lowerMirror = Mirror(reflecting: lowerBoundBar)
+        let lowerBinding =
+            lowerMirror.children.first { $0.label == "_currentStep" }?.value as? Binding<Int>
+        XCTAssertEqual(lowerBinding?.wrappedValue, 1, "Current step should be clamped to minimum 1")
 
         // Test upper bound
         let upperBoundBar = DPTSteppedProgressBar(currentStep: 6, totalSteps: 5)
-        XCTAssertEqual(upperBoundBar.currentStep, 5, "Current step should be clamped to totalSteps")
+        let upperMirror = Mirror(reflecting: upperBoundBar)
+        let upperBinding =
+            upperMirror.children.first { $0.label == "_currentStep" }?.value as? Binding<Int>
+        XCTAssertEqual(
+            upperBinding?.wrappedValue, 5, "Current step should be clamped to totalSteps")
     }
 
     func testPaletteConfiguration() {
@@ -318,7 +333,8 @@ final class DPTSteppedProgressBarTests: XCTestCase {
             labelFont: .headline,
             labelSpacing: 6,
             lineStyle: .dashed(width: 2),
-            strokeWidth: 1.5
+            strokeWidth: 1.5,
+            isInteractive: true
         )
 
         let progressBar = DPTSteppedProgressBar(
@@ -337,6 +353,7 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertTrue(progressBar.style.showLabels)
         XCTAssertEqual(progressBar.style.labelFont, .headline)
         XCTAssertEqual(progressBar.style.labelSpacing, 6)
+        XCTAssertTrue(progressBar.style.isInteractive)
 
         // Test line style
         if case let .dashed(width) = progressBar.style.lineStyle {
@@ -365,6 +382,7 @@ final class DPTSteppedProgressBarTests: XCTestCase {
         XCTAssertEqual(progressBar.style.cornerRadius, defaultBar.style.cornerRadius)
         XCTAssertEqual(progressBar.style.showLabels, defaultBar.style.showLabels)
         XCTAssertEqual(progressBar.style.labelSpacing, defaultBar.style.labelSpacing)
+        XCTAssertEqual(progressBar.style.isInteractive, defaultBar.style.isInteractive)
     }
 
     func testLineStyleWidth() {
