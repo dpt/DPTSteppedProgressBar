@@ -1,5 +1,15 @@
 # DPTSteppedProgressBar
 
+> ## ⚠️ AI-GENERATED PROJECT NOTICE
+> 
+> **This project was primarily generated using artificial intelligence tools.**
+> 
+> - The code, documentation, and examples were created with AI assistance
+> - While thoroughly reviewed and tested, AI-generated code may contain unexpected behaviors
+> - We recommend additional testing in your specific environment
+> - Please report any issues you encounter
+> - This notice is provided for transparency and ethical disclosure
+
 [![Swift](https://img.shields.io/badge/Swift-5.5+-orange.svg)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2015.0+%20%7C%20macOS%2011.0+-333333.svg)](https://developer.apple.com)
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-brightgreen.svg)](https://swift.org/package-manager/)
@@ -10,6 +20,7 @@ A customisable stepped progress indicator for SwiftUI. Perfect for multi-step fo
 
 ## Contents
 
+- [About AI-Generated Content](#about-ai-generated-content)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -21,6 +32,17 @@ A customisable stepped progress indicator for SwiftUI. Perfect for multi-step fo
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
+
+## About AI-Generated Content
+
+This project was created using AI tools to demonstrate a stepped progress bar implementation in SwiftUI. While we've made every effort to ensure the code is functional and follows best practices, users should be aware of the following:
+
+- The implementation was AI-assisted and may benefit from human review
+- Edge cases might not be handled as thoroughly as in fully human-written code
+- Performance optimizations may be limited
+- Documentation might be more generic than custom-written documentation
+
+We welcome contributions and improvements from the community to enhance this AI-generated foundation.
 
 ## Features
 
@@ -351,3 +373,7 @@ Contributions are welcome! Please see [Contributing Guidelines](CONTRIBUTING.md)
 ## License
 
 DPTSteppedProgressBar is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+
+---
+
+*This README and associated code were created with AI assistance. While we strive for accuracy and quality, please review carefully before implementing in production environments.*
