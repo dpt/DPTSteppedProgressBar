@@ -147,6 +147,7 @@ public struct DPTSteppedProgressBar: View {
         ///   - labelSpacing: Spacing between step and label
         ///   - lineStyle: The style and width of the connecting lines
         ///   - strokeWidth: The width of the step border strokes (defaults to 0 if nil)
+        ///   - isInteractive: Whether steps can be tapped to navigate
         public init(
             direction: Direction = .horizontal,
             palette: Palette = .init(),
@@ -204,6 +205,7 @@ public struct DPTSteppedProgressBar: View {
     ///   - totalSteps: The total number of steps
     ///   - style: The style configuration for the progress bar
     ///   - steps: Configuration for each step
+    ///   - onStepChange: Optional callback when step changes
     public init(
         currentStep: Binding<Int>,
         totalSteps: Int,

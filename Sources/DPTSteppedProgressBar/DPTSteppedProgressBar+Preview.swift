@@ -2,9 +2,20 @@
 //  DPTSteppedProgressBar+Preview.swift
 //  DPTSteppedProgressBar
 //
+//  This file contains SwiftUI preview examples for the DPTSteppedProgressBar component.
+//  It demonstrates various configurations and use cases to help developers understand
+//  how to implement and style the progress bar in their applications.
+//
 
 import SwiftUI
 
+/// An example view demonstrating interactive functionality with step navigation buttons
+///
+/// This example shows how to:
+/// - Bind the progress bar to state
+/// - Enable interactive step navigation
+/// - Implement previous/next navigation controls
+/// - Display the current progress
 private struct InteractiveStepsExample: View {
     @State private var currentStep = 2
     let totalSteps = 4
@@ -66,11 +77,19 @@ private struct InteractiveStepsExample: View {
     }
 }
 
+/// SwiftUI preview provider showcasing various configurations of DPTSteppedProgressBar
+///
+/// This preview demonstrates:
+/// - Different layout directions (horizontal/vertical)
+/// - Various styling options (colors, sizes, corner radius)
+/// - Line styles (solid, dashed, dotted)
+/// - Label configurations and accessibility settings
+/// - Different shape variations (circular, pill, rectangular)
 struct DPTSteppedProgressBar_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(spacing: 40) {
-                // Default style (circular)
+                // Default style (circular) - Simplest configuration with default settings
                 DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5
@@ -79,7 +98,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Default style with labels
+                // Default style with labels and accessibility - Demonstrates advanced configuration with labels and custom colors
                 DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
@@ -125,7 +144,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Without connecting lines
+                // Without connecting lines - Shows steps without any connecting lines
                 DPTSteppedProgressBar(
                     currentStep: 1,
                     totalSteps: 5,
@@ -135,7 +154,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Thin connecting lines
+                // Thin connecting lines - Demonstrates customizing line width with 1px solid lines
                 DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 5,
@@ -146,7 +165,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Dashed connecting lines
+                // Dashed connecting lines - Shows dashed pattern for connecting lines
                 DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
@@ -157,7 +176,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Dotted connecting lines
+                // Dotted connecting lines - Shows dotted pattern for connecting lines
                 DPTSteppedProgressBar(
                     currentStep: 4,
                     totalSteps: 5,
@@ -168,7 +187,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Vertical with custom labels
+                // Vertical with custom labels - Example of vertical layout with longer label text
                 DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 4,
@@ -197,7 +216,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Tall rounded rectangles
+                // Tall rounded rectangles - Shows taller indicators in a vertical layout
                 DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 4,
@@ -217,7 +236,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Wide pill shapes
+                // Wide pill shapes - Demonstrates wider indicators with rounded corners (pill shape)
                 DPTSteppedProgressBar(
                     currentStep: 4,
                     totalSteps: 6,
@@ -237,7 +256,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Square steps
+                // Square steps - Shows square indicators with minimal corner radius and strokes
                 DPTSteppedProgressBar(
                     currentStep: 2,
                     totalSteps: 6,
@@ -258,7 +277,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
 
                 Divider()
 
-                // Soft rectangles
+                // Soft rectangles - Demonstrates low corner radius rectangles with custom spacing
                 DPTSteppedProgressBar(
                     currentStep: 3,
                     totalSteps: 5,
@@ -282,7 +301,7 @@ struct DPTSteppedProgressBar_Previews: PreviewProvider {
             Divider()
                 .padding(.horizontal)
             
-            // Interactive binding example
+            // Interactive binding example - Shows a fully functional interactive implementation with navigation buttons
             InteractiveStepsExample()
                 .previewDisplayName("Interactive Binding Example")
             
